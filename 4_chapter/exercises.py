@@ -233,7 +233,19 @@ def find_pair(numbers: Sequence[int], n: int) -> bool:
 
 
 def power_iterative(x: int, n: int) -> int:
-  """Compute x^n (x to the power of n) by repeated squaring"""
+  """Compute x^n (x to the power of n) by repeated squaring - iteratively"""
+  result = 1
+  while n > 0:
+    if n % 2 == 1:
+      result = result * x
+    x = x * x
+    n = n // 2
+    print(f"result is {result}, x is {x}, n is {n}")
+
+  return result
+
+def my_power_iterative(x: int, n: int) -> int:
+  """Compute x^n (x to the power of n) by repeated squaring - iteratively"""
   result = 1
   while n > 0:
     if n % 2 == 1:
@@ -243,6 +255,16 @@ def power_iterative(x: int, n: int) -> int:
 
   return result
 
+def power_recursive(x: int, n: int) -> int:
+  """Compute x^n (x to the power of n) by repeated squaring - recursively"""
+  if n == 1:
+    return x
+  
+  partial = power_recursive(x, n // 2)
+  result = partial * partial
+  if n % 2 == 1:
+    result = result * x
+  return result
 
 
 
@@ -290,4 +312,7 @@ if __name__ == "__main__":
   print(find_pair([1, 3, 8, 12, 17, 20, 21, 24, 27, 28, 30], 44))
   print("\npower_iterative \n")
   print(power_iterative(2, 10))
-  print(power_iterative(2, 11))
+  # print(power_iterative(2, 11))
+  print("\npower_recursive \n")
+  print(power_recursive(2, 10))
+  print(power_recursive(2, 11))
