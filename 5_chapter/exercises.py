@@ -207,7 +207,44 @@ def list_pop_experiments(repetitions: int = 10) -> None:
     print(value) 
 
 
+# 5.10
+def init(self, shift):
+    """Construct Caesar cipher using given integer shift for rotation."""
+    self._forward = ''.join(chr((k + shift) % 26 + ord('A')) for k in range(26))                # will store as string
+    self._backward = ''.join(chr((k - shift) % 26 + ord('A')) for k in range(26))  
+
+
+# 5.11
+def add_two_dimensional(two_dimensional: list[list[float]]) -> float:
+  total = 0
+  for seq in two_dimensional:
+    for elem in seq:
+      total += elem
+  
+  return total
+
+# 5.12
+def sum_add_two_dimensional(two_dimensional: list[list[float]]) -> float:
+  return sum(sum(seq) for seq in two_dimensional)
+
+# 5.13
+def find_list_resize_boundaries_grow_initial_size(initial_size: int, additions: int) -> None:
+  data = [None] * initial_size
+  print(f"initial length of list: {len(data)}")
+  prev_size = sys.getsizeof(data)
+  for _ in range(additions):
+    length = len(data)
+    current_size = sys.getsizeof(data)
+    if current_size != prev_size:
+      print(f"List changed size at length {length - 1}")
+      prev_size = current_size
+    data.append(None)
+
+  
+  print(f"final length of list: {len(data)}")
+  print("========================")
+
+
 if __name__ == "__main__":
-  list_pop_experiments(100)
-
-
+  for i in range(30):
+    find_list_resize_boundaries_grow_initial_size(i, 50 - i)
