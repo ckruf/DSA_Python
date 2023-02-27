@@ -349,6 +349,43 @@ def list_pop_experiments(repetitions: int = 10) -> None:
     print(f"List of size {key}")
     print(value) 
 
+# 5.10
+def init(self, shift):
+    """Construct Caesar cipher using given integer shift for rotation."""
+    self._forward = ''.join(chr((k + shift) % 26 + ord('A')) for k in range(26))                # will store as string
+    self._backward = ''.join(chr((k - shift) % 26 + ord('A')) for k in range(26))  
+
+
+# 5.11
+def add_two_dimensional(two_dimensional: list[list[float]]) -> float:
+  total = 0
+  for seq in two_dimensional:
+    for elem in seq:
+      total += elem
+  
+  return total
+
+# 5.12
+def sum_add_two_dimensional(two_dimensional: list[list[float]]) -> float:
+  return sum(sum(seq) for seq in two_dimensional)
+
+# 5.13
+def find_list_resize_boundaries_grow_initial_size(initial_size: int, additions: int) -> None:
+  data = [None] * initial_size
+  print(f"initial length of list: {len(data)}")
+  prev_size = sys.getsizeof(data)
+  for _ in range(additions):
+    length = len(data)
+    current_size = sys.getsizeof(data)
+    if current_size != prev_size:
+      print(f"List changed size at length {length - 1}")
+      prev_size = current_size
+    data.append(None)
+
+  
+  print(f"final length of list: {len(data)}")
+  print("========================")
+
 # 5.14
 def shuffle_sequence(seq: Sequence) -> None:
   """Shuffle sequence in place, using random module for RNG"""
@@ -788,86 +825,261 @@ def test_natural_join():
     assert triple in result
 
 
-def recursive_sum(A: list[int | float]) -> int:
-  if len(A) == 1:
-    return A[0]
+def recursive_sum(A: list[int | float]) -> int | float:
+  def recurse(A: list[int | float], n: int):
+    if n == 0:
+      return 0
+    else:
+      return recurse(A, n - 1) + A[n - 1]
+  return recurse(A, len(A))
+
+def recursive_sum_front(A: list[int | float]) -> int | float:
+  def recurse(A: list[int | float], n: int):
+    if n == len(A):
+      return 0
+    else:
+      return A[n] + recurse(A, n + 1)
+  return recurse(A, 0)
+
+def recursive_sum_pop(A: list[int | float]) -> int | float:
+  if len(A) == 0:
+    return 0
   else:
-    return A[0] + recursive_sum(A[1:])
+    return A.pop() + recursive_sum_pop(A)
+
+def recursive_sum_acc(A: list[int | float]):
+  def recurse(A: list[int | float], acc: int | float, n: int) -> int | float:
+    if n == len(A):
+      return acc
+    else:
+      return recurse(A, A[n] + acc, n + 1)
+  return recurse(A, 0, 0)
+
+def recursive_sum_acc_pop(A: list[int | float], acc: int | float = 0):
+  if len(A) == 0:
+    return acc
+  else:
+    return recursive_sum_acc_pop(A, A.pop() + acc)
+
+def iterative_sum(A: list[int | float]) -> int | float:
+  total = 0
+  for val in A:
+    total += val
+  return total
 
 
-def test_recursive_sum(recursive_fn: Callable[[Sequence[int]], int], initial_input_size: int = 10_000, repetitions: int = 10):
-  def single_rep(input_size: int) -> int:
+
+
+def test_recursive_sum(recursive_fn: Callable[[Sequence[int | float]], int], initial_input_size: int = 1000, repetitions: int = 20):
+  def single_rep(input_size: int, recursive_fn: Callable[[Sequence[int | float]], int]) -> int:
     test_seq = [i for i in range(input_size)]
+    check_result = sum(test_seq)
     start = perf_counter_ns()
     result = recursive_fn(test_seq)
     stop = perf_counter_ns()
-    time_elapsed_initial = stop - start
-    total_time_initial += time_elapsed_initial
-    assert result == sum(test_seq)
-
-
+    time_elapsed = stop - start
+    assert result == check_result
+    return time_elapsed
   
   total_time_initial = 0
   total_time_double = 0
   total_time_quadruple = 0
   
   for _ in range(repetitions):
-    test_seq = [i for i in range(initial_input_size)]
-    start = perf_counter_ns()
-    result = recursive_fn(test_seq)
-    stop = perf_counter_ns()
-    time_elapsed_initial = stop - start
-    total_time_initial += time_elapsed_initial
-    assert result == sum(test_seq)
+    total_time_initial += single_rep(initial_input_size, recursive_fn)
+    total_time_double += single_rep(2 * initial_input_size, recursive_fn)
+    total_time_quadruple += single_rep(4 * initial_input_size, recursive_fn)
 
-    test_seq = [i for i in range(2 * initial_input_size)]
-    start = perf_counter_ns()
-    result = recursive_fn(test_seq)
-    stop = perf_counter_ns()
-    time_elapsed_double = stop - start
-    total_time_double += time_elapsed_double
-    assert result == sum(test_seq)
+  average_time_initial = total_time_initial / repetitions
+  average_time_double = total_time_double / repetitions
+  average_time_quadruple = total_time_quadruple / repetitions
+
+  print(f"Function: {recursive_fn.__name__}")
+  print(f"Average time taken for input size {initial_input_size:,} is {average_time_initial:,}")
+  print(f"Average time taken for input size {2*initial_input_size:,} is {average_time_double:,}")
+  print(f"Average time taken for input size {4*initial_input_size:,} is {average_time_quadruple:,}")
+  print()
+  print("=" * 50)
+  print()
+
+class RecursionLimit:
+    """
+    Class which can be used as context manager for temporarily increasing the recursion limit.
+    
+    Usage:
+    with RecursionLimit(5000):
+      pass
+
+    """
+    def __init__(self, limit):
+        self.limit = limit
+
+    def __enter__(self):
+        self.old_limit = sys.getrecursionlimit()
+        sys.setrecursionlimit(self.limit)
+
+    def __exit__(self, type, value, tb):
+        sys.setrecursionlimit(self.old_limit)
 
 
-
-# 5.10
-def init(self, shift):
-    """Construct Caesar cipher using given integer shift for rotation."""
-    self._forward = ''.join(chr((k + shift) % 26 + ord('A')) for k in range(26))                # will store as string
-    self._backward = ''.join(chr((k - shift) % 26 + ord('A')) for k in range(26))  
-
-
-# 5.11
-def add_two_dimensional(two_dimensional: list[list[float]]) -> float:
-  total = 0
-  for seq in two_dimensional:
-    for elem in seq:
-      total += elem
+# 5.31
+def add_two_dimensional_recursive(two_dimensional: list[list[int | float]],) -> int | float:
+  def recurse(two_dimensional: list[list[int | float]], n1: int, n2: int, acc: int | float) -> int | float:
+    if n1 == 0 and n2 == 0:
+      return acc + two_dimensional[0][0]
+    elif n2 == 0:
+      return recurse(two_dimensional, n1 - 1, len(two_dimensional[n1 - 1]) - 1, acc + two_dimensional[n1][n2])
+    else:
+      return recurse(two_dimensional, n1, n2 - 1, acc + two_dimensional[n1][n2])
   
-  return total
+  return recurse(two_dimensional, len(two_dimensional) - 1, len(two_dimensional[-1]) - 1, 0)
 
-# 5.12
-def sum_add_two_dimensional(two_dimensional: list[list[float]]) -> float:
-  return sum(sum(seq) for seq in two_dimensional)
-
-# 5.13
-def find_list_resize_boundaries_grow_initial_size(initial_size: int, additions: int) -> None:
-  data = [None] * initial_size
-  print(f"initial length of list: {len(data)}")
-  prev_size = sys.getsizeof(data)
-  for _ in range(additions):
-    length = len(data)
-    current_size = sys.getsizeof(data)
-    if current_size != prev_size:
-      print(f"List changed size at length {length - 1}")
-      prev_size = current_size
-    data.append(None)
-
+def alt_add_two_dimensional_recursive(two_dimensional: list[list[int | float]],) -> int | float:
+  def recurse(two_dimensional: list[list[int | float]], n1: int, n2: int, acc: int | float) -> int | float:
+    print(f"recurse(_, {n1}, {n2}, {acc})")
+    if n1 == 1 and n2 == 0:
+      return acc
+    elif n2 == 0:
+      return recurse(two_dimensional, n1 - 1, len(two_dimensional[n1 - 2]), acc)
+    else:
+      return recurse(two_dimensional, n1, n2 - 1, acc + two_dimensional[n1 - 1][n2 - 1])
   
-  print(f"final length of list: {len(data)}")
-  print("========================")
+  return recurse(two_dimensional, len(two_dimensional), len(two_dimensional[-1]), 0)
+    
+
+def test_add_two_dimensional_recursive():
+  test_list = [
+    [1, 2], # 0
+    [3, 4, 5, 6], # 1
+    [7,8], # 2
+    [9,], # 3
+    [10,] # 4
+  ]
+  assert alt_add_two_dimensional_recursive(test_list) == 55
 
 
-if __name__ == "__main__":
-  my_lst = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-  print(recursive_sum(my_lst))
+def add_three_dimensional(a: list[list[list[int | float]]], b: list[list[list[int | float]]]) -> list[list[list[int | float]]]:
+  assert len(a) > 0
+  assert len(a) == len(b)
+  assert len(a[0]) > 0
+  assert len(a[0]) == len(b[0])
+  assert len(a[0][0]) > 1
+  assert len(a[0][0]) == len(b[0][0])
+  
+  result = []
+
+  for i in range(len(a)):
+    result.append([])
+    for j in range(len(a[i])):
+      result[i].append([])
+      for k in range(len(a[i][j])):
+        sum_ = a[i][j][k] + b[i][j][k]
+        result[i][j].append(sum_)
+
+  return result
+
+
+def test_add_three_dimensional():
+    # Test case 1
+    a = [
+      [[1, 2], [3, 4]],
+      [[5, 6], [7, 8]]
+      ]
+    b = [[[9, 10], [11, 12]], [[13, 14], [15, 16]]]
+    expected_output = [[[10, 12], [14, 16]], [[18, 20], [22, 24]]]
+    assert add_three_dimensional(a, b) == expected_output
+
+    # Test case 2
+    a = [[[1.5, 2.5], [3.5, 4.5]], [[5.5, 6.5], [7.5, 8.5]]]
+    b = [[[9.5, 10.5], [11.5, 12.5]], [[13.5, 14.5], [15.5, 16.5]]]
+    expected_output = [[[11, 13], [15, 17]], [[19, 21], [23, 25]]]
+    assert add_three_dimensional(a, b) == expected_output
+
+    # Test case 3
+    a = [[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]]
+    b = [[[13, 14, 15], [16, 17, 18]], [[19, 20, 21], [22, 23, 24]]]
+    expected_output = [[[14, 16, 18], [20, 22, 24]], [[26, 28, 30], [32, 34, 36]]]
+    assert add_three_dimensional(a, b) == expected_output
+
+    print("All test cases pass")
+
+
+class CaesarCipher:
+  """Class for doing encryption and decryption using a Caesar cipher."""
+
+  def __init__(self, shift: int):
+    """
+    Construct Caesar cipher using given integer shift for rotation.
+    Stores alphabet string shifted by given shift, both forward and backward,
+    for encryption and decryption.
+    """
+    self._forward_upper = "".join(chr((k + shift) % 26 + ord('A')) for k in range(26))                # will store as string
+    self._backward_upper = "".join(chr((k - shift) % 26 + ord('A')) for k in range(26))               # since fixed
+    self._forward_lower = "".join(chr((k + shift) % 26 + ord('a')) for k in range(26))
+    self._backward_lower = "".join(chr((k - shift) % 26 + ord('a')) for k in range(26)) 
+
+
+  def encrypt(self, message):
+    """Return string representing encripted message."""
+    return  self._transform(message, self._forward_upper, self._forward_lower)
+
+  def decrypt(self, secret):
+    """Return decrypted message given encrypted secret."""
+    return  self._transform(secret, self._backward_upper, self._backward_lower)
+
+  def _transform(self, original: str, coder_string_upper: str, coder_string_lower: str):
+    """Utility to perform transformation based on given code string."""
+    msg = list(original)
+    for k in range(len(msg)):
+      if msg[k].isupper():
+        j = ord(msg[k]) - ord('A')                  # index from 0 to 25
+        msg[k] = coder_string_upper[j]                            # replace this character
+      elif msg[k].islower():
+        j = ord(msg[k]) - ord('a')
+        msg[k] = coder_string_lower[j]
+    return ''.join(msg)
+  
+
+# 5.35  
+class SubstitutionCipher:
+  """Class for doing encryption and decryption using a given substitution cipher"""
+
+  def __init__(self, substitution_string: str):
+    assert len(substitution_string) == 26
+
+    self._forward = substitution_string
+    backward = [None] * 26
+
+    for index, letter in enumerate(substitution_string):
+      assert letter.isupper()
+      inverse_letter = chr(index + 65)
+      inverse_index = ord(letter) - 65
+      backward[inverse_index] = inverse_letter
+
+    self._backward = "".join(backward)
+
+  def _transform(self, original: str, mapping: str) -> str:
+    result = []
+    for letter in original:
+      if letter.isupper():
+        index = ord(letter) - 65
+        result.append(mapping[index])
+      else:
+        result.append(letter)
+    return "".join(result)
+  
+  def encrypt(self, clear_text: str) -> str:
+    return self._transform(clear_text, self._forward)
+  
+  def decrypt(self, cipher_text: str) -> str:
+    return self._transform(cipher_text, self._backward)
+
+if __name__ == '__main__':
+  cipher = SubstitutionCipher("DEFGHIJKLMNOPQRSTUVWXYZABC")
+  print(cipher._forward)
+  print(cipher._backward)
+  message = "THE EAGLE IS IN PLAY; MEET AT JOE'S."
+  coded = cipher.encrypt(message)
+  print('Secret: ', coded)
+  answer = cipher.decrypt(coded)
+  print('Message:', answer)
