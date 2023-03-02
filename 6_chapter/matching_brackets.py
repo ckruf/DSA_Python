@@ -62,10 +62,11 @@ def is_matched_html(raw: str) -> bool:
 
   # .find() returns - 1 when not found
   while opening_tag_index != -1:
-    closing_tag_index = raw.find(">")
+
+    closing_tag_index = raw.find(">", opening_tag_index)
     if closing_tag_index == -1:
       return False
-    tag = raw[opening_tag_index:closing_tag_index]
+    tag = raw[opening_tag_index+1:closing_tag_index]
     
     # opening tag
     if not tag.startswith("/"):
@@ -77,6 +78,92 @@ def is_matched_html(raw: str) -> bool:
       elif stack.pop() != tag[1:]:
         return False
     
-    opening_tag_index = raw.find("<", k + 1)
+    opening_tag_index = raw.find("<", closing_tag_index + 1)
+
 
   return stack.is_empty()
+
+
+def test_is_matched_html_pass():
+  """
+  Test function for is_matched_html(), with a valid HTML string
+  """
+  matched_html = """
+  <html>
+    <body>
+      <h1>Hello, world</h1>
+      <p>Lorem ipsum doloraes</p>
+    </body>
+  </html>
+  """
+  assert is_matched_html(matched_html)
+  print("test passed")
+
+
+def test_is_matched_html_fail_non_matching():
+  """
+  Test function for is_matched_html(), with HTML string which is invalid
+  because opening and closing tags do not match (<h1></h2>)
+  """
+  mismatched_html = """
+  <html>
+    <body>
+      <h1>Hello, world</h2>
+      <p>Lorem ipsum doloraes</p>
+    </body>
+  </html>
+  """
+  assert is_matched_html(mismatched_html) is False
+  print("test passed")
+
+
+def test_is_matched_html_fail_missing_matching():
+  """
+  Test with HTML string which is invalid because of a missing closing HTML tag (<html>)
+  """
+  missing_matching_html = """
+  <html>
+    <body>
+      <h1>Hello, world</h2>
+      <p>Lorem ipsum doloraes</p>
+    </body>
+  """
+  assert is_matched_html(missing_matching_html) is False
+  print("test passed")
+
+
+def test_is_matched_html_fail_tag_unclosed():
+  """
+  Test with HTML string which is invalid because of an unclosed HTML tag(<p ).
+  """
+  missing_matching_html = """
+  <html>
+    <body>
+      <h1>Hello, world</h2>
+      <p Lorem ipsum doloraes</p>
+    </body>
+  """
+  assert is_matched_html(missing_matching_html) is False
+  print("test passed")
+
+def test_is_matched_html_fail_tag_unclosed_no_space():
+  """Same as test above, but no space after p"""
+  missing_matching_html = """
+  <html>
+    <body>
+      <h1>Hello, world</h2>
+      <pLorem ipsum doloraes</p>
+    </body>
+  """
+  assert is_matched_html(missing_matching_html) is False
+  print("test passed")
+
+
+  
+
+if __name__ == "__main__":
+  test_is_matched_html_pass()
+  test_is_matched_html_fail_non_matching()
+  test_is_matched_html_fail_missing_matching()
+  test_is_matched_html_fail_tag_unclosed()
+  test_is_matched_html_fail_tag_unclosed_no_space()

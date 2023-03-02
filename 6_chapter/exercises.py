@@ -106,7 +106,7 @@ class ArrayStack:
     return self._size
 
   def __str__(self):
-    return str(self._data)
+    return str([i for i in self._data if i is not None])
   
 
 class ArrayQueue:
@@ -308,11 +308,168 @@ def choose_largest():
   # we will choose it, therefore 2/3 probability
 
 
+#6.18
+def reverse_stack():
+  """
+  Show how you can use the transfer() function and two temporary stacks to 
+  reverse the items in stack S.
+  """
+  A = ArrayStack()
+  B = ArrayStack()
+  S = ArrayStack()
+  for i in range(5):
+    S.push(i)
+  print(f"S is {S}")
+  transfer(S, A)
+  transfer(A, B)
+  transfer(B, S)
+  print(f"S is {S}")
+
+
+# 6.19
+def is_matched_html(raw: str) -> bool:
+  """
+  Use a stack to determine whether all tags in given HTML strings are matched.
+  Return True for valid HTML, and False otherwise.
+  """
+  tags = ArrayStack()
+
+  opening_tag_index = raw.find("<")
+  while opening_tag_index != -1:
+
+    closing_tag_index = raw.find(">", opening_tag_index)
+    
+    if closing_tag_index == -1:
+      return False
+    
+    space_index = raw.find(" ", opening_tag_index, closing_tag_index)
+    
+    if space_index == -1:
+      end = closing_tag_index
+    else:
+      end = space_index
+    tag = raw[opening_tag_index + 1:end]
+
+    if tag.startswith("/"):
+      tag = tag[1:]
+      if tags.is_empty():
+        return False
+      if tag != tags.pop():
+        return False
+    else:
+      tags.push(tag)
+    
+    opening_tag_index = raw.find("<", closing_tag_index)
+
+
+  return tags.is_empty()
+
+class TestIsMatchedHTML:
+  
+  @classmethod
+  def run_all(cls):
+    cls.test_is_matched_html_pass()
+    cls.test_is_matched_html_fail_missing_matching()
+    cls.test_is_matched_html_fail_non_matching()
+    cls.test_is_matched_html_fail_tag_unclosed()
+    cls.test_is_matched_html_fail_tag_unclosed_no_space()
+    cls.test_is_matched_html_with_attributes_pass()
+
+
+  @staticmethod
+  def test_is_matched_html_pass():
+    """
+    Test function for is_matched_html(), with a valid HTML string
+    """
+    matched_html = """
+    <html>
+      <body>
+        <h1>Hello, world</h1>
+        <p>Lorem ipsum doloraes</p>
+      </body>
+    </html>
+    """
+    assert is_matched_html(matched_html)
+    print("test passed")
+
+  @staticmethod
+  def test_is_matched_html_fail_non_matching():
+    """
+    Test function for is_matched_html(), with HTML string which is invalid
+    because opening and closing tags do not match (<h1></h2>)
+    """
+    mismatched_html = """
+    <html>
+      <body>
+        <h1>Hello, world</h2>
+        <p>Lorem ipsum doloraes</p>
+      </body>
+    </html>
+    """
+    assert is_matched_html(mismatched_html) is False
+    print("test passed")
+
+  @staticmethod
+  def test_is_matched_html_fail_missing_matching():
+    """
+    Test with HTML string which is invalid because of a missing closing HTML tag (<html>)
+    """
+    missing_matching_html = """
+    <html>
+      <body>
+        <h1>Hello, world</h2>
+        <p>Lorem ipsum doloraes</p>
+      </body>
+    """
+    assert is_matched_html(missing_matching_html) is False
+    print("test passed")
+
+  @staticmethod
+  def test_is_matched_html_fail_tag_unclosed():
+    """
+    Test with HTML string which is invalid because of an unclosed HTML tag(<p ).
+    """
+    missing_matching_html = """
+    <html>
+      <body>
+        <h1>Hello, world</h2>
+        <p Lorem ipsum doloraes</p>
+      </body>
+    """
+    assert is_matched_html(missing_matching_html) is False
+    print("test passed")
+
+  @staticmethod
+  def test_is_matched_html_fail_tag_unclosed_no_space():
+    """Same as test above, but no space after p"""
+    missing_matching_html = """
+    <html>
+      <body>
+        <h1>Hello, world</h2>
+        <pLorem ipsum doloraes</p>
+      </body>
+    """
+    assert is_matched_html(missing_matching_html) is False
+    print("test passed")
+
+  @staticmethod
+  def test_is_matched_html_with_attributes_pass():
+    """
+    Test function for is_matched_html(), with a valid HTML string
+    """
+    matched_html = """
+    <html>
+      <body color="red">
+        <h1 font-size="11px" color="blue">Hello, world</h1>
+        <p text-align="center">Lorem ipsum doloraes</p>
+      </body>
+    </html>
+    """
+    assert is_matched_html(matched_html)
+    print("test passed")
+
+
+
+
 if __name__ == "__main__":
-  stack = ArrayStack()
-  for i in range(10):
-    stack.push(i)
-  print(stack)
-  for _ in range(8):
-    print(stack.pop())
-  print(stack)
+  TestIsMatchedHTML.run_all()
