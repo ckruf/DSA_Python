@@ -42,7 +42,7 @@ delete_first() 8
 """
 
 from collections import deque
-from typing import Optional, Any
+from typing import Optional, Any, Sequence, TypeVar
 
  # Implementations of stack and queue, not an exercise itself, but needed
  # for other exercises.
@@ -167,7 +167,7 @@ class ArrayQueue:
     self._front = 0
 
   def __str__(self):
-    return str([self._data[(i + self._front)] % self._size for i in range(self._size)])
+    return str([self._data[(i + self._front) % self._size] for i in range(self._size)])
 
 
 # 6.3
@@ -469,7 +469,94 @@ class TestIsMatchedHTML:
     print("test passed")
 
 
+def number_permutations_recursive(numbers: list[int | float]) -> list[list[int | float]]:
+  results = []
+  length = len(numbers)
+  
+  def recurse(seq: list[int | float], curr: int, acc: list[str]):
+    if curr == length:
+      acc.append(seq.copy())
+    else:
+      for i in range(curr, length):
+        seq[curr], seq[i] = seq[i], seq[curr]
+        recurse(seq, curr + 1, acc)
+        seq[curr], seq[i] = seq[i], seq[curr]
+
+  recurse(numbers, 0, results)
+  return results
+
+
+# 6.20
+def number_permutations_stack(numbers: list[int | float]) -> list[list[int | float]]:
+  length = len(numbers)
+  results = []
+  curr = 0
+  stack = ArrayStack()
+  stack.push((numbers, curr))
+
+  while not stack.is_empty():
+    numbers, curr  = stack.pop()
+    if curr == length:
+      results.append(numbers)
+    else:
+      for i in range(curr, length):
+        numbers[curr], numbers[i] = numbers[i], numbers[curr]
+        stack.push((numbers.copy(), curr + 1))
+        numbers[curr], numbers[i] = numbers[i], numbers[curr]
+
+  return results
+
+
+def generate_subsets(n):
+  stack = ArrayStack(n)
+  for i in range(n, 0, -1):
+    stack.push(i)
+  queue = ArrayQueue()
+  queue.enqueue(set())
+
+  while not stack.is_empty():
+    next_item = stack.pop()
+    qlen = len(queue)
+    for i in range(qlen):
+      subset = queue.dequeue()
+      new_subset = set(subset)
+      new_subset.add(next_item)
+      queue.enqueue(subset)
+      queue.enqueue(new_subset)
+
+  results = []
+  while not queue.is_empty():
+    results.append(queue.dequeue())
+  return results
+
+
+def generate_power_set(T: set) -> list[set]:
+  """
+  Generate all subsets of a set T, using a stack and a queue.
+  Use the stack to store the elements yet to be used to generate
+  subsets and the queue to store the subsets generated so far.
+  """
+  stack = ArrayStack()
+  for item in T:
+    stack.push(item)
+  queue = ArrayQueue()
+  queue.enqueue(set())
+
+  while not stack.is_empty():
+    next_item = stack.pop()
+    qlen = len(queue)
+    for i in range(qlen):
+      subset = queue.dequeue()
+      new_subset = set(subset)
+      new_subset.add(next_item)
+      queue.enqueue(subset)
+      queue.enqueue(new_subset)
+
+  results = []
+  while not queue.is_empty():
+    results.append(queue.dequeue())
+  return results
 
 
 if __name__ == "__main__":
-  TestIsMatchedHTML.run_all()
+  print(generate_power_set({1, 2, 3}))
