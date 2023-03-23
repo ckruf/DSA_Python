@@ -42,7 +42,7 @@ delete_first() 8
 """
 
 from collections import deque
-from typing import Optional, Any, Sequence, TypeVar
+from typing import Optional, Any, Sequence, TypeVar, Callable, Tuple
 
  # Implementations of stack and queue, not an exercise itself, but needed
  # for other exercises.
@@ -166,8 +166,11 @@ class ArrayQueue:
       start = (1 + start) % len(old)
     self._front = 0
 
+  # def __str__(self):
+  #   return str([self._data[(i + self._front) % self._size] for i in range(self._size)])
+  
   def __str__(self):
-    return str([self._data[(i + self._front) % self._size] for i in range(self._size)])
+    return str(self._data)
 
 
 # 6.3
@@ -507,6 +510,7 @@ def number_permutations_stack(numbers: list[int | float]) -> list[list[int | flo
   return results
 
 
+# 6.21
 def generate_subsets(n):
   stack = ArrayStack(n)
   for i in range(n, 0, -1):
@@ -530,6 +534,7 @@ def generate_subsets(n):
   return results
 
 
+# 6.21
 def generate_power_set(T: set) -> list[set]:
   """
   Generate all subsets of a set T, using a stack and a queue.
@@ -557,6 +562,203 @@ def generate_power_set(T: set) -> list[set]:
     results.append(queue.dequeue())
   return results
 
+import operator
+
+
+def parse_postfix_expression(expr: str) -> list:
+  """
+  Parse a string containing a post-fix arithmetic expression (made up of integers and operations only - no floats)
+  into a list of numbers and operations
+  """
+  elements = []
+  for char in expr:
+    if char == " ":
+      continue
+    elif char.isdigit():
+      elements.append(int(char))
+    elif char == "+":
+      elements.append(operator.add)
+    elif char == "-":
+      elements.append(operator.sub)
+    elif char == "/":
+      elements.append(operator.truediv)
+    elif char == "*":
+      elements.append(operator.mul)
+    else:
+      raise ValueError(f"Unexpected character: '{char}'")
+  return elements
+
+
+def test_parse_postfix_expression():
+  """
+  Test the 'parse_postfix_expression function
+  """
+  expr_1 = "5 2 + 8 3 - * 4 /"
+
+  expr_2 = "1 1 +"
+
+  assert parse_postfix_expression(expr_1) == [5, 2, operator.add, 8, 3, operator.sub, operator.mul, 4, operator.truediv]
+
+  assert parse_postfix_expression(expr_2) == [1, 1, operator.add]
+
+  print("test_parse_postfix_expression - both tests passed")
+
+
+# 6.22
+def evaluate_postfix(expr: list) -> int | float:
+  stack = ArrayStack()
+  operations = (operator.add, operator.sub, operator.truediv, operator.mul)
+
+  for elem in expr:
+    if elem in operations:
+      x, y = stack.pop(), stack.pop()
+      result = elem(y, x)
+      stack.push(result)
+    else:
+      stack.push(elem)
+
+  return stack.pop()
+
+def test_evaluate_postfix(evaluation_fn: Callable) -> None:
+  expr_1 = "5 2 + 8 3 - * 4 /"
+  expr_1_list = parse_postfix_expression(expr_1)
+  result = evaluation_fn(expr_1_list)
+  print(f"result is {result}")
+  assert result == 8.75
+  print("test passed")
+
+
+# 6.23
+def rearrange_stacks(R: ArrayStack, S: ArrayStack, T: ArrayStack) -> Tuple[ArrayStack, ArrayStack, ArrayStack]:
+  """
+  Given three non-empty stacks: R, S and T; describe a sequence of operations that will result in S
+  storing all the elements originally in T below all of S's original elements.
+  For example if R = [1,2,3], S = [4,5] and T = [6,7,8,9] (where the right is the top of the stack),
+  the final configuration should have R = [1,2,3] and S = [6,7,8,9,4,5] 
+  """
+  length_T = len(T)
+  for _ in range(length_T):
+    R.push(T.pop())
+  
+  length_S = len(S)
+  for _ in range(length_S):
+    T.push(S.pop())
+  
+  for _ in range(length_T):
+    S.push(R.pop())
+  
+  for _ in range(length_S):
+    S.push(T.pop())
+
+  return R, S, T
+
+def test_rearrange_stacks():
+  R = ArrayStack()
+  S = ArrayStack()
+  T = ArrayStack()
+
+  R_orig = (1, 2, 3)
+  S_origin = (4, 5)
+  T_origin = (6, 7, 8, 9)
+
+  for elem in R_orig:
+    R.push(elem)
+
+  for elem in S_origin:
+    S.push(elem)
+
+  for elem in T_origin:
+    T.push(elem)
+
+  R, S, T = rearrange_stacks(R, S, T)
+
+  print(f"R: {R}")
+  print(f"S: {S}")
+  print(f"T: {T}")
+
+  for elem in reversed(R_orig):
+    assert elem == R.pop()
+
+  assert R.is_empty()
+
+  T_S_combined = T_origin + S_origin
+ 
+  for elem in reversed(T_S_combined):
+    assert elem == S.pop()
+
+  assert S.is_empty()
+
+  print("test passed")
+
+
+# 6.24
+
+class StackUsingQueue:
+
+  def __init__(self):
+    self._data = ArrayQueue()
+
+  def push(self, element):
+    self._data.enqueue(element)
+
+  def pop(self):
+    length = len(self)
+    for _ in range(length - 1):
+      self._data.enqueue(self._data.dequeue())
+    return self._data.dequeue()
+
+  def __len__(self):
+    return len(self._data)
+  
+  def is_empty(self):
+    return len(self) == 0
+  
+  def top(self):
+    length = len(self)
+    for _ in range(length - 1):
+      self._data.enqueue(self._data.dequeue())
+    result = self._data.first()
+    self._data.enqueue(self._data.dequeue())
+    return result
+
+
+def test_stack_using_queue():
+  stack = StackUsingQueue()
+  stack.push(5)
+  stack.push(3)
+  stack.push(10)
+  assert len(stack) == 3
+  assert stack.pop() == 10
+  assert stack.pop() == 3
+  stack.push(1)
+  assert stack.top() == 1
+  assert len(stack) == 2
+  assert stack.pop() == 1
+  assert stack.pop() == 5
+  assert stack.is_empty()
+  print("test passed")
+
+
+# 6.25
+class QueueUsingStacks:
+
+  def __init__(self, ):
+    pass
+
+  def enqueue(self, val) -> None:
+    pass
+
+  def dequeue(self) -> Any:
+    pass
+
+  def first(self) -> Any:
+    pass
+
+  def is_empty(self) -> bool:
+    pass
+
+  def __len__(self):
+    pass
 
 if __name__ == "__main__":
-  print(generate_power_set({1, 2, 3}))
+  test_stack_using_queue()
