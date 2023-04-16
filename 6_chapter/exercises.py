@@ -42,7 +42,7 @@ delete_first() 8
 """
 
 from collections import deque
-from typing import Optional, Any, Sequence, TypeVar, Callable, Tuple
+from typing import Optional, Any, Callable, Tuple
 
  # Implementations of stack and queue, not an exercise itself, but needed
  # for other exercises.
@@ -741,24 +741,116 @@ def test_stack_using_queue():
 
 # 6.25
 class QueueUsingStacks:
+  inbox: ArrayStack
+  outbox: ArrayStack
 
-  def __init__(self, ):
-    pass
+  def __init__(self):
+    self.inbox = ArrayStack()
+    self.outbox = ArrayStack()
 
   def enqueue(self, val) -> None:
-    pass
+    self.inbox.push(val)
 
   def dequeue(self) -> Any:
-    pass
+    if not len(self):
+      raise Empty()
+    if self.outbox.is_empty():
+      self._move_inbox_to_outbox()
+    return self.outbox.pop()
 
   def first(self) -> Any:
-    pass
+    if self.outbox.is_empty():
+      self._move_inbox_to_outbox()
+    return self.outbox.top()
 
   def is_empty(self) -> bool:
-    pass
+    return (len(self.inbox) + len(self.outbox)) == 0
+  
+  def _move_inbox_to_outbox(self):
+    while len(self.inbox):
+      self.outbox.push(self.inbox.pop())
 
   def __len__(self):
-    pass
+    return len(self.inbox) + len(self.outbox)
+  
+
+def test_queue_using_stacks():
+  queue = QueueUsingStacks()
+  queue.enqueue("A")
+  queue.enqueue("B")
+  queue.enqueue("C")
+  assert queue.dequeue() == "A"
+  assert len(queue) == 2
+  queue.enqueue("D")
+  assert queue.dequeue() == "B"
+  assert queue.dequeue() == "C"
+  assert queue.first() == "D"
+  queue.enqueue("E")
+  assert queue.dequeue() == "D"
+  assert len(queue) == 1
+  print("test passed")
+
+
+class DequeUsingStacks():
+  left: ArrayStack
+  right: ArrayStack
+  
+  def __init__(self, ):
+    self.left = ArrayStack()
+    self.right = ArrayStack()
+
+  def add_first(self, val: Any) -> None:
+    self.left.push(val)
+
+  def add_last(self, val: Any) -> None:
+    self.right.push(val)
+
+  def delete_first(self) -> Any:
+    if self.is_empty():
+      raise Empty()
+    if self.left.is_empty():
+      self._move_right_to_left()
+
+    return self.left.pop()
+  
+  def delete_last(self) -> Any:
+    if self.is_empty():
+      raise Empty()
+    if self.right.is_empty():
+      self._move_left_to_right()
+    
+    return self.right.pop()
+
+  def first(self) -> Any:
+    if self.is_empty():
+      raise Empty()
+    if self.left.is_empty():
+      self._move_right_to_left()
+    
+    return self.left.top()
+
+  def last(self) -> Any:
+    if self.is_empty():
+      raise Empty()
+    if self.right.is_empty():
+      self._move_left_to_right()
+    
+    return self.right.top()
+
+  def is_empty(self) -> bool:
+    return len(self) == 0
+
+  def __len__(self) -> int:
+    return len(self.left) + len(self.right)
+
+  def _move_left_to_right(self) -> None:
+    while len(self.left):
+      self.right.push(self.left.pop())
+
+  def _move_right_to_left(self) -> None:
+    while len(self.right):
+      self.left.push(self.right.pop())
+
 
 if __name__ == "__main__":
-  test_stack_using_queue()
+  test_queue_using_stacks()
