@@ -42,7 +42,7 @@ delete_first() 8
 """
 
 from collections import deque
-from typing import Optional, Any, Callable, Tuple
+from typing import Optional, Any, Callable, Tuple, Union, List
 
  # Implementations of stack and queue, not an exercise itself, but needed
  # for other exercises.
@@ -790,8 +790,11 @@ def test_queue_using_stacks():
   assert len(queue) == 1
   print("test passed")
 
-
+# 6.26
 class DequeUsingStacks():
+  """
+  Deque implemented using two stacks, each stack for each end of the deque.
+  """
   left: ArrayStack
   right: ArrayStack
   
@@ -852,5 +855,269 @@ class DequeUsingStacks():
       self.left.push(self.right.pop())
 
 
+# 6.27
+
+def find_in_stack(x: Any, S: ArrayStack) -> Union[bool, int]:
+  """
+  Use a queue Q to scan a stack S to determine whether a given element (x) is found 
+  in the stack. However, the elements in S have to remain in the same order.
+  
+  Return either the position of the element (considering the top of the stack is index 0),
+  or False, if the element is not part of the stack.
+  """
+  Q = ArrayQueue()
+  position: Union[int, bool] = False
+  counter = 0
+  # first move all elements from stack into queue, while looking for the element
+  while len(S):
+    elem = S.pop()
+    if elem == x:
+      position = counter
+    Q.enqueue(elem)
+    counter += 1
+  # then move all elements back into stack, which is now reversed
+  while len(Q):
+    S.push(Q.dequeue())
+  
+  # move all elements into queue
+  while(len(S)):
+    Q.enqueue(S.pop())
+  # move all elements back into stack, which will be in the initial order
+  while(len(Q)):
+    S.push(Q.dequeue())
+
+  return position
+
+
+def test_find_in_stack_middle():
+  S = ArrayStack()
+  stack_elems = ["A", "B", "C", "D", "E"]
+  for elem in stack_elems:
+    S.push(elem)
+  
+  # check index is correct
+  assert find_in_stack("C", S) == 2
+
+  assert len(S) == len(stack_elems)
+
+  # check all items are in the same order 
+  for elem in reversed(stack_elems):
+    assert S.pop() == elem
+
+def test_find_in_stack_begin():
+  S = ArrayStack()
+  stack_elems = ["A", "B", "C", "D", "E"]
+  for elem in stack_elems:
+    S.push(elem)
+  
+  # check index is correct
+  assert find_in_stack("E", S) == 0
+
+  assert len(S) == len(stack_elems)
+
+  # check all items are in the same order 
+  for elem in reversed(stack_elems):
+    assert S.pop() == elem
+
+def test_find_in_stack_end():
+  S = ArrayStack()
+  stack_elems = ["A", "B", "C", "D", "E"]
+  for elem in stack_elems:
+    S.push(elem)
+  
+  # check index is correct
+  assert find_in_stack("A", S) == 4
+
+  assert len(S) == len(stack_elems)
+
+  # check all items are in the same order 
+  for elem in reversed(stack_elems):
+    assert S.pop() == elem
+
+def test_find_in_stack_absent():
+  S = ArrayStack()
+  stack_elems = ["A", "B", "C", "D", "E"]
+  for elem in stack_elems:
+    S.push(elem)
+  
+  # check index is correct
+  assert find_in_stack("Z", S) is False
+
+  assert len(S) == len(stack_elems)
+
+  # check all items are in the same order 
+  for elem in reversed(stack_elems):
+    assert S.pop() == elem
+
+def run_all_find_in_stack_tests():
+  test_find_in_stack_middle()
+  test_find_in_stack_begin()
+  test_find_in_stack_end()
+  test_find_in_stack_absent()
+  print("all 'find in stack' tests passed!")
+
+
+# 6.28
+class ArrayQueueMaxLen:
+  """
+  Array queue implementation with option to limit its capacity.
+  """
+  DEFAULT_CAPACITY: int = 10
+  _data: List[Any]
+  _size: int
+  _front: int
+  max_len: Optional[int]
+
+  def __init__(self, max_len: Optional[int] = None):
+    self._data = [None] * self.DEFAULT_CAPACITY
+    self._size = 0
+    self._front = 0
+    self.max_len = max_len
+
+  def enqueue(self, elem: Any) -> None:
+    if self._size == self.max_len:
+      raise Full("The queue is full")
+    if self._size == len(self._data):
+      self._resize(self._size * 2)
+    position = (self._front + self._size) % len(self._data)
+    self._data[position] = elem
+    self._size += 1
+
+  def dequeue(self) -> Any:
+    if self._size == 0:
+      raise Empty("The queue is empty")
+    if (self._size - 1) < len(self._data) / 4:
+      self._resize(len(self._data) // 2)
+    elem = self._data[self._front]
+    self._data[self._front] = None
+    self._size -= 1
+    self._front = (self._front + 1) % len(self._data)
+    return elem
+
+  def __len__(self) -> int:
+    return self._size
+
+  def is_empty(self) -> bool:
+    return len(self) == 0
+
+  def _resize(self, new_capacity: int) -> None:
+    new_list = [None, ] * new_capacity
+    for i in range(self._size):
+      new_list[i] = self._data[(self._front + i) % len(self._data)]
+    self._front = 0
+    self._data = new_list
+
+
+  def first(self) -> Any:
+    if self._size == 0:
+      raise Empty("The queue is empty")
+    return self._data[self._front]
+  
+  # 6.29
+  def rotate(self):
+    if self.is_empty():
+      raise Empty("The queue is empty")
+    elem = self._front
+    # do something with elem
+    self._front = (self._front + 1) % len(self._data)
+    available = (self._front + self._size) % len(self._data)
+    self._front = None
+    self._data[available] = elem
+
+
+# 6.30
+"""
+Put one even integer in one of the queues (P), and all the other integers in the other queue (Q).
+Then, if queue P is chosen, then Alice will alway win, and if queue Q is chosen, Alice
+has 49/100 chance to win. So her overall chance of winning would be 1/2 + (1/2 * 49/99)
+"""
+
+# 6.31
+"""
+1. Take Mazie and Daisy across (4 minutes)
+2. Go back with Daisy (4 minutes)
+3. Take Lazy and Crazy across (20 minutes)
+4. Go back with Mazie (2 minutes)
+5. Take Mazie and Daisy across (4 minutes)
+"""
+
+# 6.32
+class ArrayDeque:
+  DEFAULT_CAPACITY: int = 10
+  _front: int
+  _size: int
+  _data: List[Any]
+
+  def __init__(self):
+    self._front = 0
+    self._size = 0
+    self._data = [None] * self.DEFAULT_CAPACITY
+
+  def add_first(self, elem: Any) -> None:
+    if self._size == len(self._data):
+      self._resize(2 * len(self._data))
+    index = (self._front - 1) % len(self._data)
+    self._data[index] = elem
+    self._size += 1
+    self._front = index
+
+
+  def add_last(self, elem: Any) -> None:
+    if self._size == len(self._data):
+      self._resize(2 * len(self._data))
+    index = (self._front + self._size) % len(self._data)
+    self._data[index] = elem
+    self._size += 1
+    
+
+  def delete_first(self) -> Any:
+    if self.is_empty():
+      raise Empty("The deque is empty")
+    elem = self._data[self._front]
+    self._data[self._front] = None
+    self._front = (self._front + 1) % len(self._data)
+    self._size -= 1
+    return elem
+    
+
+  def delete_last(self) -> Any:
+    if self.is_empty():
+      raise Empty("The deque is empty")
+    index = (self._front + self._size - 1) % len(self._data)
+    elem = self._data[index]
+    self._data[index] = None
+    self._size -= 1
+    return elem
+
+  def first(self) -> Any:
+    if self._size == 0:
+      raise Empty("The deque is empty")
+    return self._data[self._front]
+
+  def last(self) -> Any:
+    if self._size == 0:
+      raise Empty("The deque is empty")
+    index = (self._front + self._size - 1) % len(self._data)
+    return self._data[index]
+
+  def __len__(self) -> int:
+    return self._size
+
+
+  def is_empty(self) -> bool:
+    return self._size == 0
+  
+
+  def _resize(self, new_capacity: int) -> None:
+    if new_capacity < self._size:
+      raise ValueError(f"Cannot resize deque to size {new_capacity} when it has {self._size} elements")
+    new_data = [None] * new_capacity
+    original_size = len(self._data)
+    for i in range(self._size):
+      new_data[i] = self._data[(self._front + i) % original_size]
+    self._front = 0
+    self._data = new_data
+
+
 if __name__ == "__main__":
-  test_queue_using_stacks()
+  run_all_find_in_stack_tests()
