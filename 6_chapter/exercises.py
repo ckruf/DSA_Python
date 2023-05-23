@@ -42,7 +42,7 @@ delete_first() 8
 """
 
 from collections import deque
-from typing import Optional, Any, Callable, Tuple, Union, List
+from typing import Optional, Any, Callable, Tuple, Union, List, Sequence
 
  # Implementations of stack and queue, not an exercise itself, but needed
  # for other exercises.
@@ -1119,5 +1119,217 @@ class ArrayDeque:
     self._data = new_data
 
 
+class ArrayDequeRich:
+  DEFAULT_CAPACITY = 10
+  _front: int
+  _size: int
+  _data: List[Any]
+  max_len: Optional[int]
+
+  def __init__(self, iterable: Optional[Sequence] = None, max_len: Optional[int] = None):
+    if iterable:
+      if max_len is not None and max_len < len(iterable):
+        raise ValueError("Given iterable exceeds given maximal length")
+      if len(iterable) < self.DEFAULT_CAPACITY:
+        diff = self.DEFAULT_CAPACITY - len(iterable)
+        self._data = list(iterable) + [None] * diff
+      else:
+        self._data = list(iterable)
+      self._size = len(iterable)
+      self.max_len = max_len
+      self._front = 0
+    else:
+      self._data = [None] * self.DEFAULT_CAPACITY
+      self._front = 0
+      self._size = 0
+      self.max_len = max_len
+
+  def add_first(self, elem: Any) -> None:
+    """
+    Add an item to the front of the deque. If maxlen is specified and the deque 
+    is full, the last item of the deque is removed, so as not to exceed maxlen.
+    """
+    full = self._size == len(self._data)
+    if full and self.max_len is None:
+      self._resize(2* len(self._data))
+    index = (self._front - 1) % len(self._data)
+    self._data[index] = elem
+    self._front = index
+    if full and self.max_len is not None:
+      return
+    self._size += 1
+
+
+  def add_last(self, elem: Any) -> None:
+    """
+    Add an item to the end of the deque. If maxlen is specified and the deque is full,
+    the first item of the deque is removed, so as to not exceed maxlen.
+    """
+    full = self._size == len(self._data)
+    if full and self.max_len is None:
+      self._resize(2 * len(self._data))
+    index = (self._front + self._size) % len(self._data)
+    self._data[index] = elem
+    if full and self.max_len is not None:
+      self._front = (self._front + 1) % len(self._data)
+      return
+    self._size += 1
+
+  def delete_first(self) -> Any:
+    """
+    Remove an item from the front of the deque.
+    """
+    if self._size == 0:
+      raise Empty("The deque is empty, cannot remove element")
+    if self._size - 1 < len(self._data) / 4:
+      self._resize(len(self._data) // 2)
+    elem = self._data[self._front]
+    self._data[self._front] = None
+    self._front = (self._front + 1) % len(self._data)
+    self._size -= 1
+    return elem
+    
+
+  def delete_last(self) -> Any:
+    """
+    Remove an item from the end of the deque.
+    """
+    if self._size == 0:
+      raise Empty("The deque is empty, cannot remove element")
+    if self._size - 1 < len(self._data) / 4:
+      self._resize(len(self._data) // 2)
+    index = (self._front + self._size - 1) % len(self._data)
+    elem = self._data[index]
+    self._data[index] = None
+    self._size -= 1
+    return elem
+
+  def first(self) -> Any:
+    if self._size == 0:
+      raise Empty("The deque is empty")
+    return self._data[self._front]
+
+  def last(self) -> Any:
+    if self._size == 0:
+      raise Empty("The deque is empty")
+    index = (self._front + self._size - 1) % len(self._data)
+    return self._data[index]
+
+  def clear(self) -> None:
+    """
+    Remove all elements from the deque.
+    """
+    self._data = [None] * self.DEFAULT_CAPACITY
+    self._front = 0
+    self._size = 0
+
+  def rotate(self, k: int) -> None:
+    """
+    Rotate the deque k steps to the right. If k is negative, rotate to the left.
+    Realigns the list such that the first item (after rotating) is at index 0
+    of the underlying list. 
+    """
+    shift = k % self._size
+    rotated_list = [None] * len(self._data)
+    for i in range(self._size):
+      current_pos = (self._front + i) % len(self._data)
+      # position if we were to realign the list (such that first item is at index 0 etc)
+      realigned_pos = (current_pos + len(self._data) - self._front) % len(self._data)
+      rotated_pos = (realigned_pos + shift) % self._size
+      rotated_list[rotated_pos] = self._data[current_pos]
+    self._data = rotated_list
+    self._front = 0
+
+
+  def remove(self, elem: Any) -> None:
+    """Remove first matching element in the deque."""
+    target_index = None
+    position = None
+    for i in range(self._size):
+      index = (self._front + i) % len(self._data)
+      if self._data[index] == elem:
+        target_index = index
+        position = i
+        break
+    if target_index is not None:
+      for i in range(position, self._size - 1):
+        index = (self._front + i) % len(self._data)
+        next_index = (self._front + i + 1) % len(self._data)
+        self._data[index] = self._data[next_index]
+      self._size -= 1
+      if target_index == self._front:
+        self._front = (self._front + 1) % len(self._data)
+
+  def count(self, elem: Any) -> int:
+    count = 0
+    for i in range(len(self._data)):
+      if self._data[i] == elem:
+        count += 1
+
+    return count
+
+  def _resize(self, new_capacity: int) -> None:
+    new_data = [None] * new_capacity
+    for i in range(self._size):
+      new_data[i] = self._data[(self._front + i) % len(self._data)]
+    self._data = new_data
+    self._front = 0
+
+  def __len__(self) -> int:
+    return self._size
+
+  def __getitem__(self, index: int) -> int:
+    if not isinstance(index, int):
+      raise ValueError("Index must be integer")
+    if index < -self._size or index >= self._size:
+      raise IndexError("Index is out of range")
+    if index >= 0:
+      return self._data[(index + self._front) % len(self._data)]
+    else:
+      return self._data[(self._front + self._size - index) % len(self._data)]
+    
+
+  def __setitem__(self, index: int, elem: Any) -> None:
+    if not isinstance(index, int):
+      raise ValueError("Index must be integer")
+    if index < -self._size or index >= self._size:
+      raise IndexError("Index is out of range")
+    if index >= 0:
+      self._data[(index + self._front) % len(self._data)] = elem
+    else:
+      self._data[(self._front + self._size - index) % len(self._data)] = elem
+
+
+def builtin_deque_experiment():
+  from collections import deque
+  d = deque(["A", "B", "C", "D", "E"])
+  print(d)
+  d.append(5)
+  print(d)
+  d.rotate(1)
+  print(d)
+
+
+def deque_test():
+  letter_list = [chr(i) for i in range(65, 71)]
+  d = ArrayDequeRich(iterable=letter_list)
+  print(d._data)
+  assert d.delete_first() == "A"
+  print(d._data)
+  d.rotate(1)
+  print(d._data)
+  d.rotate(2)
+  print(d._data)
+  for i in range(6):
+    d.add_last(i)
+  print(d._data)
+  for i in range(6):
+    print(d.delete_first())
+  d.delete_last()
+  print(d._data)
+  print(d._front)
+  
+
+
 if __name__ == "__main__":
-  run_all_find_in_stack_tests()
+  deque_test()
