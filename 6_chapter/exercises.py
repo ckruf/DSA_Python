@@ -43,6 +43,7 @@ delete_first() 8
 
 from collections import deque
 from typing import Optional, Any, Callable, Tuple, Union, List, Sequence
+from dataclasses import dataclass
 
  # Implementations of stack and queue, not an exercise itself, but needed
  # for other exercises.
@@ -1286,7 +1287,7 @@ class ArrayDequeRich:
     if index >= 0:
       return self._data[(index + self._front) % len(self._data)]
     else:
-      return self._data[(self._front + self._size - index) % len(self._data)]
+      return self._data[(self._front + self._size + index) % len(self._data)]
     
 
   def __setitem__(self, index: int, elem: Any) -> None:
@@ -1328,8 +1329,233 @@ def deque_test():
   d.delete_last()
   print(d._data)
   print(d._front)
+  d = ArrayDequeRich(iterable=[i for i in range(10)], max_len=10)
+  print(d._data)
+  d.add_last(10)
+  print(d._data)
+  print(d.first())
+  print(d.last())
+  print(d[0])
+  print(d[1])
+  print(d[2])
+  print(d[-2])
+
+
+"""
+6.34 - already done in 6.22
+"""
+
+class LeakyStack:
+  max_len: int
+  _insert_index: int
+  _data: List[Any]
+  _size: int
+
+  def __init__(self, max_len: int):
+    self._insert_index = 0
+    self._size = 0
+    self.max_len = max_len
+    self._data = [None] * max_len
+
+  def push(self, elem: Any) -> None:
+    self._data[self._insert_index] = elem
+    self._insert_index = (self._insert_index + 1) % len(self._data)
+    self._size += 1
+
+  def pop(self) -> Any:
+    index = (self._insert_index - 1) % len(self._data)
+    elem = self._data[index]
+    self._data [index] = None
+    self._insert_index = index
+    self._size -= 1
+    return elem
   
+  def top(self) -> Any:
+    return self._data[(self._insert_index - 1) % len(self._data)]
+  
+  def __len__(self) -> int:
+    return self._size
+  
+  def is_empty(self) -> bool:
+    return self._size == 0
+
+
+def test_leaky_stack():
+  ls = LeakyStack(5)
+  elems = [i for i in range(5)]
+  
+  # test regular stack behavior
+  for i in elems:
+    ls.push(i)
+  for i in reversed(elems):
+    assert ls.pop() == i
+
+  new_elems = ['A', 'B', 'C', 'D', 'E', 'F']
+
+  for i in new_elems:
+    ls.push(i)
+
+  # test leaking
+  assert len(ls._data) == 5
+
+  for i in range(5, 0, -1):
+    assert ls.pop() == new_elems[i]
+
+  # more testing of leaking 
+
+  for i in range(5):
+    ls.push(i)
+
+  ls.push(5)
+  ls.push(6)
+  ls.push(7)
+
+  for i in range(7, 2, -1):
+    assert ls.pop() == i
+
+  for i in range(1000):
+    ls.push(i)
+
+  for i in range(999, 994, -1):
+    assert ls.pop() == i
+
+
+@dataclass
+class StockPurchase:
+  quantity: int
+  price: int
+
+
+class StockQueue:
+  DEFAULT_SIZE = 10
+  _front: int
+  _size: int
+  _data: List[Optional[StockPurchase]]
+
+  def __init__(self):
+    self._front = 0
+    self._size = 0
+    self._data = [None] * self.DEFAULT_SIZE
+
+  def enqueue(self, stock_purchase: StockPurchase) -> None:
+    if self._size == len(self._data):
+      self._resize(2 * len(self._data))
+    index = (self._front + self._size) % len(self._data)
+    self._data[index] = stock_purchase
+    self._size += 1
+
+  def dequeue(self) -> StockPurchase:
+    if self._size == 0:
+      raise Empty("There are no stock purchases in the queue")
+    if self._size - 1 < len(self._data) / 4:
+      self._resize(len(self._data) // 2)
+    stock_purchase = self._data[self._front]
+    assert stock_purchase is not None
+    self._front = (self._front + 1) % len(self._data)
+    self._size -= 1
+
+  def first(self) -> StockPurchase:
+    if self._size == 0:
+      raise Empty("There are no stock purchases in the queue")
+    return self._data[self._front]
+
+  def is_empty(self) -> bool:
+    return self._size == 0
+
+  def _resize(self, new_capacity: int) -> None:
+    new_data = [None] * new_capacity
+    for i in range(self._size):
+      index = (self._front + i) % len(self._data)
+      new_data[i] = self._data[index]
+    self._data = new_data
+    self._front = 0
+
+  def __len__(self) -> int:
+    return self._size
+
+
+class CapitalGainTracker:
+  _stock_queue: StockQueue
+  _total_shares: int
+  _capital_gain: int
+
+  def __init__(self):
+    self._stock_queue = StockQueue()
+    self._total_shares = 0
+    self._capital_gain = 0
+
+  def buy(self, quantity: int, price: int) -> None:
+    purchase = StockPurchase(quantity=quantity, price=price)
+    self._stock_queue.enqueue(purchase)
+    self._total_shares += quantity
+
+  def sell(self, quantity: int, price: int) -> None:
+    if quantity > self._total_shares:
+      raise ValueError(f"Cannot sell {quantity} shares, only {self._total_shares} are owned")
+    total_gain = 0
+
+    while quantity:
+      oldest_purchase = self._stock_queue.first()
+      if quantity >= oldest_purchase.quantity:
+        _ = self._stock_queue.dequeue()
+        gain = (price - oldest_purchase.price) * oldest_purchase.quantity
+        total_gain += gain
+        quantity -= oldest_purchase.quantity
+      else:
+        oldest_purchase.quantity -= quantity
+        gain = (price - oldest_purchase.price) * quantity
+        total_gain += gain
+        quantity -= quantity
+
+    self._total_shares -= quantity
+    self._capital_gain += total_gain
+
+  def get_total_capital_gain(self) -> int:
+    return self._capital_gain
+
+def calculate_capital_gain() -> int:
+  print("Hello! I can calculate capital gain or loss")
+  print("Input a series of purchases and sales of a company's stock")
+  print("They should be in the form 'buy/sell x share(s) at $y each', followed by hitting the 'enter' key")
+  print("Once you've written down all your transactions, write 'exit' and hit enter again")
+  print("Your capital gain/loss will then be determined")
+  gains_tracker = CapitalGainTracker()
+  while True:
+    user_input = input()
+    if user_input == "exit":
+      break
+    else:
+      words = user_input.split()
+      
+      if len(words) != 6:
+        raise ValueError("Input must be exactly six words long!")
+      
+      transaction_type, share_count, _, _, price, _ = words
+
+      try:
+        share_count = int(share_count)
+      except ValueError as e:
+        raise ValueError("Second word of input must be quantity represented as an integer") from e
+      
+      try:
+        # get rid of dollar sign
+        assert price[0] == "$"
+        price = int(price[1:])
+      except ValueError as e:
+        raise ValueError("Fifth word must be price represented in the form '$xyz' where xyz is an integer") from e
+      except AssertionError as e:
+        raise ValueError("Fifth word must be price starting with dollar sign")
+      
+      if transaction_type == "buy":
+        gains_tracker.buy(share_count, price)
+      elif transaction_type == "sell":
+        gains_tracker.sell(share_count, price)
+      else:
+        raise ValueError("First word of input must be either 'buy' or 'sell'")
+
+  total_gain = gains_tracker.get_total_capital_gain()
+  print(f"The total gain was ${total_gain:,}")
 
 
 if __name__ == "__main__":
-  deque_test()
+  calculate_capital_gain()
