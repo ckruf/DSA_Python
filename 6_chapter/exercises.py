@@ -1557,5 +1557,113 @@ def calculate_capital_gain() -> int:
   print(f"The total gain was ${total_gain:,}")
 
 
+# 6.37
+class RedBlueStack:
+  DEFAULT_ARRAY_SIZE = 10
+  _data: List[Any]
+  _red_size: int
+  _blue_size: int
+
+  def __init__(self):
+    self._data = [None] * self.DEFAULT_ARRAY_SIZE
+    self._blue_size = 0
+    self._red_size = 0
+
+  def red_push(self, elem: Any) -> None:
+    if len(self) == len(self._data):
+      self._resize(2 * len(self._data))
+    self._data[self._red_size] = elem
+    self._red_size += 1
+
+  def blue_push(self, elem: Any) -> None:
+    if len(self) == len(self._data):
+      self._resize(2 * len(self._data))
+    index = len(self._data) - self._blue_size - 1
+    self._data[index] = elem
+    self._blue_size += 1
+
+  def red_pop(self) -> Any:
+    if self._red_size == 0:
+      raise Empty("Red stack is empty")
+    if len(self) - 1 < len(self._data) / 4:
+      self._resize(len(self._data) // 2)
+    elem = self._data[self._red_size - 1]
+    self._data[self._red_size - 1] = None
+    self._red_size -= 1
+    return elem
+
+  def blue_pop(self) -> Any:
+    if self._blue_size == 0:
+      raise Empty("Blue stack is empty")
+    if len(self) - 1 < len(self._data) / 4:
+      self._resize(len(self._data) // 2)
+    elem = self._data[len(self._data) - self._blue_size]
+    self._data[len(self._data) - self._blue_size] = None
+    self._blue_size -= 1
+    return elem
+
+  def red_top(self) -> Any:
+    if self._red_size == 0:
+      raise Empty("Red stack is empty")
+    return self._data[self._red_size - 1]
+
+  def blue_top(self) -> Any:
+    if self._blue_size == 0:
+      raise Empty("Blue stack is empty")
+    return self._data[len(self._data) - self._blue_size]
+
+  def __len__(self) -> int:
+    return self._red_size + self._blue_size
+
+
+  def is_empty(self) -> bool:
+    return self._red_size + self._blue_size == 0
+
+  def red_length(self) -> int:
+    return self._red_size
+
+  def blue_length(self) -> int:
+    return self._blue_size 
+
+  def red_is_empty(self) -> bool:
+    return self._red_size == 0
+
+  def blue_is_empty(self) -> bool:
+    return self._blue_size == 0
+
+  def _resize(self, new_capacity: int) -> None:
+    old_data = self._data
+    old_len = len(old_data)
+    new_data = [None] * new_capacity
+    for i in range(self._red_size):
+      new_data[i] = old_data[i]
+    for i in range(self._blue_size):
+      new_data[new_capacity - i - 1] = old_data[old_len - i - 1]
+    self._data = new_data
+
+def test_red_blue_stack():
+  RBS = RedBlueStack()
+
+  elems = [i for i in range(5)]
+
+  for elem in elems:
+    RBS.red_push(elem)
+
+  letters = ['A', 'B', 'C', 'D', 'E']
+
+  for letter in letters:
+    RBS.blue_push(letter)
+
+  for elem in reversed(elems):
+    assert RBS.red_pop() == elem
+
+  for letter in reversed(letters):
+    assert RBS.blue_pop() == letter
+
+
+  print("RBS test passed")
+
+
+
 if __name__ == "__main__":
-  calculate_capital_gain()
+  test_red_blue_stack()
