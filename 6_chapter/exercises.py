@@ -1632,6 +1632,7 @@ class RedBlueStack:
     return self._blue_size == 0
 
   def _resize(self, new_capacity: int) -> None:
+    
     old_data = self._data
     old_len = len(old_data)
     new_data = [None] * new_capacity
