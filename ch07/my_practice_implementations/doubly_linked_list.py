@@ -1,21 +1,22 @@
 from __future__ import annotations
-from typing import Any, Optional
+from typing import Any, Optional, Generic, TypeVar
+from dataclasses import dataclass
 
 
-class _Node:
-  _next: Optional[_Node]
-  _prev: Optional[_Node]
-  _element: Any
+X = TypeVar("X")
+T = TypeVar("T")
 
-  def __init__(self, element: Any, prev: Optional[_Node] = None, next: Optional[_Node] = None):
-    self._element = element
-    self._prev = prev
-    self._next = next
 
+@dataclass(slots=True)
+class _Node(Generic[X]):
+  _element: Optional[X]
+  _prev: Optional[_Node[X]] = None
+  _next: Optional[_Node[X]] = None
   
-class _DoublyLinkedBase:
-  _header: Optional[_Node]
-  _trailer: Optional[_Node]
+
+class _DoublyLinkedBase(Generic[T]):
+  _header: Optional[_Node[T]]
+  _trailer: Optional[_Node[T]]
   _size: int
 
   def __init__(self):
@@ -31,14 +32,16 @@ class _DoublyLinkedBase:
   def is_empty(self) -> bool:
     return self._size == 0
 
-  def _insert_between(self, element: Any, predecessor: _Node, successor: _Node) -> _Node:
+  def _insert_between(
+      self, element: Any, predecessor: _Node[T], successor: _Node[T]
+  ) -> _Node[T]:
     new_node = _Node(element, predecessor, successor)
     predecessor._next = new_node
     successor._prev = new_node
     self._size += 1
     return new_node
 
-  def _delete_node(self, node: _Node) -> Any:
+  def _delete_node(self, node: _Node) -> T:
     predecessor = node._prev
     successor = node._next
     element = node._element
