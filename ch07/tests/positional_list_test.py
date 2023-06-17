@@ -359,7 +359,11 @@ class TestAddFirst:
         Test the add_first() method on an initially empty list.
         """
         test_list = PositionalList()
-        first_pos = test_list.add_first("A")
+        test_element = "A"
+        first_pos = test_list.add_first(test_element)
+        # test return value
+        assert isinstance(first_pos, Position)
+        assert first_pos.element() == test_element
         # check that what's returned by first() matches
         assert test_list.first() == first_pos
         # check that pointer on inserted node are correct
@@ -377,6 +381,9 @@ class TestAddFirst:
         test_list = PositionalList()
         B_pos = test_list.add_first("B")
         A_pos = test_list.add_first("A")
+        # test return value
+        assert isinstance(A_pos, Position)
+        assert A_pos.element() == "A"
         # check that what's returned by first() matches
         assert test_list.first() == A_pos
         # check that pointer on inserted node are correct
@@ -387,4 +394,153 @@ class TestAddFirst:
         assert B_pos._node._prev == A_pos._node
 
 
+class TestAddLast:
+    """
+    Test the add_last() method of the PositionalList class.
+    """
 
+    @staticmethod
+    def test_add_last_empty():
+        """
+        Test the add_last() method on an initially empty list.
+        """
+        test_list = PositionalList()
+        test_element = "A"
+        pos = test_list.add_last(test_element)
+        # check return value
+        assert isinstance(pos, Position)
+        assert pos.element() == test_element
+        # check that what's returned by last() matches
+        assert test_list.last() == pos
+        #check that pointers on inserted node are correct
+        assert pos._node._prev == test_list._header
+        assert pos._node._next == test_list._trailer
+        # check that pointer on preceding and succeeding nodes updated
+        assert test_list._header._next == pos._node
+        assert test_list._trailer._prev == pos._node
+
+    @staticmethod
+    def test_add_last():
+        """
+        Test the add_last() method when the list is not empty.
+        """
+        test_list = PositionalList()
+        first_pos = test_list.add_last("A")
+        second_pos = test_list.add_last("B")
+        # check return value
+        assert isinstance(second_pos, Position)
+        assert second_pos.element() == "B"
+        # check that what's returned by last() matches
+        assert test_list.last() == second_pos
+        # check that pointers on inserted node are correct
+        assert second_pos._node._prev == first_pos._node
+        assert second_pos._node._next == test_list._trailer
+        # check that pointers on preceding and succeeding nodes updated
+        assert first_pos._node._next == second_pos._node
+        assert test_list._trailer._prev == second_pos._node
+
+class TestAddBefore:
+    """
+    Test the add_before() method of the PositionalList class.
+    """
+    
+    @staticmethod
+    def test_add_before_first():
+        """
+        Test the add_before method when adding a node before the first node.
+        """
+        test_list = PositionalList()
+        B_pos = test_list._insert_between(
+            "B", test_list._header, test_list._trailer
+        )
+        A_pos = test_list.add_before(B_pos, "A")
+        # check return value
+        assert isinstance(A_pos, Position)
+        assert A_pos.element() == "A"
+        # check what's returned by before() matches
+        assert A_pos == test_list.before(B_pos)
+        # check that pointers on inserted node are correct
+        assert A_pos._node._next == B_pos._node
+        assert A_pos._node._prev == test_list._header
+        # check that pointers on preceding and succeeding nodes updated
+        assert B_pos._node._prev == A_pos._node
+        assert test_list._header._next == A_pos._node
+
+    @staticmethod
+    def test_add_before():
+        """
+        Test the add_before method when adding a node before any node (not
+        the first node).
+        """
+        test_list = PositionalList()
+        A_pos = test_list._insert_between(
+            "A", test_list._header, test_list._trailer
+        )
+        C_pos = test_list._insert_between(
+            "C", A_pos._node, test_list._trailer
+        )
+        B_pos = test_list.add_before(C_pos, "B")
+        # check return value
+        assert isinstance(B_pos, Position)
+        assert B_pos.element() == "B"
+        # check what's returned by before() matches
+        assert test_list.before(C_pos) == B_pos
+        # check that pointers on inserted node are correct
+        assert B_pos._node._prev == A_pos._node
+        assert B_pos._node._next == C_pos._node
+        # check that pointers on preceding and succeeding nodes updated
+        assert A_pos._node._next == B_pos._node
+        assert C_pos._node._prev == B_pos._node
+
+
+class TestAddAfter:
+    """
+    Test the add_after() method of the PositionalList class.
+    """
+
+    @staticmethod
+    def test_add_after_last():
+        """
+        Test the add_after method when adding a node after the last node.
+        """
+        test_list = PositionalList()
+        A_pos = test_list._insert_between(
+            "A", test_list._header, test_list._trailer
+        )
+        B_pos = test_list.add_after(A_pos, "B")
+        # check return value
+        assert isinstance(B_pos, Position)
+        assert B_pos.element() == "B"
+        # check that what's returned by after() matches
+        assert test_list.after(A_pos) == B_pos
+        # check that pointers on inserted node are correct
+        assert B_pos._node._prev == A_pos._node
+        assert B_pos._node._next == test_list._trailer
+        # check that pointers on preceding and succeeding nodes upated
+        assert A_pos._node._next == B_pos._node
+        assert test_list._trailer._prev == B_pos._node
+
+    @staticmethod
+    def test_add_after():
+        """
+        Test the add_after method when adding a node after any node node (not
+        the last node).
+        """
+        test_list = PositionalList()
+        A_pos = test_list._insert_between(
+            "A", test_list._header, test_list._trailer
+        )
+        C_pos = test_list._insert_between(
+            "C", A_pos._node, test_list._trailer)
+        B_pos = test_list.add_after(A_pos, "B")
+        # check return value
+        assert isinstance(B_pos, Position)
+        assert B_pos.element() == "B"
+        # check that what's returned by 'after()' matches
+        assert test_list.after(A_pos) == B_pos
+        # check that pointers on inserted node are correct
+        assert B_pos._node._prev == A_pos._node
+        assert B_pos._node._next == C_pos._node
+        # check that pointers on preceding and succeeding nodes updated
+        assert A_pos._node._next == B_pos._node
+        assert C_pos._node._prev == B_pos._node 
