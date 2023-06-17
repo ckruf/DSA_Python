@@ -17,8 +17,13 @@ class Position(Generic[V]):
         return self._node._element
 
     def __eq__(self, other) -> bool:
-        """Return True if position we are given represents the same location"""
+        """
+        Return True if position we are given represents the same location
+        """
         return type(other) is type(self) and other._node is self._node
+
+    def __ne__(self, other) -> bool:
+        return not (self == other)
 
 
 class PositionalList(_DoublyLinkedBase[T]):
@@ -57,6 +62,8 @@ class PositionalList(_DoublyLinkedBase[T]):
         return self._make_position(node._next)
 
     def __iter__(self):
+        if self.is_empty():
+            return
         cursor = self.first()
         while cursor is not None:
             yield cursor.element()
