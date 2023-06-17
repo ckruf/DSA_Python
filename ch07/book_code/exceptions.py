@@ -19,6 +19,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
 class Empty(Exception):
-  """Error attempting to access an element from an empty container."""
-  pass
+    """Error attempting to access an element from an empty container."""
+
+    pass
