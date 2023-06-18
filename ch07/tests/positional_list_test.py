@@ -379,8 +379,11 @@ class TestAddFirst:
         Test the add_first() method when the list is not empty.
         """
         test_list = PositionalList()
+        assert len(test_list) == 0
         B_pos = test_list.add_first("B")
+        assert len(test_list) == 1
         A_pos = test_list.add_first("A")
+        assert len(test_list) == 2
         # test return value
         assert isinstance(A_pos, Position)
         assert A_pos.element() == "A"
@@ -425,8 +428,11 @@ class TestAddLast:
         Test the add_last() method when the list is not empty.
         """
         test_list = PositionalList()
+        assert len(test_list) == 0
         first_pos = test_list.add_last("A")
+        assert len(test_list) == 1
         second_pos = test_list.add_last("B")
+        assert len(test_list) == 2
         # check return value
         assert isinstance(second_pos, Position)
         assert second_pos.element() == "B"
@@ -479,7 +485,9 @@ class TestAddBefore:
         C_pos = test_list._insert_between(
             "C", A_pos._node, test_list._trailer
         )
+        assert len(test_list) == 2
         B_pos = test_list.add_before(C_pos, "B")
+        assert len(test_list) == 3
         # check return value
         assert isinstance(B_pos, Position)
         assert B_pos.element() == "B"
@@ -532,7 +540,9 @@ class TestAddAfter:
         )
         C_pos = test_list._insert_between(
             "C", A_pos._node, test_list._trailer)
+        assert len(test_list) == 2
         B_pos = test_list.add_after(A_pos, "B")
+        assert len(test_list) == 3
         # check return value
         assert isinstance(B_pos, Position)
         assert B_pos.element() == "B"
@@ -544,3 +554,123 @@ class TestAddAfter:
         # check that pointers on preceding and succeeding nodes updated
         assert A_pos._node._next == B_pos._node
         assert C_pos._node._prev == B_pos._node 
+
+
+class TestDelete:
+    """
+    Test the 'delete()' method of the PositionalList class.
+    """
+
+    @staticmethod
+    def test_delete():
+        """
+        One complete test of the delete method. 
+        - Deletes a middle node
+        - Checks return value of method
+        - Checks that pointers of preceding and succeeding node updated
+        - Checks that 'len' decremented
+        """
+        test_list = PositionalList()
+        A_pos = test_list.add_last("A")
+        B_pos = test_list.add_last("B")
+        C_pos = test_list.add_last("C")
+        # assertions about state before deleting
+        assert len(test_list) == 3
+        assert A_pos._node._next == B_pos._node
+        assert C_pos._node._prev == B_pos._node
+
+        deleted_element = test_list.delete(B_pos)
+        assert deleted_element == "B"
+        assert len(test_list) == 2
+        assert A_pos._node._next == C_pos._node
+        assert C_pos._node._prev == A_pos._node
+        # assert node is 'discarded' by setting everything to None
+        assert B_pos._node._prev is None
+        assert B_pos._node._next is None
+        assert B_pos._node._element is None
+
+
+class TestReplace:
+    """
+    Test the 'replace'()' method of the PositionalList class.
+    """
+
+    @staticmethod
+    def test_replace():
+        """
+        One complete test of the 'replace' method.
+        """
+        test_list = PositionalList()
+        A_pos = test_list.add_last("A")
+        second_pos = test_list.add_last(2)
+        C_pos = test_list.add_last("C")
+
+        assert len(test_list) == 3
+
+        assert A_pos._node._next == second_pos._node
+        assert C_pos._node._prev == second_pos._node
+
+        assert second_pos._node._prev == A_pos._node
+        assert second_pos._node._next == C_pos._node
+        
+        assert second_pos.element() == 2
+
+        test_list.replace(second_pos, "B")
+
+        # we are not replacing the whole node, but just the element of the node
+        # so the pointers should stay the same
+        assert A_pos._node._next == second_pos._node
+        assert C_pos._node._prev == second_pos._node
+        
+        assert second_pos._node._prev == A_pos._node
+        assert second_pos._node._next == C_pos._node
+        assert len(test_list) == 3
+        assert second_pos.element() == "B"
+
+
+class TestValidate:
+    """
+    Test the '_validate()' method of the PositionalList class.
+    This method is used in all PositionalList methods which take a Position
+    instance as argument, in order to - surprisingly - validate that the
+    Position is legit (is actually Position instance, actually belongs
+    to this PositionalList, is not deprecated).
+    """
+
+    @staticmethod
+    def test_fails_not_position_instance():
+        """
+        Test that the '_validate()' method raises TypeError when
+        it is given an object which is not a Position instance.
+        """
+        test_list = PositionalList()
+        with pytest.raises(TypeError) as e_info:
+            test_list._validate(5)
+
+    @staticmethod
+    def test_fails_when_container_is_not_list():
+        """
+        Test that the '_validate()' method raises ValueError when it is given
+        a Position instance whose _container is a different PositionalList.
+        """
+        test_list = PositionalList()
+        different_list = PositionalList()
+        test_node = _Node("B", _Node("A"), _Node("C"))
+        test_pos = Position(different_list, test_node)
+        with pytest.raises(ValueError) as e_info:
+            test_list._validate(test_pos)
+
+    @staticmethod
+    def test_fails_when_next_is_none():
+        """
+        Test that the '_validate()' method raises ValueError when p._node._next
+        is None. This is the check used to determine whether we are dealing
+        with a deprecated node (for example one which has since been deleted
+        from the list).s
+        """
+        test_list = PositionalList()
+        test_node = _Node("A")
+        test_pos = Position(test_list, test_node)
+        with pytest.raises(ValueError) as e_info:
+            test_list._validate(test_pos)
+
