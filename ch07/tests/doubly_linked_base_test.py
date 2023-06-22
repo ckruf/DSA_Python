@@ -1,7 +1,6 @@
 """
 Tests for the DoublyLinkedBase class.
 """
-import pytest
 from ch07.my_practice_implementations.doubly_linked_list import _DoublyLinkedBase, _Node
 
 

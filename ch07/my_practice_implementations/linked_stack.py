@@ -36,6 +36,7 @@ class LinkedStack:
     def top(self) -> Any:
         if self._size == 0:
             raise ValueError("Stack is empty")
+        return self._head._element
 
     def __len__(self) -> int:
         return self._size
