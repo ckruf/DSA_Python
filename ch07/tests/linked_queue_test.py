@@ -77,7 +77,10 @@ class TestEnqueue:
 
 
 class TestDequeue:
-    """Test the 'dequeue()' method of the LinkedQueue class."""
+    """
+    Test the 'dequeue()' method of the LinkedQueue class.
+    NOTE these tests depend on the enqueue method being implemented correctly.
+    """
 
     @staticmethod
     def test_dequeue_empty():
@@ -116,6 +119,49 @@ class TestDequeue:
         assert len(queue) == queue._size == 2
 
     @staticmethod
+    def test_dequeue_sets_new_head():
+        """
+        Test that the 'dequeue()' method correctly sets pointer to the new head.
+        """
+        queue = LinkedQueue()
+        queue.enqueue("A")
+        queue.enqueue("B")
+        queue.enqueue("C")
+        B_node = queue._head._next
+        queue.dequeue()
+        assert queue._head == B_node
+
+    @staticmethod
+    def test_dequeue_return():
+        """
+        Test that the 'dequeue()' method returns the expected element.
+        """
+        queue = LinkedQueue()
+        queue.enqueue("A")
+        queue.enqueue("B")
+        assert queue.dequeue() == "A"
+        assert queue.dequeue() == "B"
+
+    @staticmethod
+    def test_dequeue_decrements_size():
+        """
+        Test that the 'dequeue()' method decrements the size of the queue
+        after it is called.
+        """
+        queue = LinkedQueue()
+        queue.enqueue("A")
+        queue.enqueue("B")
+        queue.enqueue("C")
+        assert queue._size == len(queue) == 3
+        queue.dequeue()
+        assert queue._size == len(queue) == 2
+        queue.dequeue()
+        assert queue._size == len(queue) == 1
+        queue.dequeue()
+        assert queue._size == len(queue) == 0
+        
+
+    @staticmethod
     def test_dequeue_single():
         """
         Test the 'dequeue()' method when called on a queue with a single
@@ -131,3 +177,58 @@ class TestDequeue:
         assert queue._head is None
         assert queue._tail is None
         assert len(queue) == queue._size == 0
+
+
+class TestFront:
+    """Tests for the 'front()' method of the LinkedQueue class."""
+
+    @staticmethod
+    def test_front_empty():
+        """
+        Test that an Exception is raised when the 'front()' method is called
+        on an empty queue.
+        """
+        queue = LinkedQueue()
+        with pytest.raises(Exception):
+            queue.front()
+
+    @staticmethod
+    def test_front_non_empty():
+        queue = LinkedQueue()
+        queue.enqueue("A")
+        assert queue.front() == "A"
+
+
+class TestIsEmpty:
+    """Tests for the 'is_empty()' method of the LinkedQueue class."""
+
+    @staticmethod
+    def test_is_empty_empty():
+        queue = LinkedQueue()
+        assert queue.is_empty() is True
+
+    @staticmethod
+    def test_is_empty_non_empty():
+        queue = LinkedQueue()
+        queue.enqueue("A")
+        assert queue.is_empty() is False
+
+
+class TestGeneral:
+    """
+    Test a sequence of enqueue and dequeue operations.
+    """
+
+    @staticmethod
+    def test_general():
+        queue = LinkedQueue()
+        for i in range(1, 101):
+            queue.enqueue(i)
+            assert len(queue) == i
+
+        for i in range(1, 101):
+            assert queue.front() == i
+            assert queue.dequeue() == i
+            assert len(queue) == 100 - i
+
+        assert queue.is_empty() is True
