@@ -98,3 +98,7 @@ class PositionalList(_DoublyLinkedBase[T]):
         original_element = node._element
         node._element = element
         return original_element
+    
+    def __str__(self) -> str:
+        elements = [i for i in self]
+        return str(elements)
