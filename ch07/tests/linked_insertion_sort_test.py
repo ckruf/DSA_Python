@@ -81,6 +81,26 @@ class TestLinkedInsertionSort:
     """
 
     @staticmethod
+    def test_three_elements_last_in_order():
+        test_list = PositionalList()
+        elements = [22, 15, 25]
+        for elem in elements:
+            test_list.add_last(elem)
+        assert elements == [i for i in test_list]
+        # insertion_sort(test_list)
+        assert [15, 22, 25] == [i for i in test_list]
+
+    @staticmethod
+    def test_three_elements_last_out_of_order():
+        test_list = PositionalList()
+        elements = [25, 22, 15]
+        for elem in elements:
+            test_list.add_last(elem)
+        assert elements == [i for i in test_list]
+        # insertion_sort(test_list)
+        assert [15, 22, 25] == [i for i in test_list]
+
+    @staticmethod
     def test_two_element_list():
         test_list = PositionalList()
         test_list.add_last(2)
@@ -89,14 +109,12 @@ class TestLinkedInsertionSort:
         # insertion_sort(test_list)
         assert [1, 2] == [i for i in test_list]
 
-
-if __name__ == "__main__":
-    test_list = PositionalList()
-    # elements = [15, 22, 25,]
-    elements = [25, 22, 15]
-    for elem in elements:
-        test_list.add_last(elem)
-    print("test list before sorting", test_list)
-    insertion_sort_attempt_3(test_list)
-    print("test list after sorting", test_list)
-    
+    @staticmethod
+    def test_random_list():
+        test_list = PositionalList()
+        elements = [25, 22, 15, 17, 10,]
+        for elem in elements:
+            test_list.add_last(elem)
+        assert elements == [i for i in test_list]
+        # insertion_sort(test_list)
+        assert [10, 15, 17, 22, 25] == [i for i in test_list]
