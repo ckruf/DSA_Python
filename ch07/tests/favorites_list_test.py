@@ -176,7 +176,8 @@ class TestAccess:
     and _move_up private methods.
     """
 
-    def test_access_existing(self, favorites_list_abcd_cnt_1):
+    @staticmethod
+    def test_access_existing(favorites_list_abcd_cnt_1):
         """
         Test the 'access' method when accessing an existing element.
         Should increase the element's access count and move the element up.
@@ -195,7 +196,8 @@ class TestAccess:
         # because all items had equal access counts, D should now be at the front
         assert favorites_list_abcd_cnt_1._data.first().element() == D_element
 
-    def test_access_non_existing(self, favorites_list_abcd_cnt_1):
+    @staticmethod
+    def test_access_non_existing(favorites_list_abcd_cnt_1):
         """
         Test the 'access' method when accessing a non-existing element.
         This should create a new Item instance with the element and an access count
@@ -209,6 +211,21 @@ class TestAccess:
         assert isinstance(item_E, Item)
         assert item_E._element == "E"
         assert item_E._access_count == 1
+
+    @staticmethod
+    def test_access_initially_empty():
+        """
+        Test the 'access' method on an initially empty list.
+        This test was written because my implementation of PositionalList
+        raised ValueError when calling 'first()' on an empty list, which then
+        caused 'access()' to fail when using on initially empty FavoritesList.
+        """
+        test_list = FavoritesList()
+        assert len(test_list) == 0
+        test_list.access("A")
+        assert len(test_list) == 1
+        assert test_list._data.first().element() == Item("A", 1)
+
 
 
 class TestRemove:
@@ -236,7 +253,8 @@ class TestTop:
     Tests for the 'top' method of the FavoritesList class.
     """
 
-    def test_fails_on_zero(self, favorites_list_abcd_cnt_1):
+    @staticmethod
+    def test_fails_on_zero(favorites_list_abcd_cnt_1):
         """
         Test that ValueError is raised when 0 is provided as argument.
         """
@@ -244,7 +262,8 @@ class TestTop:
             for elem in favorites_list_abcd_cnt_1.top(0):
                 pass
 
-    def test_fails_on_greater_than_length(self, favorites_list_abcd_cnt_1):
+    @staticmethod
+    def test_fails_on_greater_than_length(favorites_list_abcd_cnt_1):
         """
         Test that ValueError is raised when a number greater than the length
         of the list is provided.
@@ -255,7 +274,8 @@ class TestTop:
             ):
                 pass
 
-    def test_succeeds_one(self):
+    @staticmethod
+    def test_succeeds_one():
         """
         Test that top() succeeds when 1 is provided as argument.
         """
@@ -271,7 +291,8 @@ class TestTop:
             "A",
         ]
 
-    def test_succeeds_all(self, favorites_list_abcd_cnt_1):
+    @staticmethod
+    def test_succeeds_all(favorites_list_abcd_cnt_1):
         """
         Test that top() succeeds when the length of the list is provided as
         argument.
@@ -280,7 +301,8 @@ class TestTop:
         elems = [elem for elem in favorites_list_abcd_cnt_1.top(length)]
         assert elems == ["A", "B", "C", "D"]
 
-    def test_succeeds_some(self, favorites_list_abcd_cnt_1):
+    @staticmethod
+    def test_succeeds_some(favorites_list_abcd_cnt_1):
         """
         Test that top() succeeds when the provided length is greater than 1 and
         less than the length of the list.s

@@ -31,6 +31,8 @@ class FavoritesListMTF:
     # Private methods
 
     def _find_in_list(self, e: Any) -> Optional[Position[Item]]:
+        if len(self._data) == 0:
+            return None
         walk = self._data.first()
         while walk is not None and walk.element()._element != e:
             walk = self._data.after(walk)
@@ -91,3 +93,8 @@ class FavoritesListMTF:
                 walk = temp_list.after(walk)
             yield top_pos.element()._element
             temp_list.delete(top_pos)
+
+
+if __name__ == "__main__":
+    test_list = FavoritesListMTF()
+    test_list.top(0)

@@ -33,6 +33,8 @@ class FavoritesList:
 
     # private utilities
     def _find_in_list(self, elem: Any) -> Optional[Position[Item]]:
+        if len(self._data) == 0:
+            return None
         walk = self._data.first()
         while walk is not None and walk.element()._element != elem:
             walk = self._data.after(walk)

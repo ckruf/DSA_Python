@@ -307,17 +307,21 @@ class TestTop:
         Test that the 'top()' method raises an Exception when it is given
         0 as argument.
         """ 
-        assert False
+        test_list = FavoritesListMTF()
+        with pytest.raises(Exception):
+            for elem in test_list.top(0):
+                pass
 
     @staticmethod
-    def test_raises_exception_on_greater_than_length():
+    def test_raises_exception_on_greater_than_length(favorites_list_abcd_cnt_1):
         """
         Test that the 'top()' method raises an Exception when it is given
         a number greater than the length of the list as an argument.
         """
-        assert False
-
-
+        assert len(favorites_list_abcd_cnt_1) < 5
+        with pytest.raises(Exception):
+            for elem in favorites_list_abcd_cnt_1.top(5):
+                pass
 
 
 class TestGeneral:
@@ -325,4 +329,20 @@ class TestGeneral:
 
     @staticmethod
     def test_general():
-        assert False
+        test_list = FavoritesListMTF()
+        assert len(test_list) == 0
+        elems = ["A", "B", "C", "D", "E"]
+        for elem in elems:
+            test_list.access(elem)
+        assert len(test_list) == len(elems)
+        assert test_list._data.first().element() == Item("E", 1)
+        test_list.access("C")
+        assert test_list._data.first().element() == Item("C", 2)
+        test_list.access("C")
+        test_list.access("B")
+        assert test_list._data.first().element() == Item("B", 2)
+        assert [elem for elem in test_list.top(2)] == ["C", "B"]
+        test_list.access("E")
+        test_list.remove("C")
+        assert len(test_list) == len(elems) - 1
+        assert [elem for elem in test_list.top(2)] == ["E", "B"]
