@@ -10,6 +10,7 @@ dsa_python_dir = src_dir.parent.absolute()
 sys.path.insert(0, str(dsa_python_dir))
 
 from ch07.my_practice_implementations.positional_list import PositionalList
+from ch07.my_practice_implementations.insertion_sort import insertion_sort_doubly_linked_list
 
 def insertion_sort_attempt_1(seq: PositionalList):
     """
@@ -87,7 +88,7 @@ class TestLinkedInsertionSort:
         for elem in elements:
             test_list.add_last(elem)
         assert elements == [i for i in test_list]
-        # insertion_sort(test_list)
+        insertion_sort_doubly_linked_list(test_list)
         assert [15, 22, 25] == [i for i in test_list]
 
     @staticmethod
@@ -97,7 +98,7 @@ class TestLinkedInsertionSort:
         for elem in elements:
             test_list.add_last(elem)
         assert elements == [i for i in test_list]
-        # insertion_sort(test_list)
+        insertion_sort_doubly_linked_list(test_list)
         assert [15, 22, 25] == [i for i in test_list]
 
     @staticmethod
@@ -106,7 +107,7 @@ class TestLinkedInsertionSort:
         test_list.add_last(2)
         test_list.add_last(1)
         assert [2, 1] == [i for i in test_list]
-        # insertion_sort(test_list)
+        insertion_sort_doubly_linked_list(test_list)
         assert [1, 2] == [i for i in test_list]
 
     @staticmethod
@@ -116,5 +117,5 @@ class TestLinkedInsertionSort:
         for elem in elements:
             test_list.add_last(elem)
         assert elements == [i for i in test_list]
-        # insertion_sort(test_list)
+        insertion_sort_doubly_linked_list(test_list)
         assert [10, 15, 17, 22, 25] == [i for i in test_list]

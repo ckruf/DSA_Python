@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="883bca3a-2372-4f14-93de-7a24c30083d9" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/ch07/my_practice_implementations/tests/exercises_test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ch07/my_practice_implementations/tests/singly_linked_list_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ch07/exercises.py" beforeDir="false" afterPath="$PROJECT_DIR$/ch07/exercises.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ch07/my_practice_implementations/singly_linked_list.py" beforeDir="false" afterPath="$PROJECT_DIR$/ch07/my_practice_implementations/singly_linked_list.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ch07/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ch07/my_practice_implementations/tests/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ch07/tests/circular_queue_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/ch07/my_practice_implementations/tests/circular_queue_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ch07/tests/doubly_linked_base_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/ch07/my_practice_implementations/tests/doubly_linked_base_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ch07/tests/exercises_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ch07/tests/favorites_list_mtf_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/ch07/my_practice_implementations/tests/favorites_list_mtf_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ch07/tests/favorites_list_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/ch07/my_practice_implementations/tests/favorites_list_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ch07/tests/linked_deque_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/ch07/my_practice_implementations/tests/linked_deque_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ch07/tests/linked_insertion_sort_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/ch07/my_practice_implementations/tests/linked_insertion_sort_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ch07/tests/linked_queue_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/ch07/my_practice_implementations/tests/linked_queue_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ch07/tests/linked_stack_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/ch07/my_practice_implementations/tests/linked_stack_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ch07/tests/positional_list_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/ch07/my_practice_implementations/tests/positional_list_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ch07/tests/singly_linked_list_test.py" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingMarkupGrave">
+    <markupCoffin contentHash="-1711263247" url="file://$PROJECT_DIR$/ch07/my_practice_implementations/tests/linked_insertion_sort_test.py">
+      <highlighter start="296" end="300" layer="3750" target="0">
+        <option name="myExternalName" value="INFO_ATTRIBUTES" />
+      </highlighter>
+      <highlighter start="372" end="376" layer="3750" target="0">
+        <option name="myExternalName" value="INFO_ATTRIBUTES" />
+      </highlighter>
+      <highlighter start="467" end="517" layer="3750" target="0">
+        <option name="myExternalName" value="INFO_ATTRIBUTES" />
+      </highlighter>
+      <highlighter start="1829" end="1879" layer="3750" target="0">
+        <option name="myExternalName" value="INFO_ATTRIBUTES" />
+      </highlighter>
+      <highlighter start="2358" end="2408" layer="3750" target="0">
+        <option name="myExternalName" value="INFO_ATTRIBUTES" />
+      </highlighter>
+      <highlighter start="2892" end="2915" layer="3000" target="1" gutterIconUrl="jar:file:/snap/pycharm-community/337/lib/app-client.jar!/runConfigurations/testState/run.svg" />
+      <highlighter start="3075" end="3108" layer="3000" target="1" gutterIconUrl="jar:file:/snap/pycharm-community/337/lib/app-client.jar!/runConfigurations/testState/run.svg" />
+      <highlighter start="3432" end="3469" layer="3000" target="1" gutterIconUrl="jar:file:/snap/pycharm-community/337/lib/app-client.jar!/runConfigurations/testState/run.svg" />
+      <highlighter start="3793" end="3814" layer="3000" target="1" gutterIconUrl="jar:file:/snap/pycharm-community/337/lib/app-client.jar!/runConfigurations/testState/run.svg" />
+      <highlighter start="4091" end="4107" layer="3000" target="1" gutterIconUrl="jar:file:/snap/pycharm-community/337/lib/app-client.jar!/runConfigurations/testState/run.svg" />
+      <highlighter start="4186" end="4187" layer="3750" target="0">
+        <option name="myExternalName" value="INFO_ATTRIBUTES" />
+      </highlighter>
+    </markupCoffin>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2S9VHqrUql49XkZOCdiFM3zIei9" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/home/ckruf/DSA_Python/ch07/my_practice_implementations"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ch07/my_practice_implementations" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="883bca3a-2372-4f14-93de-7a24c30083d9" name="Changes" comment="" />
+      <created>1688558698589</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1688558698589</updated>
+    </task>
+    <servers />
+  </component>
+</project>

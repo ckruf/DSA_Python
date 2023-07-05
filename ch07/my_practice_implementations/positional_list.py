@@ -62,6 +62,7 @@ class PositionalList(_DoublyLinkedBase[T]):
         return self._make_position(node._next)
 
     def __iter__(self):
+        # necessary because .first() will fail on empty list
         if self.is_empty():
             return
         cursor = self.first()
