@@ -1,6 +1,6 @@
 """This file contains tests for exercise 7.1"""
 from ch07.exercises.find_penultimate_node_1 import (
-    find_penultimate_node,
+    find_penultimate_node_recursive as find_penultimate_node,
 )
 from ch07.my_practice_implementations.singly_linked_list import (
     LinkedList,

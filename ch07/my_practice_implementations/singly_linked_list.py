@@ -83,10 +83,11 @@ class LinkedList:
         current_head = self._head
         self._head = self._head._next
         element = current_head.element()
-        current_head = current_head._element = current_head._next = None
+        current_head._element = current_head._next = None
         self._size -= 1
         if self._size == 0:
             self._head = None
+            self._tail = None
         return element
     
     def delete_last(self) -> Any:
@@ -103,6 +104,8 @@ class LinkedList:
         while walk._next._next is not None:
             walk = walk._next
         element = self._tail.element()
+        # deprecate node
+        self._tail._element = self._tail._next = None
         self._tail = walk
         self._tail._next = None
         self._size -= 1
@@ -124,10 +127,11 @@ class LinkedList:
             walk = walk._next
             count += 1
         deleted_node = walk._next
+        element = deleted_node._element
         walk._next = deleted_node._next
-        deleted_node._next = None  # garbage collection / node invalidation
+        deleted_node._next = deleted_node._element = None  # garbage collection / node invalidation
         self._size -= 1
-        return deleted_node.element()
+        return element
     
     def get_first(self) -> Any:
         """Get first element of linked list"""
@@ -153,9 +157,10 @@ class LinkedList:
     def clear(self) -> None:
         walk = self._head
         while walk is not None:
-            walk = walk._next
+            next = walk._next
             walk._next = None
             walk._element = None
+            walk = next
         self._head = None
         self._tail = None
         self._size = 0
