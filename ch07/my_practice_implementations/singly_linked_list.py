@@ -145,6 +145,24 @@ class LinkedList:
             raise ValueError("Cannot get last, list is empty")
         return self._tail.element()
     
+    def get_element_at_index(self, index: int) -> Any:
+        """Get element at given index"""
+        node = self.get_node_at_index(index)
+        return node._element
+        
+    def get_node_at_index(self, index: int) -> Node:
+        """Get node at given index"""
+        if not 0 <= index < self._size:
+            raise ValueError(
+                f"index must be 0 or greater and less than {self._size}"
+            )
+        count = 0
+        walk = self._head
+        while count < index:
+            walk = walk._next
+            count += 1
+        return walk
+    
     def __iter__(self):
         walk = self._head
         while walk is not None:

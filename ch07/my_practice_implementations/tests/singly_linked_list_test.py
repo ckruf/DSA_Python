@@ -513,6 +513,55 @@ class TestGetLast:
             test_list.get_last()
 
 
+class TestGetAtIndex:
+    """
+    Tests for the 'get_node_at_index()' and 'get_element_at_index()' methods.
+    """
+
+    @staticmethod
+    def test_get_node_at_index():
+        test_list = LinkedList()
+        for e in ("A", "B", "C"):
+            test_list.add_last(e)
+        A_node = test_list._head
+        B_node = A_node._next
+        C_node = B_node._next
+        
+        assert isinstance(A_node, Node)
+        assert A_node._element == "A"
+
+        assert isinstance(B_node, Node)
+        assert B_node._element == "B"
+
+        assert isinstance(C_node, Node)
+        assert C_node._element == "C"
+
+        assert test_list.get_node_at_index(0) == A_node
+        assert test_list.get_node_at_index(1) == B_node
+        assert test_list.get_node_at_index(2) == C_node
+
+    @staticmethod
+    def test_get_element_at_index():
+        test_list = LinkedList()
+        for e in ("A", "B", "C"):
+            test_list.add_last(e)
+        A_node = test_list._head
+        B_node = A_node._next
+        C_node = B_node._next
+        
+        assert isinstance(A_node, Node)
+        assert A_node._element == "A"
+
+        assert isinstance(B_node, Node)
+        assert B_node._element == "B"
+
+        assert isinstance(C_node, Node)
+        assert C_node._element == "C"
+
+        assert test_list.get_element_at_index(0) == "A"
+        assert test_list.get_element_at_index(1) == "B"
+        assert test_list.get_element_at_index(2) == "C"
+
 class TestIter:
     """
     Tests for the __iter__ method of the LinkedList class.
