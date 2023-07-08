@@ -674,3 +674,30 @@ class TestValidate:
         with pytest.raises(ValueError) as e_info:
             test_list._validate(test_pos)
 
+
+class TestGetNodeAtIndex:
+    """
+    Test the '_get_node_at_index()' method of the PositionalList class.
+    """
+
+    @staticmethod
+    def test_get_node_at_index():
+        test_list = PositionalList()
+        for e in "A", "B", "C":
+            test_list.add_last(e)
+        
+        A_node = test_list._header._next
+        assert isinstance(A_node, _Node)
+        assert A_node._element == "A"
+
+        B_node = A_node._next
+        assert isinstance(B_node, _Node)
+        assert B_node._element == "B"
+
+        C_node = B_node._next
+        assert isinstance(C_node, _Node)
+        assert C_node._element == "C"
+
+        assert test_list._get_node_at_index(0) == A_node
+        assert test_list._get_node_at_index(1) == B_node
+        assert test_list._get_node_at_index(2) == C_node

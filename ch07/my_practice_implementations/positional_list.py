@@ -42,6 +42,24 @@ class PositionalList(_DoublyLinkedBase[T]):
         if node is self._header or node is self._trailer:
             return None
         return Position(self, node)
+    
+    def _get_node_at_index(self, index: int) -> _Node:
+        """
+        Get node at given index. This method really only serves for making
+        testing of 'swap_nodes' method easier. Nodes are abstracted
+        away in this implementation, and should not be exposed to the user.
+        That's why method is private - only to be used in testing.
+        """
+        if not 0 <= index < self._size:
+            raise ValueError(
+                f"index must be 0 or greater and less than {self._size}"
+            )
+        count = 0
+        walk = self._header._next
+        while count < index:
+            walk = walk._next
+            count += 1
+        return walk
 
     def first(self) -> Position[T]:
         if self.is_empty():
