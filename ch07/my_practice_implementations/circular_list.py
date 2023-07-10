@@ -6,7 +6,7 @@ from typing import Optional, Any
 @dataclass(slots=True)
 class Node:
     _element: Any
-    _next: Optional[Node]
+    _next: Optional[Node] = None
 
 
 class CircularList:
@@ -25,10 +25,14 @@ class CircularList:
         return self._size
     
     def get_first(self) -> Any:
-        pass
+        if self._size == 0:
+            raise Exception("List is empty")
+        return self._tail._next._element
 
     def get_last(self) -> Any:
-        pass
+        if self._size == 0:
+            raise 
+        return self._tail._element
     
     def insert_first(self, element: Any) -> None:
         new_head = Node(element, None)
@@ -43,24 +47,83 @@ class CircularList:
 
     def insert_last(self, element: Any) -> None:
         new_tail = Node(element, None)
+        if self._size == 0:
+            new_tail._next = new_tail
+        else:
+            new_tail._next = self._tail._next
+            self._tail._next = new_tail
+        self._tail = new_tail
+        self._size += 1
 
     def insert_after(self, node: Node, element: Any) -> None:
-        pass
+        new_node = Node(element)
+        new_node._next = node._next
+        node._next = new_node
+        self._size += 1
+
 
     def delete_first(self) -> Any:
-        pass
-
+        if self._size == 0:
+            raise Exception("Can't delete from empty list")
+        element = self._tail._next._element
+        if self._size == 1:
+            self._tail = self._tail._next = None
+        else:
+            self._tail._next = self._tail._next._next
+        self._size -= 1
+        return element
+    
     def delete_last(self) -> Any:
-        pass
+        if self._size == 0:
+            raise ValueError("Can't delete from empty list")
+        element = self._tail._element
+        if self._size == 1:
+            self._tail = self._tail._next = None
+        else:
+            penultimate_node = None
+            walk = self._tail
+            while walk._next != self._tail:
+                walk = walk._next
+            penultimate_node = walk
+            penultimate_node._next = self._tail._next
+            self._tail._next = None  # garbage collect
+            self._tail = penultimate_node
+        self._size -= 1
+        return element
 
-    def delete_node(self, node: Node) -> Any:
-        pass
+    def delete_node(self, node: Node) -> None:
+        if self._size == 0:
+            raise ValueError("Can't delete from empty list")
+        elif self._size == 1:
+            if self._tail != node:
+                raise ValueError("Node is not part of list")
+            self._head = self._head._next = None
+        else:
+            walk = self._tail
+            preceding_node = None
+            while walk._next != node:
+                walk = walk._next
+                if walk == self._tail:
+                    raise ValueError("Node is not part of list")
+            preceding_node = walk
+            preceding_node._next = node._next
+            node._next = None
+        self._size -= 1
 
     def find(self, target: Any) -> Optional[Node]:
-        pass
+        walk = self._tail
+        while walk._element != target:
+            walk = walk._next
+            if walk == self._tail:
+                return None
+        return walk
 
     def __str__(self) -> str:
         pass
 
     def __iter__(self):
-        pass
+        walk = self._tail
+        while walk._next != self._tail:
+            yield walk._element
+            walk = walk._next
+        yield walk
