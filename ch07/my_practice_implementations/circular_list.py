@@ -67,9 +67,11 @@ class CircularList:
             raise Exception("Can't delete from empty list")
         element = self._tail._next._element
         if self._size == 1:
-            self._tail = self._tail._next = None
+            self._tail._next = self._tail = None
         else:
+            first_node = self._tail._next
             self._tail._next = self._tail._next._next
+            first_node._next = None
         self._size -= 1
         return element
     
@@ -78,7 +80,7 @@ class CircularList:
             raise ValueError("Can't delete from empty list")
         element = self._tail._element
         if self._size == 1:
-            self._tail = self._tail._next = None
+            self._tail._next = self._tail = None
         else:
             penultimate_node = None
             walk = self._tail
