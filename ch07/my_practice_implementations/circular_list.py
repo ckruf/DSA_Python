@@ -56,6 +56,8 @@ class CircularList:
         self._size += 1
 
     def insert_after(self, node: Node, element: Any) -> None:
+        if not self._node_belongs_to_list(node):
+            raise ValueError("Given node does not belong to this list")
         new_node = Node(element)
         new_node._next = node._next
         node._next = new_node
@@ -99,8 +101,10 @@ class CircularList:
         elif self._size == 1:
             if self._tail != node:
                 raise ValueError("Node is not part of list")
-            self._head = self._head._next = None
+            self._tail._next = self._tail = None
         else:
+            if node == self._tail:
+                return self.delete_last()
             walk = self._tail
             preceding_node = None
             while walk._next != node:
@@ -113,19 +117,36 @@ class CircularList:
         self._size -= 1
 
     def find(self, target: Any) -> Optional[Node]:
+        if self._size == 0:
+            return None
         walk = self._tail
         while walk._element != target:
             walk = walk._next
             if walk == self._tail:
                 return None
         return walk
+    
+    def _node_belongs_to_list(self, node: Node) -> bool:
+        if self._size == 0:
+            return False
+        if node == self._tail:
+            return True
+        walk = self._tail._next
+        while walk != self._tail:
+            if walk == node:
+                return True
+            walk =  walk._next
+        return False
 
     def __str__(self) -> str:
         pass
 
     def __iter__(self):
-        walk = self._tail
-        while walk._next != self._tail:
+        if self._size == 0:
+            return
+        walk = self._tail._next
+        while True: 
             yield walk._element
+            if walk == self._tail:
+                break
             walk = walk._next
-        yield walk
