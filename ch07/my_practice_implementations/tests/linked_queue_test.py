@@ -214,6 +214,98 @@ class TestIsEmpty:
         assert queue.is_empty() is False
 
 
+class TestRotate:
+    """Tests for the 'rotate()' method of the LinkedQueue class."""
+
+    @staticmethod
+    def test_rotate_empty():
+        """
+        Test that 'rotate()' method raises Exception when called on
+        an empty list.
+        """
+        queue = LinkedQueue()
+        with pytest.raises(Exception):
+            queue.rotate()
+
+    @staticmethod
+    def test_rotate_single_element():
+        """
+        Test that 'rotate()' method works correctly on a queue with a single
+        element (ie does nothing).
+        """
+        queue = LinkedQueue()
+        queue.enqueue("A")
+        A_node = queue._head
+        assert isinstance(A_node, _Node)
+        assert A_node._element == "A"
+        assert queue._tail == A_node
+        queue.rotate()
+        assert queue._head == A_node
+        assert queue._tail == A_node
+
+    @staticmethod
+    def test_rotate_two_element():
+        """
+        Test that the 'rotate()' method works correctly on a queue with two
+        elements.
+        """
+        queue = LinkedQueue()
+        queue.enqueue("A")
+        queue.enqueue("B")
+        A_node = queue._head
+        assert isinstance(A_node, _Node)
+        assert A_node._element == "A"
+        B_node = queue._tail
+        assert isinstance(B_node, _Node)
+        assert B_node._element == "B"
+
+        assert A_node._next == B_node
+        assert B_node._next is None
+
+        queue.rotate()
+        assert queue._head == B_node
+        assert queue._tail == A_node
+        assert B_node._next == A_node
+        assert A_node._next is None
+
+    @staticmethod
+    def test_rotate_multiple_elements():
+        """
+        Test that the 'rotate()' method works correctly on a queue with 
+        multiple elements.
+        """
+        queue = LinkedQueue()
+        for e in "A", "B", "C", "D":
+            queue.enqueue(e)
+        
+        A_node = queue._head
+        assert isinstance(A_node, _Node)
+        assert A_node._element == "A"
+        B_node = A_node._next
+        assert isinstance(B_node, _Node)
+        assert B_node._element == "B"
+        C_node = B_node._next
+        assert isinstance(C_node, _Node)
+        assert C_node._element == "C"
+
+        D_node = queue._tail
+        assert isinstance(D_node, _Node)
+        assert D_node._element == "D"
+        assert D_node._next is None
+
+        queue.rotate()
+
+        assert queue._head == B_node
+        assert B_node._next == C_node
+
+        assert D_node._next == A_node
+
+        assert queue._tail == A_node
+        assert A_node._next is None
+        
+
+
+
 class TestGeneral:
     """
     Test a sequence of enqueue and dequeue operations.

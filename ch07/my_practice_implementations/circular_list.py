@@ -31,7 +31,7 @@ class CircularList:
 
     def get_last(self) -> Any:
         if self._size == 0:
-            raise 
+            raise Exception("List is empty")
         return self._tail._element
     
     def insert_first(self, element: Any) -> None:
@@ -139,7 +139,7 @@ class CircularList:
         return False
 
     def __str__(self) -> str:
-        pass
+        return str([e for e in self])
 
     def __iter__(self):
         if self._size == 0:

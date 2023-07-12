@@ -489,3 +489,28 @@ class TestIter:
         for e in elems:
             test_list.insert_last(e)
         
+
+
+class TestStr:
+    """
+    Tests for the __str__() method of the CircularList class.
+    """
+
+    @staticmethod
+    def test_str_empty():
+        test_list = CircularList()
+        assert str(test_list) == str([])
+
+    @staticmethod
+    def test_str_single_element():
+        test_list = CircularList()
+        test_list.insert_last("A")
+        assert str(test_list) == str(["A",])
+
+    @staticmethod
+    def test_str_mulitple_elements():
+        elements = ["A", "B", "C"]
+        test_list = CircularList()
+        for e in elements:
+            test_list.insert_last(e)
+        assert str(test_list) == str(elements)

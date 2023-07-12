@@ -1,16 +1,11 @@
 from __future__ import annotations
+from dataclasses import dataclass
 from typing import Optional, Any
 
-
+@dataclass(slots=True)
 class _Node:
-    __slots__ = "_element", "_next"
     _element: Any
-    _next: Optional[_Node]
-
-    def __init__(self, element: Any, next: Optional[_Node]):
-        self._element = element
-        self._next = next
-
+    _next: Optional[_Node] = None
 
 class LinkedQueue:
     _size: int
@@ -41,6 +36,22 @@ class LinkedQueue:
         if self._size == 0:
             self._tail = None
         return element
+    
+    def rotate(self) -> None:
+        """
+        Dequeue the first element of the queue and then enqueue it
+        at the back of the queue.
+        """
+        if self._size == 0:
+            raise ValueError("The queue is empty")
+        elif self._size == 1:
+            return
+        else:
+            first_node = self._head
+            self._head = self._head._next
+            first_node._next = None
+            self._tail._next = first_node
+            self._tail = first_node
 
     def front(self) -> Any:
         if self._size == 0:
