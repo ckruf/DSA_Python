@@ -7,11 +7,26 @@ X = TypeVar("X")
 T = TypeVar("T")
 
 
-@dataclass(slots=True)
+@dataclass(slots=True, repr=False)
 class _Node(Generic[X]):
     _element: Optional[X]
     _prev: Optional[_Node[X]] = None
     _next: Optional[_Node[X]] = None
+
+    def __str__(self) -> str:
+        first_part= f"_Node(_element={self._element}, "
+        if self._prev is None:
+            second_part = "_prev=None, "
+        else:
+            second_part = f"_prev=_Node(_element={self._prev._element}), "
+        if self._next is None:
+            third_part = "_next=None)"
+        else:
+            third_part=f"_next=_Node(_element={self._next._element}))"
+        return first_part + second_part + third_part
+    
+    def __repr__(self) -> str:
+        return str(self)
 
 
 class _DoublyLinkedBase(Generic[T]):

@@ -88,6 +88,14 @@ class PositionalList(_DoublyLinkedBase[T]):
             yield cursor.element()
             cursor = self.after(cursor)
 
+    def __reversed__(self):
+        if self.is_empty():
+            return
+        cursor = self.last()
+        while cursor is not None:
+            yield cursor.element()
+            cursor = self.before(cursor)
+
     def _insert_between(
         self, element: T, predecessor: _Node[T], successor: _Node[T]
     ) -> Position[T]:
@@ -121,3 +129,38 @@ class PositionalList(_DoublyLinkedBase[T]):
     def __str__(self) -> str:
         elements = [i for i in self]
         return str(elements)
+    
+    def max(self) -> Any:
+        maximum = self.first().element()
+        for e in self:
+            if e > maximum:
+                maximum = e
+        return maximum
+
+    def find(self, e: Any) -> Optional[Position]:
+        walk = self._header._next
+        while walk != self._trailer:
+            if walk._element == e:
+                return self._make_position(walk)
+            walk = walk._next
+        return None
+    
+    def find_recursive(self, e: Any) -> Optional[Position]:
+        def _find(e: Any, node: _Node) -> _Node:
+            if node._element == e or node == self._trailer:
+                return node
+            else:
+                return _find(e, node._next)
+        return self._make_position(_find(e, self._header._next))
+    
+    def add_last_composite(self, element: T) -> Position[T]:
+        if self.is_empty():
+            return self.add_first(element)
+        return self.add_after(self.last(), element)
+
+    def add_before_composite(self, p: Position[T], element: T) -> Position[T]:
+        if p == self.first():
+            return self.add_first(element)
+        else:
+            preceding = self.before(p)
+            return self.add_after(preceding, element)

@@ -701,3 +701,224 @@ class TestGetNodeAtIndex:
         assert test_list._get_node_at_index(0) == A_node
         assert test_list._get_node_at_index(1) == B_node
         assert test_list._get_node_at_index(2) == C_node
+
+
+class TestMax:
+    """
+    Test the 'max()' method of the PositionalList class.
+    """
+
+    @staticmethod
+    def test_max_empty():
+        test_list = PositionalList()
+        with pytest.raises(Exception):
+            test_list.max()
+
+    @staticmethod
+    def test_max_single_element():
+        test_list = PositionalList()
+        test_list.add_last(10)
+        assert test_list.max() == 10
+
+    @staticmethod
+    def test_max_multiple_elements():
+        test_list = PositionalList()
+        test_list.add_last(10)
+        test_list.add_last(6)
+        test_list.add_last(3)
+        assert test_list.max() == 10
+        test_list.add_first(15)
+        assert test_list.max() == 15
+        test_list.add_last(100)
+        assert test_list.max() == 100
+
+
+class TestFind:
+    """
+    Test the 'find()' method of the PositionalList class.
+    """
+
+    @staticmethod
+    def test_find_non_existent_empty():
+        test_list = PositionalList()
+        assert test_list.find("A") is None
+
+    @staticmethod
+    def test_find_non_existent_full():
+        test_list = PositionalList()
+        for e in "A", "B", "C":
+            test_list.add_last(e)
+        assert test_list.find("D") is None
+
+    @staticmethod
+    def test_find_existing():
+        test_list = PositionalList()
+        for e in "A", "B", "C", "D":
+            test_list.add_last(e)
+        A_pos = test_list.first()
+        B_pos = test_list.after(A_pos)
+        C_pos = test_list.after(B_pos)
+        D_pos = test_list.after(C_pos)
+        assert test_list.find("A") == A_pos
+        assert test_list.find("B") == B_pos
+        assert test_list.find("C") == C_pos
+        assert test_list.find("D") == D_pos
+
+
+class TestFindRecursive:
+    """
+    Test the 'find_recursive()' method of the PositionalList class.
+    """
+
+    @staticmethod
+    def test_find_non_existent_empty():
+        test_list = PositionalList()
+        assert test_list.find_recursive("A") is None
+
+    @staticmethod
+    def test_find_non_existent_full():
+        test_list = PositionalList()
+        for e in "A", "B", "C":
+            test_list.add_last(e)
+        assert test_list.find_recursive("D") is None
+
+    @staticmethod
+    def test_find_existing():
+        test_list = PositionalList()
+        for e in "A", "B", "C", "D":
+            test_list.add_last(e)
+        A_pos = test_list.first()
+        B_pos = test_list.after(A_pos)
+        C_pos = test_list.after(B_pos)
+        D_pos = test_list.after(C_pos)
+        assert test_list.find_recursive("A") == A_pos
+        assert test_list.find_recursive("B") == B_pos
+        assert test_list.find_recursive("C") == C_pos
+        assert test_list.find_recursive("D") == D_pos
+
+
+class TestReverse:
+    """
+    Test the '__reversed__()' method of the PositionalList class.
+    """
+
+    @staticmethod
+    def test_reversed_empty():
+        test_list = PositionalList()
+        for e in reversed(test_list):
+            assert False
+
+    @staticmethod
+    def test_reversed_full():
+        test_list = PositionalList()
+        elems = ["A", "B", "C", "D", "E"]
+        for e in elems:
+            test_list.add_last(e)
+        assert [e for e in elems] == [e for e in test_list]
+        assert [e for e in reversed(elems)] == [e for e in reversed(test_list)]
+
+
+
+class TestAddBeforeComposite:
+    """
+    Tests for the 'add_before_composite()' method of the PositionalList class.
+    """
+
+    @staticmethod
+    def test_add_before_first():
+        """
+        Test the add_before method when adding a node before the first node.
+        """
+        test_list = PositionalList()
+        B_pos = test_list._insert_between(
+            "B", test_list._header, test_list._trailer
+        )
+        A_pos = test_list.add_before_composite(B_pos, "A")
+        # check return value
+        assert isinstance(A_pos, Position)
+        assert A_pos.element() == "A"
+        # check what's returned by before() matches
+        assert A_pos == test_list.before(B_pos)
+        # check that pointers on inserted node are correct
+        assert A_pos._node._next == B_pos._node
+        assert A_pos._node._prev == test_list._header
+        # check that pointers on preceding and succeeding nodes updated
+        assert B_pos._node._prev == A_pos._node
+        assert test_list._header._next == A_pos._node
+
+    @staticmethod
+    def test_add_before():
+        """
+        Test the add_before method when adding a node before any node (not
+        the first node).
+        """
+        test_list = PositionalList()
+        A_pos = test_list._insert_between(
+            "A", test_list._header, test_list._trailer
+        )
+        C_pos = test_list._insert_between(
+            "C", A_pos._node, test_list._trailer
+        )
+        assert len(test_list) == 2
+        B_pos = test_list.add_before_composite(C_pos, "B")
+        assert len(test_list) == 3
+        # check return value
+        assert isinstance(B_pos, Position)
+        assert B_pos.element() == "B"
+        # check what's returned by before() matches
+        assert test_list.before(C_pos) == B_pos
+        # check that pointers on inserted node are correct
+        assert B_pos._node._prev == A_pos._node
+        assert B_pos._node._next == C_pos._node
+        # check that pointers on preceding and succeeding nodes updated
+        assert A_pos._node._next == B_pos._node
+        assert C_pos._node._prev == B_pos._node
+
+
+class TestAddLastComposite:
+    """
+    Test the 'add_last_composite()' method of the PositionalList class.
+    """
+
+    @staticmethod
+    def test_add_last_empty():
+        """
+        Test the add_last() method on an initially empty list.
+        """
+        test_list = PositionalList()
+        test_element = "A"
+        pos = test_list.add_last_composite(test_element)
+        # check return value
+        assert isinstance(pos, Position)
+        assert pos.element() == test_element
+        # check that what's returned by last() matches
+        assert test_list.last() == pos
+        #check that pointers on inserted node are correct
+        assert pos._node._prev == test_list._header
+        assert pos._node._next == test_list._trailer
+        # check that pointer on preceding and succeeding nodes updated
+        assert test_list._header._next == pos._node
+        assert test_list._trailer._prev == pos._node
+
+    @staticmethod
+    def test_add_last():
+        """
+        Test the add_last() method when the list is not empty.
+        """
+        test_list = PositionalList()
+        assert len(test_list) == 0
+        first_pos = test_list.add_last_composite("A")
+        assert len(test_list) == 1
+        second_pos = test_list.add_last_composite("B")
+        assert len(test_list) == 2
+        # check return value
+        assert isinstance(second_pos, Position)
+        assert second_pos.element() == "B"
+        # check that what's returned by last() matches
+        assert test_list.last() == second_pos
+        # check that pointers on inserted node are correct
+        assert second_pos._node._prev == first_pos._node
+        assert second_pos._node._next == test_list._trailer
+        # check that pointers on preceding and succeeding nodes updated
+        assert first_pos._node._next == second_pos._node
+        assert test_list._trailer._prev == second_pos._node
