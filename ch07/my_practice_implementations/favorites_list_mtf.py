@@ -64,7 +64,6 @@ class FavoritesListMTF:
         item._access_count += 1
         self._data.add_first(item)
 
-
     def remove(self, e: Any) -> None:
         """
         Remove element e from the list.
@@ -93,8 +92,3 @@ class FavoritesListMTF:
                 walk = temp_list.after(walk)
             yield top_pos.element()._element
             temp_list.delete(top_pos)
-
-
-if __name__ == "__main__":
-    test_list = FavoritesListMTF()
-    test_list.top(0)

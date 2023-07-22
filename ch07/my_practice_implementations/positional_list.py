@@ -164,3 +164,30 @@ class PositionalList(_DoublyLinkedBase[T]):
         else:
             preceding = self.before(p)
             return self.add_after(preceding, element)
+
+    def move_to_front(self, p: Position) -> None:
+        """
+        Exercise 7.17 - move given node to front by relinking nodes,
+        rather than deleting at current position and adding at front.
+        """
+        if p == self.first():
+            return
+        
+        node = self._validate(p)
+        # grab references to all nodes whose pointers need to be relinked
+        preceding = node._prev
+        following = node._next
+        first = self._header._next
+        header = self._header
+        
+        # relink preceding and following node to skip given node now
+        preceding._next = following
+        following._prev = preceding
+        
+        # relink given node itself
+        node._prev = header
+        node._next = first
+
+        # relink header and first node
+        header._next = node
+        first._prev = node

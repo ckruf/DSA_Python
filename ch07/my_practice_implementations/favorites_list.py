@@ -94,6 +94,19 @@ class FavoritesList:
             walk = self._data.after(walk)
             counter += 1
 
+    def clear(self) -> None:
+        """
+        Exercise 7.22 - clearing the list.
+        """
+        self._data = PositionalList()
+
+    def reset_counts(self) -> None:
+        """
+        Exercise 7.23 - resetting all access counts to 0.
+        """
+        for item in self._data:
+            item._access_count = 0
+
     def __len__(self) -> int:
         return len(self._data)
 

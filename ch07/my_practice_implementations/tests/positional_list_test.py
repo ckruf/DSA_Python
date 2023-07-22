@@ -922,3 +922,182 @@ class TestAddLastComposite:
         # check that pointers on preceding and succeeding nodes updated
         assert first_pos._node._next == second_pos._node
         assert test_list._trailer._prev == second_pos._node
+
+
+class TestMoveToFront:
+    """
+    Tests for the 'move_to_front()' method of the PositionalList class.
+    Exercise 7.17
+    """
+
+    @staticmethod
+    def test_move_to_front_single_element():
+        """
+        Test the 'move_to_front()' method when the PositionalList contains
+        a single item.
+        """
+        test_list = PositionalList()
+        test_list.add_last("A")
+        header = test_list._header
+        A_node = header._next
+        trailer = test_list._trailer
+        assert A_node._prev == header
+        assert A_node._next == trailer
+        assert trailer._prev == A_node
+        assert ["A",] == [e for e in test_list]
+        test_list.move_to_front(test_list.first())
+        assert header._next == A_node
+        assert A_node._prev == header
+        assert A_node._next == trailer
+        assert trailer._prev == A_node
+        assert ["A",] == [e for e in test_list]
+
+
+    @staticmethod
+    def test_move_to_front_two_elements_first():
+        """
+        Test the 'move_to_front()' method when the PositionalList contains
+        two items (and we want try to move the first one to the front).
+        """
+        test_list = PositionalList()
+        test_list.add_last("A")
+        test_list.add_last("B")
+        header = test_list._header
+        A_node = header._next
+        B_node = A_node._next
+        trailer = test_list._trailer
+
+        assert A_node._prev == header
+        assert B_node._prev == A_node
+        assert B_node._next == trailer
+        assert trailer._prev == B_node
+        assert ["A", "B"] == [e for e in test_list]
+        
+        test_list.move_to_front(test_list.first())
+
+        assert header._next == A_node
+
+        assert A_node._prev == header 
+        assert A_node._next == B_node
+
+        assert B_node._prev == A_node
+        assert B_node._next == trailer
+
+        assert trailer._prev == B_node
+        assert ["A", "B"] == [e for e in test_list]
+
+    @staticmethod
+    def test_move_to_front_two_elements_second():
+        """
+        Test the 'move_to_front()' method when the PositionalList contains
+        two items (and we want to move the second one to the front).
+        """
+        test_list = PositionalList()
+        test_list.add_last("A")
+        test_list.add_last("B")
+
+        header = test_list._header
+        A_node = header._next
+        B_node = A_node._next
+        trailer = test_list._trailer
+
+        assert A_node._prev == header
+        assert B_node._prev == A_node
+        assert B_node._next == trailer
+        assert trailer._prev == B_node
+        assert ["A", "B"] == [e for e in test_list]
+
+        test_list.move_to_front(test_list.last())
+
+        assert header._next == B_node
+        
+        assert B_node._prev == header
+        assert B_node._next == A_node
+
+        assert A_node._prev == B_node
+        assert A_node._next == trailer
+
+        assert trailer._prev == A_node
+
+        assert ["B", "A"] == [e for e in test_list]
+
+    @staticmethod
+    def test_move_to_front_multiple_elements_mid():
+        """
+        Test the 'move_to_front()' method when the PositionalList contains
+        multiple items and we move a middle item to the front.
+        """
+        test_list = PositionalList()
+        for e in "A", "B", "C":
+            test_list.add_last(e)
+        
+        header = test_list._header
+        A_node = header._next
+        B_node = A_node._next
+        C_node = B_node._next
+        trailer = test_list._trailer
+
+        assert A_node._prev == test_list._header
+        assert B_node._prev == A_node
+        assert C_node._prev == B_node
+        assert C_node._next == trailer
+        assert trailer._prev == C_node
+        assert ["A", "B", "C"] == [e for e in test_list]
+
+        test_list.move_to_front(test_list.after(test_list.first()))
+
+        assert header._next == B_node
+
+        assert B_node._prev == header
+        assert B_node._next == A_node
+
+        assert A_node._prev == B_node
+        assert A_node._next == C_node
+        
+        assert C_node._prev == A_node
+        assert C_node._next == trailer
+
+        assert trailer._prev == C_node
+
+        assert ["B", "A", "C"] == [e for e in test_list]
+
+
+    @staticmethod
+    def test_move_to_front_multiple_elements_last():
+        """
+        Test the 'move_to_front()' method when the PositionalList contains 
+        multiple items and we move the last item to the front.
+        """
+        test_list = PositionalList()
+        for e in "A", "B", "C":
+            test_list.add_last(e)
+        
+        header = test_list._header
+        A_node = header._next
+        B_node = A_node._next
+        C_node = B_node._next
+        trailer = test_list._trailer
+
+        assert A_node._prev == test_list._header
+        assert B_node._prev == A_node
+        assert C_node._prev == B_node
+        assert C_node._next == trailer
+        assert trailer._prev == C_node
+        assert ["A", "B", "C"] == [e for e in test_list]
+
+        test_list.move_to_front(test_list.last())
+
+        assert header._next == C_node
+
+        assert C_node._prev == header
+        assert C_node._next == A_node
+
+        assert A_node._prev == C_node
+        assert A_node._next == B_node
+
+        assert B_node._prev == A_node
+        assert B_node._next == trailer
+
+        assert trailer._prev == B_node
+
+        assert ["C", "A", "B"] == [e for e in test_list]

@@ -308,3 +308,36 @@ class TestTop:
         less than the length of the list.s
         """
         assert [elem for elem in favorites_list_abcd_cnt_1.top(2)] == ["A", "B"]
+
+
+class TestClear:
+    """
+    Test for the 'clear()' method of the FavoritesList class. Done for
+    exercise 7.22
+    """
+
+    @staticmethod
+    def test_clear(favorites_list_abcd_cnt_1):
+        assert len(favorites_list_abcd_cnt_1) == 4
+        favorites_list_abcd_cnt_1.clear()
+        assert len(favorites_list_abcd_cnt_1) == 0
+
+
+class TestResetCounts:
+    """
+    Test for the 'reset_counts()' method of the FavoritesList class. Done for
+    exercise 7.23.
+    """
+
+    @staticmethod
+    def test_reset_counts(favorites_list_abcd_cnt_1):
+        original_order = []
+        for item in favorites_list_abcd_cnt_1._data:
+            original_order.append(item._element)
+            assert item._access_count == 1
+        favorites_list_abcd_cnt_1.reset_counts()
+        new_order = []
+        for item in favorites_list_abcd_cnt_1._data:
+            new_order.append(item._element)
+            assert item._access_count == 0
+        assert original_order == new_order
