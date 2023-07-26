@@ -28,10 +28,10 @@ def test_concatenate_full_to_empty():
     assert len(first) == 3
     assert len(second) == 0
     concatenate_doubly_linked(first, second)
-    
+
     assert elems == [e for e in first]
     assert len(first) == 3
-    
+
     assert [] == [e for e in second]
     assert len(second) == 0
 
@@ -57,7 +57,11 @@ def test_concatenate_empty_to_full():
 def test_concatenate_two_full():
     first = PositionalList()
     second = PositionalList()
-    first_elems = ["A", "B", "C",]
+    first_elems = [
+        "A",
+        "B",
+        "C",
+    ]
     second_elems = ["D", "E", "F"]
     all_elems = first_elems + second_elems
     for e in first_elems:

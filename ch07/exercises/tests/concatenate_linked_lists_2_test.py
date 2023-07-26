@@ -1,12 +1,10 @@
 """This file contains tests for exercise 7.2"""
-from ch07.exercises.concatenate_linked_lists_2 import (
-    concatenate_linked_lists,
-    Node
-)
+from ch07.exercises.concatenate_linked_lists_2 import concatenate_linked_lists, Node
+
 
 def test_concatenate_linked_lists():
     """
-    Test the 'concatenate_linked_lists()' function. 
+    Test the 'concatenate_linked_lists()' function.
     """
     # create first list
     A_node = Node("A")

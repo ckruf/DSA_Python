@@ -7,10 +7,12 @@ def test_count_nodes_empty():
     test_list = CircularList()
     assert count_nodes_circular(test_list) == 0
 
+
 def test_count_nodes_single_element():
     test_list = CircularList()
     test_list.insert_last("A")
     assert count_nodes_circular(test_list) == 1
+
 
 def test_count_nodes_mulitple_elements():
     test_list = CircularList()
@@ -19,6 +21,7 @@ def test_count_nodes_mulitple_elements():
         test_list.insert_last(e)
     assert count_nodes_circular(test_list) == len(elems)
 
+
 def test_count_nodes_circular_50():
     """
     Tests the 'count_nodes_circular()' function. Test by adding 50 items
@@ -26,7 +29,7 @@ def test_count_nodes_circular_50():
     This therefore covers all the classic cases (empty, one element,
     mulitple elements).
     NOTE however that this test also relies on the correct impolementation
-    of the 'CircularList' class. Unit tests for that class are separate 
+    of the 'CircularList' class. Unit tests for that class are separate
     in a different file.
     """
     test_list = CircularList()

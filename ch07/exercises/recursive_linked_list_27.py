@@ -1,3 +1,4 @@
+"""This file contains solution attempt for exercise 7.27"""
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional, Any
@@ -79,7 +80,14 @@ class RecursiveLinkedList:
             return self._rest.last()
 
     def __iter__(self):
-        pass
+        if self._element is None:
+            return
+        walk = self
+        while True:
+            yield walk._element
+            if walk._rest is None:
+                break
+            walk = walk._rest
 
     def __str__(self) -> str:
-        pass
+        return str([e for e in self])

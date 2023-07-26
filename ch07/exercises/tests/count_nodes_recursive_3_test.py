@@ -2,6 +2,7 @@
 from ch07.my_practice_implementations.singly_linked_list import LinkedList
 from ch07.exercises.count_nodes_recursive_3 import count_nodes
 
+
 def test_count_nodes():
     """
     Test the 'count_nodes()' function.
@@ -11,6 +12,7 @@ def test_count_nodes():
     for e in elems:
         test_list.add_last(e)
     assert count_nodes(test_list) == len(elems)
+
 
 def test_count_nodes_single():
     """

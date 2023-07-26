@@ -151,9 +151,9 @@ class TestLen:
             test_stack.pop()
 
 
-
 class TestGeneral:
     """Test a sequence of push and pop operations."""
+
     @staticmethod
     def test_random_ops():
         stack = LinkedStack()

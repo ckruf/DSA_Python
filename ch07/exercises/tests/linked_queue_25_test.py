@@ -48,7 +48,7 @@ class TestDequeue:
         test_q = LinkedQueue()
         with pytest.raises(Exception):
             test_q.dequeue()
-    
+
     @staticmethod
     def test_dequeue_single():
         test_q = LinkedQueue()
@@ -58,7 +58,7 @@ class TestDequeue:
         assert isinstance(A_node, Node)
         assert A_node._element == "A"
         assert test_q._tail == A_node
-        
+
         assert test_q.dequeue() == "A"
         assert test_q._header._next is None
         assert test_q._tail == test_q._header
@@ -78,7 +78,7 @@ class TestDequeue:
         assert B_node._element == "B"
         assert B_node._next is None
         assert test_q._tail == B_node
-        
+
         assert test_q.dequeue() == "A"
         assert len(test_q) == 1
         assert test_q._header._next == B_node
@@ -172,4 +172,3 @@ class TestGeneral:
 
         assert len(test_q) == 0
         assert test_q.is_empty() is True
-

@@ -1,10 +1,9 @@
 """This file contains tests for exercise 7.6"""
 import itertools
-from ch07.exercises.check_nodes_belong_to_same_list_6 import check_if_nodes_belong_to_same_list
-from ch07.my_practice_implementations.circular_list import (
-    CircularList,
-    Node
+from ch07.exercises.check_nodes_belong_to_same_list_6 import (
+    check_if_nodes_belong_to_same_list,
 )
+from ch07.my_practice_implementations.circular_list import CircularList, Node
 
 
 def test_belong_to_same_list():

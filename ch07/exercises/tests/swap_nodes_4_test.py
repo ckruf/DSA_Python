@@ -4,8 +4,9 @@ import ch07.my_practice_implementations.doubly_linked_list as dl
 from ch07.my_practice_implementations.positional_list import PositionalList
 from ch07.exercises.swap_nodes_4 import (
     swap_nodes_singly_linked,
-    swap_nodes_doubly_linked
+    swap_nodes_doubly_linked,
 )
+
 
 class TestSwapNodesSinglyLinked:
     """
@@ -27,7 +28,7 @@ class TestSwapNodesSinglyLinked:
 
         x_original_position = elems.index("X")
         y_original_position = elems.index("Y")
-        
+
         X_node = test_list.get_node_at_index(x_original_position)
         assert isinstance(X_node, sl.Node)
         assert X_node._element == "X"
@@ -99,7 +100,7 @@ class TestSwapNodesSinglyLinked:
 
         x_original_position = elems.index("X")
         y_original_position = elems.index("Y")
-        
+
         X_node = test_list.get_node_at_index(x_original_position)
         assert isinstance(X_node, sl.Node)
         assert X_node._element == "X"
@@ -150,7 +151,6 @@ class TestSwapNodesSinglyLinked:
         swapped_elems = ["Y", "A", "B", "C", "X", "D"]
         assert swapped_elems == [e for e in test_list]
 
-
     @staticmethod
     def test_last_node():
         """
@@ -169,7 +169,7 @@ class TestSwapNodesSinglyLinked:
 
         x_original_position = elems.index("X")
         y_original_position = elems.index("Y")
-        
+
         X_node = test_list.get_node_at_index(x_original_position)
         assert isinstance(X_node, sl.Node)
         assert X_node._element == "X"
@@ -238,7 +238,7 @@ class TestSwapNodesSinglyLinked:
 
         x_original_position = elems.index("X")
         y_original_position = elems.index("Y")
-        
+
         X_node = test_list.get_node_at_index(x_original_position)
         assert isinstance(X_node, sl.Node)
         assert X_node._element == "X"
@@ -281,13 +281,12 @@ class TestSwapNodesSinglyLinked:
 
         swapped_elems = elems = ["Y", "A", "B", "C", "D", "X"]
         assert swapped_elems == [e for e in test_list]
-        
 
     @staticmethod
     def test_neighboring_nodes_middle():
         """
         Test case where:
-        - nodes are neighboring 
+        - nodes are neighboring
         - neither node is beginning of list or end of list
         """
         test_list = sl.LinkedList()
@@ -298,7 +297,7 @@ class TestSwapNodesSinglyLinked:
 
         x_original_position = elems.index("X")
         y_original_position = elems.index("Y")
-        
+
         X_node = test_list.get_node_at_index(x_original_position)
         assert isinstance(X_node, sl.Node)
         assert X_node._element == "X"
@@ -342,7 +341,6 @@ class TestSwapNodesSinglyLinked:
         swapped_elems = ["A", "B", "Y", "X", "C", "D"]
         assert swapped_elems == [e for e in test_list]
 
-
     @staticmethod
     def test_neighboring_nodes_beginning():
         """
@@ -360,7 +358,7 @@ class TestSwapNodesSinglyLinked:
 
         x_original_position = elems.index("X")
         y_original_position = elems.index("Y")
-        
+
         X_node = test_list.get_node_at_index(x_original_position)
         assert isinstance(X_node, sl.Node)
         assert X_node._element == "X"
@@ -398,9 +396,8 @@ class TestSwapNodesSinglyLinked:
 
         assert test_list._head == Y_node
 
-        swapped_elems = ["Y", "X",  "A", "B", "C", "D"]
+        swapped_elems = ["Y", "X", "A", "B", "C", "D"]
         assert swapped_elems == [e for e in test_list]
-
 
     @staticmethod
     def test_neighboring_nodes_end():
@@ -419,7 +416,7 @@ class TestSwapNodesSinglyLinked:
 
         x_original_position = elems.index("X")
         y_original_position = elems.index("Y")
-        
+
         X_node = test_list.get_node_at_index(x_original_position)
         assert isinstance(X_node, sl.Node)
         assert X_node._element == "X"
@@ -460,13 +457,12 @@ class TestSwapNodesSinglyLinked:
         swapped_elems = ["A", "B", "C", "D", "Y", "X"]
         assert swapped_elems == [e for e in test_list]
 
-
     @staticmethod
     def test_neighboring_nodes_beginning_and_end():
         """
         Test case where:
         - nodes are neighboring
-        - nodes are both at beginning and end of list (ie they are 
+        - nodes are both at beginning and end of list (ie they are
         the only two elements in the list)
 
         Checks (among other) whether ._head and ._tail get updated correctly
@@ -479,7 +475,7 @@ class TestSwapNodesSinglyLinked:
 
         x_original_position = elems.index("X")
         y_original_position = elems.index("Y")
-        
+
         X_node = test_list.get_node_at_index(x_original_position)
         assert isinstance(X_node, sl.Node)
         assert X_node._element == "X"
@@ -514,7 +510,6 @@ class TestSwapNodesSinglyLinked:
 
         swapped_elems = ["Y", "X"]
         assert swapped_elems == [e for e in test_list]
-
 
 
 class TestSwapNodesDoublyLinked:
@@ -601,7 +596,6 @@ class TestSwapNodesDoublyLinked:
         swapped_elems = ["A", "B", "Y", "C", "X", "D"]
         assert swapped_elems == [e for e in test_list]
 
-
     @staticmethod
     def test_first_node():
         """
@@ -675,7 +669,6 @@ class TestSwapNodesDoublyLinked:
 
         swapped_elems = ["Y", "A", "B", "C", "X", "D"]
         assert swapped_elems == [e for e in test_list]
-
 
     @staticmethod
     def test_last_node():
@@ -817,12 +810,11 @@ class TestSwapNodesDoublyLinked:
         swapped_elems = ["Y", "A", "B", "C", "D", "X"]
         assert swapped_elems == [e for e in test_list]
 
-
     @staticmethod
     def test_neighboring_nodes_middle():
         """
         Test case where:
-        - nodes are neighboring 
+        - nodes are neighboring
         - neither node is beginning of list or end of list
         """
         test_list = PositionalList()
@@ -919,7 +911,7 @@ class TestSwapNodesDoublyLinked:
         # pointers between X and Y before swap
         assert X_node._next == Y_node
         assert Y_node._prev == X_node
-        
+
         assert test_list.first()._node == X_node
 
         swap_nodes_doubly_linked(X_node, Y_node)
@@ -954,7 +946,7 @@ class TestSwapNodesDoublyLinked:
         - nodes are at end of list
         """
         test_list = PositionalList()
-        elems = ["A", "B","C", "D", "X", "Y"]
+        elems = ["A", "B", "C", "D", "X", "Y"]
         for e in elems:
             test_list.add_last(e)
         assert elems == [e for e in test_list]
@@ -1004,16 +996,15 @@ class TestSwapNodesDoublyLinked:
 
         assert test_list.last()._node == X_node
 
-        swapped_elems = ["A", "B","C", "D", "Y", "X"]
+        swapped_elems = ["A", "B", "C", "D", "Y", "X"]
         assert swapped_elems == [e for e in test_list]
-
 
     @staticmethod
     def test_neighboring_nodes_beginning_and_end():
         """
         Test case where:
         - nodes are neighboring
-        - nodes are both at beginning and end of list (ie they are 
+        - nodes are both at beginning and end of list (ie they are
         the only two elements in the list)
 
         Checks (among other) whether ._head and ._tail get updated correctly
