@@ -63,3 +63,28 @@ class LinkedQueue:
 
     def is_empty(self) -> bool:
         return self._size == 0
+
+    def concatenate(self, Q2: LinkedQueue) -> None:
+        """
+        Exercise 7.26
+
+        Implement a method, concatenate(Q2) for the LinkedQueue class that
+        takes all elements of LinkedQueue Q2 and appends them to the end of the
+        original queue. The operation should run in O(1) time and should result
+        in Q2 being an empty queue.
+        """
+        if Q2 is self:
+            raise Exception("Cannot concatenate queue to itself")
+
+        if self._size == 0:
+            self._head = Q2._head
+        else:
+            self._tail._next = Q2._head
+        if Q2._size != 0:
+            self._tail = Q2._tail
+        self._size += Q2._size
+        # empty out Q2
+        Q2._head = None
+        Q2._tail = None
+        Q2._size = 0
+    

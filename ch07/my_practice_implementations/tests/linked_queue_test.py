@@ -302,8 +302,157 @@ class TestRotate:
 
         assert queue._tail == A_node
         assert A_node._next is None
-        
 
+
+class TestConcatenate:
+    """
+    Tests for the 'concatenate()' method of the LinkedQueue class.
+    Exercise 7.26
+    """
+
+    @staticmethod
+    def test_both_non_empty():
+        q1 = LinkedQueue()
+        for e in "A", "B", "C":
+            q1.enqueue(e)
+        q2 = LinkedQueue()
+        for e in "D", "E", "F":
+            q2.enqueue(e)
+        
+        # grab references to head and tail nodes of both queues
+        A_node = q1._head
+        assert isinstance(A_node, _Node)
+        assert A_node._element == "A"
+        C_node = q1._tail
+        assert isinstance(C_node, _Node)
+        assert C_node._element == "C"
+        assert C_node._next is None
+        D_node = q2._head
+        assert isinstance(D_node, _Node)
+        assert D_node._element == "D"
+        F_node = q2._tail
+        assert isinstance(F_node, _Node)
+        assert F_node._element == "F"
+        
+        assert len(q1) == 3
+        assert len(q2) == 3
+        
+        q1.concatenate(q2)
+
+        assert q1._head == A_node
+        assert C_node._next == D_node
+        assert q1._tail == F_node
+
+        assert q2._head is None
+        assert q2._tail is None
+
+        assert len(q1) == 6
+        assert len(q2) == 0
+
+        assert q1.dequeue() == "A"
+        q1.enqueue("G")
+        G_node = q1._tail
+        assert isinstance(G_node, _Node)
+        assert G_node._element == "G"
+        assert F_node._next == G_node
+
+        for e in "B", "C", "D", "E", "F", "G":
+            assert q1.dequeue() == e
+
+    @staticmethod
+    def test_q1_empty():
+        q1 = LinkedQueue()
+        q2 = LinkedQueue()
+        for e in "A", "B", "C":
+            q2.enqueue(e)
+        A_node = q2._head
+        assert isinstance(A_node, _Node)
+        assert A_node._element == "A"
+        C_node = q2._tail
+        assert isinstance(C_node, _Node)
+        assert C_node._element == "C"
+
+        assert q1._head is None
+        assert q1._tail is None
+
+        assert len(q1) == 0
+        assert len(q2) == 3
+
+        q1.concatenate(q2)
+
+        assert q1._head == A_node
+        assert q1._tail == C_node
+        
+        assert q2._head is None
+        assert q2._tail is None
+
+        assert len(q1) == 3
+        assert len(q2) == 0
+
+        q1.enqueue("D")
+
+        for e in "A", "B", "C", "D":
+            assert q1.dequeue() == e
+        
+    @staticmethod
+    def test_q2_empty():
+        q1 = LinkedQueue()
+        for e in "A", "B", "C":
+            q1.enqueue(e)
+        q2 = LinkedQueue()
+
+        A_node = q1._head
+        assert isinstance(A_node, _Node)
+        assert A_node._element == "A"
+
+        C_node = q1._tail
+        assert isinstance(C_node, _Node)
+        assert C_node._element == "C"
+        assert C_node._next is None
+
+        assert q2._head is None
+        assert q2._tail is None
+
+        assert len(q1) == 3
+        assert len(q2) == 0
+
+        q1.concatenate(q2)
+
+        assert q1._head == A_node
+        assert q1._tail == C_node
+        assert C_node._next is None
+        
+        assert q2._head is None
+        assert q2._tail is None
+
+        assert len(q1) == 3
+        assert len(q2) == 0
+
+        q1.enqueue("D")
+
+        for e in "A", "B", "C", "D":
+            assert q1.dequeue() == e
+        
+    @staticmethod
+    def test_both_empty():
+        q1 = LinkedQueue()
+        q2 = LinkedQueue()
+
+        assert q1._head is None
+        assert q1._tail is None
+        assert q2._head is None
+        assert q2._tail is None
+
+        assert len(q1) == len(q2) == 0
+
+        q1.concatenate(q2)
+
+        assert q1._head is None
+        assert q1._tail is None
+        assert q2._head is None
+        assert q2._tail is None
+
+        assert len(q1) == len(q2) == 0
 
 
 class TestGeneral:
@@ -314,6 +463,17 @@ class TestGeneral:
     @staticmethod
     def test_general():
         queue = LinkedQueue()
+        for i in range(1, 101):
+            queue.enqueue(i)
+            assert len(queue) == i
+
+        for i in range(1, 101):
+            assert queue.front() == i
+            assert queue.dequeue() == i
+            assert len(queue) == 100 - i
+
+        assert queue.is_empty() is True
+
         for i in range(1, 101):
             queue.enqueue(i)
             assert len(queue) == i
