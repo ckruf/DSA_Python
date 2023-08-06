@@ -12,7 +12,6 @@ class Node:
 
 
 class LinkedLeakyStack:
-    DEFAULT_SIZE = 5
     """
     Stack with a maximum capacity. When pushing onto a full stack, 'leak'
     the bottom item in the stack. Implemented using singly linked list, per
@@ -22,6 +21,7 @@ class LinkedLeakyStack:
     _top: Optional[Node]
     _size: int
     _capacity: int
+    DEFAULT_SIZE = 5
 
     def __init__(self, capacity: Optional[int] = None):
         if capacity is None:
@@ -51,10 +51,11 @@ class LinkedLeakyStack:
     def pop(self) -> Any:
         if self._size == 0:
             raise Exception("Cannot pop from empty stack")
-        element = self._top._element
+        current_top = self._top
         self._top = self._top._next
         self._size -= 1
-        return element
+        current_top._next = None  # garbage collect
+        return current_top._element
 
     def top(self) -> Any:
         if self._size == 0:
