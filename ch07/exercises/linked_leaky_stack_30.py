@@ -10,7 +10,6 @@ class Node:
     _next: Optional[Node] = None
 
 
-
 class LinkedLeakyStack:
     """
     Stack with a maximum capacity. When pushing onto a full stack, 'leak'
@@ -18,6 +17,7 @@ class LinkedLeakyStack:
     exercise requirements. Although this doesn't really make sense because
     pushing onto full stack is O(n).
     """
+
     _top: Optional[Node]
     _size: int
     _capacity: int
@@ -67,7 +67,7 @@ class LinkedLeakyStack:
 
     def is_empty(self) -> bool:
         return self._size == 0
-    
+
     def __iter__(self):
         if self._size == 0:
             return
@@ -75,6 +75,6 @@ class LinkedLeakyStack:
         while walk is not None:
             yield walk._element
             walk = walk._next
-    
+
     def __str__(self) -> str:
         return str([e for e in self])

@@ -1,3 +1,4 @@
+"""File containing solution attempt for exercise 7.31"""
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional, Any
@@ -16,15 +17,19 @@ class Position:
 
     def element(self) -> Any:
         return self._node._element
-    
+
     def __eq__(self, other):
         return type(other) is type(self) and other._node is self._node
-    
+
     def __ne__(self, other):
         return not (self == other)
 
 
 class ForwardList:
+    """
+    Abstraction of a singly linked list.
+    """
+
     _size: int
     _header: Node
 
@@ -49,7 +54,7 @@ class ForwardList:
 
     def after(self, p: Position) -> Optional[Position]:
         node = self._validate(p)
-        return self._make_position(node)
+        return self._make_position(node._next)
 
     def is_empty(self) -> bool:
         return self._size == 0
@@ -83,15 +88,14 @@ class ForwardList:
         node._element = e
         return current_element
 
-
     def delete(self, p: Position) -> None:
         node_for_deletion = self._validate(p)
-        walk = self.first()
-        while walk is not None and walk._node._next != node_for_deletion:
-            walk = self.after(walk)
-        if walk._node._next != node_for_deletion:
+        walk = self._header
+        while walk is not None and walk._next != node_for_deletion:
+            walk = walk._next
+        if walk._next != node_for_deletion:
             raise ValueError("Given position is not in the list")
-        preceding_node = walk._node
+        preceding_node = walk
         preceding_node._next = node_for_deletion._next
         node_for_deletion._next = node_for_deletion._element = None
         self._size -= 1

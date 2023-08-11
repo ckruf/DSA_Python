@@ -10,10 +10,8 @@ src_dir = script_path.parent.absolute()
 dsa_python_dir = src_dir.parent.absolute()
 sys.path.insert(0, str(dsa_python_dir))
 
-from ch07.my_practice_implementations.positional_list import (
-    PositionalList,
-    _Node
-)
+from ch07.my_practice_implementations.positional_list import PositionalList, _Node
+
 
 def find_middle_node(dl_list: PositionalList) -> _Node:
     """
@@ -37,7 +35,7 @@ def find_middle_node(dl_list: PositionalList) -> _Node:
             left = left._next
             right = right._prev
         return left
-    
+
 
 if __name__ == "__main__":
     test_list = PositionalList()

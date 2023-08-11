@@ -9,6 +9,7 @@ def reverse_list_recursively(L: LinkedList):
         next_node = current_node._next
         current_node._next = prev_node
         traverse_reverse_recurse(next_node, current_node)
+
     traverse_reverse_recurse(L._head, None)
     original_head = L._head
     original_tail = L._tail

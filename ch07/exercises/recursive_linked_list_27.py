@@ -8,11 +8,7 @@ class RecursiveLinkedList:
     _element: Any
     _rest: Optional[RecursiveLinkedList]
 
-    def __init__(
-        self,
-        element: Any = None,
-        rest: Optional[RecursiveLinkedList] = None
-    ):
+    def __init__(self, element: Any = None, rest: Optional[RecursiveLinkedList] = None):
         self._element = element
         self._rest = rest
 

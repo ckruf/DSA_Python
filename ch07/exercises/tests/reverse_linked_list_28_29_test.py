@@ -16,7 +16,9 @@ def reversing_function(request):
     "elems",
     [
         [],
-        ["A",],
+        [
+            "A",
+        ],
         ["A", "B", "C"],
     ],
 )

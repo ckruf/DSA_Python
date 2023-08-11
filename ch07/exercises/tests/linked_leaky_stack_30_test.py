@@ -71,7 +71,7 @@ class TestPush:
         assert D_node._element == "D"
 
         test_stack.push("A")
-        
+
         A_node = test_stack._top
         assert isinstance(A_node, Node)
         assert A_node._element == "A"
@@ -89,7 +89,7 @@ class TestPush:
         assert B_node._element == "B"
         assert B_node._next is None
         assert len(test_stack) == 1
-        test_stack.push("A") 
+        test_stack.push("A")
         A_node = test_stack._top
         assert isinstance(A_node, Node)
         assert A_node._element == "A"
@@ -112,7 +112,7 @@ class TestPop:
         test_stack.push("A")
         assert isinstance(test_stack._top, Node)
         assert len(test_stack) == 1
-        
+
         assert test_stack.pop() == "A"
         assert test_stack._top is None
         assert len(test_stack) == 0
@@ -122,7 +122,7 @@ class TestPop:
         test_stack = LinkedLeakyStack()
         for e in "A", "B", "C":
             test_stack.push(e)
-        
+
         assert len(test_stack) == 3
 
         C_node = test_stack._top
@@ -136,7 +136,6 @@ class TestPop:
         A_node = B_node._next
         assert isinstance(A_node, Node)
         assert A_node._element == "A"
-
 
         assert test_stack.pop() == "C"
         assert len(test_stack) == 2
@@ -199,8 +198,9 @@ class TestIter:
     def test_iter_single_element():
         test_stack = LinkedLeakyStack()
         test_stack.push("A")
-        assert ["A", ] == [e for e in test_stack]
-
+        assert [
+            "A",
+        ] == [e for e in test_stack]
 
     @staticmethod
     def test_iter_mulitple_elements():

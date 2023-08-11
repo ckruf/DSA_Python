@@ -1,12 +1,9 @@
 """This file contains solution attempt for exercise 7.1"""
 from typing import Optional
-from ch07.my_practice_implementations.singly_linked_list import (
-    LinkedList,
-    Node
-    )
+from ch07.my_practice_implementations.singly_linked_list import LinkedList, Node
 
 
-def find_penultimate_node(linked_list: LinkedList) ->  Optional[Node]:
+def find_penultimate_node(linked_list: LinkedList) -> Optional[Node]:
     """
     Exercise 7.1
     Find the second-to-last node in a singly linked list in which the last
@@ -29,4 +26,5 @@ def find_penultimate_node_recursive(linked_list: LinkedList) -> Optional[Node]:
             return current_node
         else:
             return _recursive_traversal(current_node._next)
+
     return _recursive_traversal(linked_list._head)

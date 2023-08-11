@@ -9,11 +9,13 @@ class Node:
     _element: Any
     _next: Optional[Node] = None
 
+
 class LinkedStack:
     """
     Give a complete implementation of the stack ADT using a singly linked
     list that includes a header sentinel
     """
+
     _header: Node
     _size: int
 
@@ -46,6 +48,3 @@ class LinkedStack:
 
     def __len__(self) -> int:
         return self._size
-
-
-    

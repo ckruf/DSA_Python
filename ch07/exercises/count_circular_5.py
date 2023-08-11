@@ -2,10 +2,8 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional, Any
-from ch07.my_practice_implementations.circular_list import (
-    CircularList,
-    Node
-)
+from ch07.my_practice_implementations.circular_list import CircularList, Node
+
 
 def count_nodes_circular(test_list: CircularList) -> int:
     """
