@@ -242,3 +242,167 @@ class TestDeleteNode:
         assert new_node._prev is None
         assert new_node._next is None
         assert new_node._element is None
+
+
+
+class TestReverseIterative:
+    """
+    Tests for the 'reverse_iterative()' method of the DoublyLinkedBase class.
+    Done for exercise 7.33
+    """
+
+    @staticmethod
+    def test_reverse_iterative_non_empty():
+        test_base = _DoublyLinkedBase()
+        A_node = test_base._insert_between("A", test_base._header, test_base._trailer)
+        B_node = test_base._insert_between("B", A_node, test_base._trailer)
+        C_node = test_base._insert_between("C", B_node, test_base._trailer)
+        original_header = test_base._header
+        original_trailer = test_base._trailer
+
+        # make assertions about list before reversing
+        assert isinstance(original_header, _Node)
+        assert original_header._prev is None
+        assert original_header._next == A_node
+
+        assert isinstance(A_node, _Node)
+        assert A_node._element == "A"
+        assert A_node._prev == original_header
+        assert A_node._next == B_node
+
+        assert isinstance(B_node, _Node)
+        assert B_node._element == "B"
+        assert B_node._prev == A_node
+        assert B_node._next == C_node
+
+        assert isinstance(C_node, _Node)
+        assert C_node._element == "C"
+        assert C_node._prev == B_node
+        assert C_node._next == original_trailer
+
+        assert isinstance(original_trailer, _Node)
+        assert original_trailer._prev == C_node
+        assert original_trailer._next is None
+
+        test_base.reverse_iterative()
+
+        assert test_base._header == original_trailer
+        assert test_base._header._next == C_node
+        assert test_base._header._prev is None
+
+        assert C_node._next == B_node
+        assert C_node._prev == test_base._header
+
+        assert B_node._next == A_node
+        assert B_node._prev == C_node
+
+        assert A_node._next == test_base._trailer
+        assert A_node._prev == B_node
+
+        assert test_base._trailer == original_header
+        assert test_base._trailer._next is None
+        assert test_base._trailer._prev == A_node
+
+    @staticmethod
+    def test_reverse_iterative_empty():
+        test_base = _DoublyLinkedBase()
+        original_header = test_base._header
+        original_trailer = test_base._trailer
+        
+        assert test_base._header._prev is None
+        assert test_base._header._next == test_base._trailer
+
+        assert test_base._trailer._prev == test_base._header
+        assert test_base._trailer._next is None
+
+        test_base.reverse_iterative()
+
+        assert test_base._header == original_trailer
+        assert test_base._header._next == test_base._trailer
+        assert test_base._header._prev is None
+
+        assert test_base._trailer == original_header
+        assert test_base._trailer._prev == test_base._header
+        assert test_base._trailer._next is None
+
+
+class TestReverseRecursive:
+    """
+    Tests for the 'reverse_recursive()' method of the DoublyLinkedBase class.
+    Done for exercise 7.33
+    """
+
+    @staticmethod
+    def test_reverse_recursive_non_empty():
+        test_base = _DoublyLinkedBase()
+        A_node = test_base._insert_between("A", test_base._header, test_base._trailer)
+        B_node = test_base._insert_between("B", A_node, test_base._trailer)
+        C_node = test_base._insert_between("C", B_node, test_base._trailer)
+        original_header = test_base._header
+        original_trailer = test_base._trailer
+
+        # make assertions about list before reversing
+        assert isinstance(original_header, _Node)
+        assert original_header._prev is None
+        assert original_header._next == A_node
+
+        assert isinstance(A_node, _Node)
+        assert A_node._element == "A"
+        assert A_node._prev == original_header
+        assert A_node._next == B_node
+
+        assert isinstance(B_node, _Node)
+        assert B_node._element == "B"
+        assert B_node._prev == A_node
+        assert B_node._next == C_node
+
+        assert isinstance(C_node, _Node)
+        assert C_node._element == "C"
+        assert C_node._prev == B_node
+        assert C_node._next == original_trailer
+
+        assert isinstance(original_trailer, _Node)
+        assert original_trailer._prev == C_node
+        assert original_trailer._next is None
+
+        test_base.reverse_recursive()
+
+        assert test_base._header == original_trailer
+        assert test_base._header._next == C_node
+        assert test_base._header._prev is None
+
+        assert C_node._next == B_node
+        assert C_node._prev == test_base._header
+
+        assert B_node._next == A_node
+        assert B_node._prev == C_node
+
+        assert A_node._next == test_base._trailer
+        assert A_node._prev == B_node
+
+        assert test_base._trailer == original_header
+        assert test_base._trailer._next is None
+        assert test_base._trailer._prev == A_node
+
+    @staticmethod
+    def test_reverse_recursive_empty():
+        test_base = _DoublyLinkedBase()
+        original_header = test_base._header
+        original_trailer = test_base._trailer
+        
+        assert test_base._header._prev is None
+        assert test_base._header._next == test_base._trailer
+
+        assert test_base._trailer._prev == test_base._header
+        assert test_base._trailer._next is None
+
+        test_base.reverse_recursive()
+
+        assert test_base._header == original_trailer
+        assert test_base._header._next == test_base._trailer
+        assert test_base._header._prev is None
+
+        assert test_base._trailer == original_header
+        assert test_base._trailer._prev == test_base._header
+        assert test_base._trailer._next is None
+    

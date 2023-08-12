@@ -67,3 +67,36 @@ class _DoublyLinkedBase(Generic[T]):
         node._prev = node._next = node._element = None
 
         return element
+
+    def reverse_iterative(self) -> None:
+        """
+        Iteratively reverse the doubly linked list.
+        Done for exercise 7.33
+        """
+        walk = self._header
+        while walk is not None:
+            preceding = walk._prev
+            following = walk._next
+            walk._next = preceding
+            walk._prev = following
+            walk = following
+        original_header = self._header
+        original_trailer = self._trailer
+        self._header = original_trailer
+        self._trailer = original_header
+
+    def reverse_recursive(self) -> None:
+        def _traverse_and_reverse(node: Optional[_Node]) -> None:
+            if node is None:
+                return
+            else:
+                preceding = node._prev
+                following = node._next
+                node._next = preceding
+                node._prev = following
+                _traverse_and_reverse(following)
+        _traverse_and_reverse(self._header)
+        original_header = self._header
+        original_trailer = self._trailer
+        self._header = original_trailer
+        self._trailer = original_header

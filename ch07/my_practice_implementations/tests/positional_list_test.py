@@ -347,6 +347,30 @@ class TestIter:
         for expected, actual in zip(elements, test_list):
             assert expected == actual
 
+    @staticmethod
+    def test_iter_mulitple_times():
+        """
+        Test that iterating twice over the same list works. 
+        (Test specifically written for nested iterator implementation)
+        """
+        test_list = PositionalList()
+        elements = ["A", "B", "C"]
+        first_pos = test_list._insert_between(
+            "A", test_list._header, test_list._trailer
+        )
+        second_pos = test_list._insert_between(
+            "B", first_pos._node, test_list._trailer
+        )
+        test_list._insert_between(
+            "C", second_pos._node, test_list._trailer
+        )
+        for expected, actual in zip(elements, test_list):
+            assert expected == actual
+        for expected, actual in zip(elements, test_list):
+            assert expected == actual
+
+
+
 
 class TestAddFirst:
     """

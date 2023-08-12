@@ -88,6 +88,36 @@ class PositionalList(_DoublyLinkedBase[T]):
             yield cursor.element()
             cursor = self.after(cursor)
 
+    # class PositionalListIterator:
+    #     """
+    #     Nested iterator class implemented for exercise 7.35. For this to work,
+    #     the __iter__() method below this class (meaning the __iter__() method
+    #     belonging to the PositionalList class, not to this class) must be
+    #     uncommented.
+    #     """
+        
+    #     def __init__(self, walk: _Node, trailer: _Node):
+    #         self.walk = walk
+    #         self.trailer = trailer
+
+    #     def __iter__(self):
+    #         return self
+        
+    #     def __next__(self):
+    #         if self.walk == self.trailer:
+    #             raise StopIteration
+    #         else:
+    #             element = self.walk._element
+    #             self.walk = self.walk._next
+    #             return element
+            
+    # def __iter__(self):
+    #     return PositionalList.PositionalListIterator(
+    #         self._header._next,
+    #         self._trailer
+    #     )
+
+
     def __reversed__(self):
         if self.is_empty():
             return
