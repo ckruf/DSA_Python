@@ -216,9 +216,9 @@ class TestMoveNext:
         test_list = CircularPositionalList()
         for e in "A", "B", "C":
             test_list.add_after(e)
-        C_pos =  test_list.current_element()
+        C_pos = test_list.current_element()
         assert isinstance(C_pos, Position)
-        assert C_pos.element()== "C"
+        assert C_pos.element() == "C"
         test_list.move_next()
         A_pos = test_list.current_element()
         assert isinstance(A_pos, Position)
@@ -242,7 +242,7 @@ class TestMovePrevious:
         test_list = CircularPositionalList()
         with pytest.raises(Exception):
             test_list.move_previous()
-        
+
     @staticmethod
     def test_move_previous_non_empty():
         test_list = CircularPositionalList()
@@ -290,7 +290,6 @@ class TestNextElement:
         assert test_list.current_element() == A_pos
         assert test_list.next_element() == B_pos
 
-
     @staticmethod
     def test_next_element_non_empty_argument_given():
         test_list = CircularPositionalList()
@@ -307,7 +306,6 @@ class TestNextElement:
         assert B_pos.element() == "B"
         assert test_list.next_element(B_pos) == C_pos
         assert test_list.next_element(C_pos) == A_pos
-
 
 
 class TestPreviousElement:
@@ -350,12 +348,11 @@ class TestPreviousElement:
         assert test_list.previous_element(A_pos) == C_pos
 
 
-
 class TestDelete:
     """
     Tests for the 'delete()' method of the CircularPositionalList class.
     """
-    
+
     @staticmethod
     def test_delete_empty():
         test_list = CircularPositionalList()
@@ -384,14 +381,14 @@ class TestDelete:
         test_list = CircularPositionalList()
         for e in "A", "B", "C", "D":
             test_list.add_after(e)
-        
+
         assert len(test_list) == 4
-        
+
         # grab references to all nodes
         D_node = test_list._cursor
         assert isinstance(D_node, Node)
         assert D_node._element == "D"
-        
+
         A_node = D_node._next
         assert isinstance(A_node, Node)
         assert A_node._element == "A"
@@ -403,8 +400,8 @@ class TestDelete:
         C_node = B_node._next
         assert isinstance(C_node, Node)
         assert C_node._element == "C"
-        
-        # make assertions about nodes/pointers which are going to change 
+
+        # make assertions about nodes/pointers which are going to change
         # after deletion
         assert C_node._next == D_node
         assert A_node._prev == D_node
@@ -440,7 +437,7 @@ class TestDelete:
         assert C_node._prev == B_node
 
         assert test_list.delete() == "B"
-        
+
         assert len(test_list) == 1
         # check that cursor has advanced
         assert test_list._cursor == C_node
@@ -457,12 +454,11 @@ class TestDelete:
         assert C_node._next == C_node._prev == C_node._element == None
 
 
-
 class TestReplace:
     """
     Tests for the 'replace()' method of the CircularPositionalList class.
     """
-    
+
     @staticmethod
     def test_replace_empty():
         test_list = CircularPositionalList()
@@ -483,7 +479,7 @@ class TestIsEmpty:
     """
     Tests for the 'is_empty()' method of the CircularPositionalList class.
     """
-    
+
     @staticmethod
     def test_is_empty_empty():
         test_list = CircularPositionalList()
@@ -500,7 +496,7 @@ class TestIter:
     """
     Tests for the '__iter__()' method of the CircularPositionalList class.
     """
-    
+
     @staticmethod
     def test_iter_empty():
         test_list = CircularPositionalList()
@@ -511,7 +507,9 @@ class TestIter:
     def test_iter_single_element():
         test_list = CircularPositionalList()
         test_list.add_after("A")
-        assert [e for e in test_list] == ["A", ]
+        assert [e for e in test_list] == [
+            "A",
+        ]
 
     @staticmethod
     def test_iter_multiple_elements():

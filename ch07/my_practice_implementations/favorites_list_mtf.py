@@ -23,9 +23,10 @@ class Item:
 class FavoritesListMTF:
     """
     Favorites list ordered with move-to-front heuristic.
-    This implementation can have better running times for certain access 
+    This implementation can have better running times for certain access
     sequences, compared to keeping the elements in a sorted list.
     """
+
     _data: PositionalList[Item]
 
     # Private methods
@@ -39,7 +40,7 @@ class FavoritesListMTF:
         return walk
 
     # Public API
-    
+
     def __init__(self):
         self._data = PositionalList()
 
@@ -51,7 +52,7 @@ class FavoritesListMTF:
 
     def access(self, e: Any) -> None:
         """
-        Access element e in the list. 
+        Access element e in the list.
         If it's already present, increase access_cnt.
         If it's not, add it to list (and set access_cnt = 1).
         """

@@ -21,14 +21,14 @@ class TestEnqueue:
         """
         Test the enqueue method when enqueueing into an initially empty queue.
         This is a special case, where we need to point the _head attribute
-        to the newly inserted Node. 
+        to the newly inserted Node.
         """
         queue = LinkedQueue()
         queue.enqueue("A")
         assert queue._head._element == "A"
         assert queue._tail._element == "A"
         assert queue._head == queue._tail
-    
+
     @staticmethod
     def test_enqueue_non_empty_complete():
         """
@@ -36,7 +36,7 @@ class TestEnqueue:
         Test that:
         - tail is set to inserted node
         - the old tail is pointing to the current tail
-        - size has incremented 
+        - size has incremented
         """
         queue = LinkedQueue()
         assert len(queue) == queue._size == 0
@@ -110,7 +110,7 @@ class TestDequeue:
         assert B_node._element == "B"
         assert len(queue) == queue._size == 3
         element = queue.dequeue()
-        
+
         # check correct element returned
         assert element == "A"
         # check _head updated
@@ -159,7 +159,6 @@ class TestDequeue:
         assert queue._size == len(queue) == 1
         queue.dequeue()
         assert queue._size == len(queue) == 0
-        
 
     @staticmethod
     def test_dequeue_single():
@@ -271,13 +270,13 @@ class TestRotate:
     @staticmethod
     def test_rotate_multiple_elements():
         """
-        Test that the 'rotate()' method works correctly on a queue with 
+        Test that the 'rotate()' method works correctly on a queue with
         multiple elements.
         """
         queue = LinkedQueue()
         for e in "A", "B", "C", "D":
             queue.enqueue(e)
-        
+
         A_node = queue._head
         assert isinstance(A_node, _Node)
         assert A_node._element == "A"
@@ -318,7 +317,7 @@ class TestConcatenate:
         q2 = LinkedQueue()
         for e in "D", "E", "F":
             q2.enqueue(e)
-        
+
         # grab references to head and tail nodes of both queues
         A_node = q1._head
         assert isinstance(A_node, _Node)
@@ -333,10 +332,10 @@ class TestConcatenate:
         F_node = q2._tail
         assert isinstance(F_node, _Node)
         assert F_node._element == "F"
-        
+
         assert len(q1) == 3
         assert len(q2) == 3
-        
+
         q1.concatenate(q2)
 
         assert q1._head == A_node
@@ -382,7 +381,7 @@ class TestConcatenate:
 
         assert q1._head == A_node
         assert q1._tail == C_node
-        
+
         assert q2._head is None
         assert q2._tail is None
 
@@ -393,7 +392,7 @@ class TestConcatenate:
 
         for e in "A", "B", "C", "D":
             assert q1.dequeue() == e
-        
+
     @staticmethod
     def test_q2_empty():
         q1 = LinkedQueue()
@@ -421,7 +420,7 @@ class TestConcatenate:
         assert q1._head == A_node
         assert q1._tail == C_node
         assert C_node._next is None
-        
+
         assert q2._head is None
         assert q2._tail is None
 
@@ -432,7 +431,7 @@ class TestConcatenate:
 
         for e in "A", "B", "C", "D":
             assert q1.dequeue() == e
-        
+
     @staticmethod
     def test_both_empty():
         q1 = LinkedQueue()

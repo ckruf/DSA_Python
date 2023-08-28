@@ -5,10 +5,7 @@ Tests for the LinkedList class, implementing a singly linked list.
 import pytest
 from unittest.mock import MagicMock
 
-from ch07.my_practice_implementations.singly_linked_list import (
-    LinkedList,
-    Node
-)
+from ch07.my_practice_implementations.singly_linked_list import LinkedList, Node
 
 
 class TestAddFirst:
@@ -41,7 +38,7 @@ class TestAddFirst:
     @staticmethod
     def test_add_first_non_empty():
         """
-        Test that the 'add_first()' method correctly adds node in case of 
+        Test that the 'add_first()' method correctly adds node in case of
         initially non-empty list. Check the following:
         - self._head set correctly
         - size incremented
@@ -60,6 +57,7 @@ class TestAddFirst:
         assert A_node._element == "A"
         assert A_node._next == B_node
         assert len(test_list) == 2
+
 
 class TestAddLast:
     """
@@ -86,12 +84,11 @@ class TestAddLast:
         assert test_list._head._next is None
         assert test_list._tail == test_list._head
         assert len(test_list) == 1
-        
 
     @staticmethod
     def test_add_last_non_empty():
         """
-        Test thtat the 'add_last()' method correctly adds node in case of 
+        Test thtat the 'add_last()' method correctly adds node in case of
         initially non-empty list. Check the following:
         - self._tail set to new node
         - ._next of old tail set to new tail/new node
@@ -134,11 +131,11 @@ class TestAddAtIndex:
         elems = ["A", "C", "D"]
         for e in elems:
             test_list.add_last(e)
-        
+
         A_node = test_list._head
         assert isinstance(A_node, Node)
         assert A_node._element == "A"
-        
+
         C_node = A_node._next
         assert isinstance(C_node, Node)
         assert C_node._element == "C"
@@ -146,14 +143,13 @@ class TestAddAtIndex:
         assert len(test_list) == 3
 
         test_list.add_at_index("B", 1)
-        
+
         B_node = A_node._next
         assert isinstance(B_node, Node)
         assert B_node._element == "B"
-        assert B_node._next == C_node 
-        
-        assert len(test_list) == 4 
+        assert B_node._next == C_node
 
+        assert len(test_list) == 4
 
     @staticmethod
     def test_add_at_middle_index():
@@ -187,7 +183,7 @@ class TestAddAtIndex:
     @staticmethod
     def test_raises_exception_negative_index():
         """
-        Test that the 'add_at_index()' method raises an Exception when 
+        Test that the 'add_at_index()' method raises an Exception when
         it is given index less than 0.
         """
         test_list = LinkedList()
@@ -208,7 +204,7 @@ class TestAddAtIndex:
     @staticmethod
     def test_calls_appropriate_method_first():
         """
-        Test that the 'add_at_index()' method calls 'add_first()' 
+        Test that the 'add_at_index()' method calls 'add_first()'
         method when given the corresponding index.
         """
         test_list = LinkedList()
@@ -216,11 +212,10 @@ class TestAddAtIndex:
         test_list.add_at_index("A", 0)
         test_list.add_first.assert_called_once_with("A")
 
-
     @staticmethod
     def test_calls_appropriate_method_last():
         """
-        Test that the 'add_at_index()' method calls 'add_last()' method when 
+        Test that the 'add_at_index()' method calls 'add_last()' method when
         given the corresponding index.
         """
         test_list = LinkedList()
@@ -228,7 +223,7 @@ class TestAddAtIndex:
             test_list.add_last(e)
         test_list.add_last = MagicMock()
         test_list.add_at_index("D", 3)
-        test_list.add_last.assert_called_once_with("D") 
+        test_list.add_last.assert_called_once_with("D")
 
 
 class TestDeleteFirst:
@@ -239,7 +234,7 @@ class TestDeleteFirst:
     @staticmethod
     def test_single_element_list():
         """
-        Test that the 'delete_first()' method correctly removes the first 
+        Test that the 'delete_first()' method correctly removes the first
         element of the list when the list contains a single element.
         Check the following:
         - self._head is set to None
@@ -250,7 +245,7 @@ class TestDeleteFirst:
         """
         test_list = LinkedList()
         test_list.add_first("A")
-        
+
         assert len(test_list) == 1
         A_node = test_list._head
         assert isinstance(A_node, Node)
@@ -279,7 +274,7 @@ class TestDeleteFirst:
         test_list = LinkedList()
         for e in ["A", "B", "C"]:
             test_list.add_last(e)
-        
+
         assert len(test_list) == 3
         A_node = test_list._head
         assert isinstance(A_node, Node)
@@ -298,7 +293,7 @@ class TestDeleteFirst:
     @staticmethod
     def test_empty_list():
         """
-        Test that the 'delete_first()' raises an Exception when called 
+        Test that the 'delete_first()' raises an Exception when called
         on an empty list.
         """
         test_list = LinkedList()
@@ -396,7 +391,7 @@ class TestDeleteAtIndex:
         test_list = LinkedList()
         for e in ["A", "B", "C"]:
             test_list.add_last(e)
-        # get all three nodes 
+        # get all three nodes
         A_node = test_list._head
         assert isinstance(A_node, Node)
         assert A_node._element == "A"
@@ -412,7 +407,7 @@ class TestDeleteAtIndex:
         assert len(test_list) == 3
 
         element = test_list.delete_at_index(1)
-        
+
         assert element == "B"
         assert A_node._next == C_node
         assert len(test_list) == 2
@@ -422,7 +417,7 @@ class TestDeleteAtIndex:
     @staticmethod
     def test_delete_at_illegal_index():
         """
-        Test that the 'delete_at_index()' method raises Exception when it 
+        Test that the 'delete_at_index()' method raises Exception when it
         is given an illegal index
         """
         test_list = LinkedList()
@@ -466,7 +461,7 @@ class TestGetFirst:
     @staticmethod
     def test_get_first_existent():
         """
-        Test that the 'get_first()' method correctly returns the first 
+        Test that the 'get_first()' method correctly returns the first
         element, when the list is not empty.
         """
         test_list = LinkedList()
@@ -501,7 +496,6 @@ class TestGetLast:
             test_list.add_last(e)
         assert test_list.get_last() == "C"
 
-
     @staticmethod
     def test_get_last_empty():
         """
@@ -526,7 +520,7 @@ class TestGetAtIndex:
         A_node = test_list._head
         B_node = A_node._next
         C_node = B_node._next
-        
+
         assert isinstance(A_node, Node)
         assert A_node._element == "A"
 
@@ -548,7 +542,7 @@ class TestGetAtIndex:
         A_node = test_list._head
         B_node = A_node._next
         C_node = B_node._next
-        
+
         assert isinstance(A_node, Node)
         assert A_node._element == "A"
 
@@ -561,6 +555,7 @@ class TestGetAtIndex:
         assert test_list.get_element_at_index(0) == "A"
         assert test_list.get_element_at_index(1) == "B"
         assert test_list.get_element_at_index(2) == "C"
+
 
 class TestIter:
     """
@@ -615,7 +610,7 @@ class TestClear:
         """
         Test that the 'clear()' method clears the lists and enables
         garbage collection of the nodes.
-        Check the following: 
+        Check the following:
         - self._head is set to None
         - self._tails is set to None
         - self._size is set to 0
@@ -625,7 +620,7 @@ class TestClear:
         for e in ["A", "B", "C"]:
             test_list.add_last(e)
 
-        # get all three nodes 
+        # get all three nodes
         A_node = test_list._head
         assert isinstance(A_node, Node)
         assert A_node._element == "A"
@@ -646,7 +641,7 @@ class TestClear:
         assert test_list._head is None
         assert test_list._tail is None
         assert len(test_list) == 0
-        
+
         assert A_node._element is None
         assert A_node._next is None
 

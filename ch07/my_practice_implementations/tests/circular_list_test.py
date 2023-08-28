@@ -1,8 +1,5 @@
 import pytest
-from ch07.my_practice_implementations.circular_list import (
-    CircularList,
-    Node
-)
+from ch07.my_practice_implementations.circular_list import CircularList, Node
 
 
 class TestInsertFirst:
@@ -13,7 +10,7 @@ class TestInsertFirst:
     @staticmethod
     def test_insert_into_empty_list():
         test_list = CircularList()
-        
+
         assert len(test_list) == 0
         assert test_list._tail is None
 
@@ -68,7 +65,7 @@ class TestInsertLast:
     @staticmethod
     def test_insert_into_empty_list():
         test_list = CircularList()
-        
+
         assert len(test_list) == 0
         assert test_list._tail is None
 
@@ -127,7 +124,7 @@ class TestInsertAfter:
         A_node._next = A_node
         test_list._tail = A_node
         test_list._size = 1
-        
+
         test_list.insert_after(A_node, "B")
 
         B_node = test_list._tail._next
@@ -135,7 +132,7 @@ class TestInsertAfter:
         assert B_node._element == "B"
         assert A_node._next == B_node
         assert B_node._next == A_node
-        assert len(test_list) == 2 
+        assert len(test_list) == 2
 
     @staticmethod
     def test_insert_after_mulitple_nodes():
@@ -171,12 +168,11 @@ class TestInsertAfter:
         B_node._next = C_node
         test_list._tail = C_node
         test_list._size = 3
-        
+
         D_node = Node("D")
 
         with pytest.raises(ValueError):
             test_list.insert_after(D_node, "E")
-
 
 
 class TestDeleleteFirst:
@@ -187,7 +183,7 @@ class TestDeleleteFirst:
     @staticmethod
     def test_delete_first_empty():
         """
-        Test that an exception is raised when 'delete_first()' is called 
+        Test that an exception is raised when 'delete_first()' is called
         on an empty list.
         """
         test_list = CircularList()
@@ -222,7 +218,7 @@ class TestDeleleteFirst:
         assert isinstance(A_node, Node)
         assert A_node._element == "A"
 
-        B_node = A_node._next 
+        B_node = A_node._next
         assert isinstance(B_node, Node)
         assert B_node._element == "B"
 
@@ -270,7 +266,7 @@ class TestDeleteLast:
     @staticmethod
     def test_delete_last_mulitple_elements():
         test_list = CircularList()
-        
+
         A_node = Node("A")
         B_node = Node("B")
         C_node = Node("C")
@@ -307,7 +303,7 @@ class TestDeleteNode:
         A_node._next = A_node
         test_list._size = 1
         test_list._tail = A_node
-        
+
         test_list.delete_node(A_node)
         assert test_list._tail is None
         assert len(test_list) == 0
@@ -315,7 +311,7 @@ class TestDeleteNode:
     @staticmethod
     def test_delete_node_multiple_elements():
         test_list = CircularList()
-        
+
         A_node = Node("A")
         B_node = Node("B")
         C_node = Node("C")
@@ -335,7 +331,7 @@ class TestDeleteNode:
     @staticmethod
     def test_delete_tail_node_mulitple_elements():
         test_list = CircularList()
-        
+
         A_node = Node("A")
         B_node = Node("B")
         C_node = Node("C")
@@ -353,7 +349,6 @@ class TestDeleteNode:
         assert C_node._next is None
         assert len(test_list) == 2
 
-        
     @staticmethod
     def test_delete_non_existent_node():
         test_list = CircularList()
@@ -365,7 +360,7 @@ class TestDeleteNode:
         B_node._next = C_node
         test_list._tail = C_node
         test_list._size = 3
-        
+
         D_node = Node("D")
 
         with pytest.raises(ValueError):
@@ -432,7 +427,6 @@ class TestFind:
 
 
 class TestNodeBelongsToList:
-
     @staticmethod
     def test_node_belongs_to_empty_list():
         test_list = CircularList()
@@ -444,7 +438,7 @@ class TestNodeBelongsToList:
         test_list = CircularList()
         A_node = Node("A")
         A_node._next = A_node
-        test_list._size = 1 
+        test_list._size = 1
         test_list._tail = A_node
         assert test_list._node_belongs_to_list(A_node) is True
         B_node = Node("B")
@@ -475,12 +469,14 @@ class TestIter:
         test_list = CircularList()
         for e in test_list:
             assert False
-    
+
     @staticmethod
     def test_iter_single_element():
         test_list = CircularList()
         test_list.insert_last("A")
-        assert [e for e in test_list] == ["A", ]
+        assert [e for e in test_list] == [
+            "A",
+        ]
 
     @staticmethod
     def test_iter_multiple_elements():
@@ -488,7 +484,6 @@ class TestIter:
         elems = ["A", "B", "C"]
         for e in elems:
             test_list.insert_last(e)
-        
 
 
 class TestStr:
@@ -505,7 +500,11 @@ class TestStr:
     def test_str_single_element():
         test_list = CircularList()
         test_list.insert_last("A")
-        assert str(test_list) == str(["A",])
+        assert str(test_list) == str(
+            [
+                "A",
+            ]
+        )
 
     @staticmethod
     def test_str_mulitple_elements():

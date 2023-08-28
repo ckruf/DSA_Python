@@ -14,7 +14,7 @@ class _Node(Generic[X]):
     _next: Optional[_Node[X]] = None
 
     def __str__(self) -> str:
-        first_part= f"_Node(_element={self._element}, "
+        first_part = f"_Node(_element={self._element}, "
         if self._prev is None:
             second_part = "_prev=None, "
         else:
@@ -22,9 +22,9 @@ class _Node(Generic[X]):
         if self._next is None:
             third_part = "_next=None)"
         else:
-            third_part=f"_next=_Node(_element={self._next._element}))"
+            third_part = f"_next=_Node(_element={self._next._element}))"
         return first_part + second_part + third_part
-    
+
     def __repr__(self) -> str:
         return str(self)
 
@@ -95,6 +95,7 @@ class _DoublyLinkedBase(Generic[T]):
                 node._next = preceding
                 node._prev = following
                 _traverse_and_reverse(following)
+
         _traverse_and_reverse(self._header)
         original_header = self._header
         original_trailer = self._trailer

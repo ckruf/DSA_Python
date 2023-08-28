@@ -19,7 +19,7 @@ from ch07.my_practice_implementations.favorites_list_mtf import (
     FavoritesListMTF,
     PositionalList,
     Position,
-    Item
+    Item,
 )
 
 
@@ -100,8 +100,8 @@ class TestInit:
     @staticmethod
     def test_init():
         """
-        Test that the '__init__()' method initializes a FavoritesListMTF 
-        instance with the _data attribute being an instance of PositionalList. 
+        Test that the '__init__()' method initializes a FavoritesListMTF
+        instance with the _data attribute being an instance of PositionalList.
         """
         test_list = FavoritesListMTF()
         assert isinstance(test_list._data, PositionalList)
@@ -168,7 +168,7 @@ class TestAccess:
         already present in the list (but not in first position). This should:
         - increase the Item's access_count
         - insert the item at the front of the list
-        - remove the item from its original position 
+        - remove the item from its original position
         """
         # assert item is in list to begin with
         C_pos = favorites_list_abcd_cnt_1._find_in_list("C")
@@ -180,7 +180,7 @@ class TestAccess:
         pos_list = favorites_list_abcd_cnt_1._data
         # assert C is in third position before accessing
         assert pos_list.after(pos_list.after(pos_list.first())) == C_pos
-        
+
         favorites_list_abcd_cnt_1.access("C")
         # assert item has been moved to fron
         C_pos = favorites_list_abcd_cnt_1._data.first()
@@ -229,17 +229,11 @@ class TestTop:
     @staticmethod
     def test_top_some():
         """
-        Test that the 'top()' method works correctly when some items (but not 
+        Test that the 'top()' method works correctly when some items (but not
         all) are selected. The list is ordered in access_cnt order.
         """
         test_list = FavoritesListMTF()
-        items = [
-            Item("A", 1),
-            Item("B", 2),
-            Item("C", 3),
-            Item("D", 4),
-            Item("E", 5)
-        ]
+        items = [Item("A", 1), Item("B", 2), Item("C", 3), Item("D", 4), Item("E", 5)]
         for item in items:
             test_list._data.add_last(item)
         top_three_elements = [elem for elem in test_list.top(3)]
@@ -248,7 +242,7 @@ class TestTop:
     @staticmethod
     def test_top_some_random_order():
         """
-        Test that the 'top()' method works correctly when some items (but not 
+        Test that the 'top()' method works correctly when some items (but not
         all) are selected. The list is random order.
         """
         test_list = FavoritesListMTF()
@@ -299,14 +293,16 @@ class TestTop:
         for item in items:
             test_list._data.add_last(item)
         top_three_elements = [elem for elem in test_list.top(1)]
-        assert top_three_elements == ["E", ]
+        assert top_three_elements == [
+            "E",
+        ]
 
     @staticmethod
     def test_raises_exception_on_zero():
         """
         Test that the 'top()' method raises an Exception when it is given
         0 as argument.
-        """ 
+        """
         test_list = FavoritesListMTF()
         with pytest.raises(Exception):
             for elem in test_list.top(0):

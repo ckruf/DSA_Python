@@ -18,19 +18,17 @@ class Position:
 
     def element(self) -> Any:
         return self._node._element
-    
+
     def __eq__(self, other) -> bool:
         return type(other) is type(self) and other._node is self._node
-    
+
     def __ne__(self, other) -> bool:
         return not (self == other)
-    
 
 
-@dataclass(slots=True)
 class PositionalList:
     _size: int = 0
-    _first: Optional [Node] = None
+    _first: Optional[Node] = None
     _last: Optional[Node] = None
 
     # private utilities
@@ -45,26 +43,23 @@ class PositionalList:
         if p._container is not self:
             raise ValueError("p must belong to this list")
         return p._node
-    
+
     def _insert_into_empty_list(self, e: Any) -> Position:
         new_node = Node(e)
         self._first = new_node
         self._last = new_node
         self._size += 1
         return self._make_position(new_node)
-    
+
     def _insert_between_nodes(
-        self,
-        preceding: Node,
-        following: Node,
-        e: Any
+        self, preceding: Node, following: Node, e: Any
     ) -> Position:
         new_node = Node(e, preceding, following)
         preceding._next = new_node
         following._prev = new_node
         self._size += 1
         return self._make_position(new_node)
-    
+
     def _delete_last_remaining_node(self) -> Any:
         assert self._size == 1
         assert self._first == self._last
@@ -80,10 +75,10 @@ class PositionalList:
 
     def is_empty(self) -> bool:
         return self._size == 0
-    
+
     def __len__(self) -> int:
-        return self._size 
-    
+        return self._size
+
     def __iter__(self):
         if self._size == 0:
             return
@@ -137,14 +132,13 @@ class PositionalList:
         preceding_node = following_node._prev
         return self._insert_between_nodes(preceding_node, following_node, e)
 
-
     def add_after(self, p: Position, e: Any) -> Position:
         preceding_node = self._validate(p)
         if preceding_node == self._last:
             return self.add_last(e)
         following_node = preceding_node._next
         return self._insert_between_nodes(preceding_node, following_node, e)
-    
+
     def delete_first(self) -> Any:
         if self._size == 0:
             raise Exception("Cannot delete from empty list")
@@ -160,7 +154,7 @@ class PositionalList:
         if self._size == 1:
             self._last = following_node
         return element
-    
+
     def delete_last(self) -> Any:
         if self._size == 0:
             raise Exception("Cannot delete from empty list")
@@ -198,4 +192,3 @@ class PositionalList:
         element = node._element
         node._element = e
         return element
-

@@ -227,7 +227,6 @@ class TestAccess:
         assert test_list._data.first().element() == Item("A", 1)
 
 
-
 class TestRemove:
     """
     Tests for the 'remove' method of the FavoritesList class.

@@ -11,7 +11,7 @@ class TestEnqueue:
     def test_enqueue_empty():
         """
         Test the enqueue method when inserting into an initially empty
-        queue. This is a special case, as the _next pointer of the 
+        queue. This is a special case, as the _next pointer of the
         newly inserted element needs to point at itself.
         """
         queue = CircularQueue()
@@ -96,15 +96,16 @@ class TestDequeue:
         assert isinstance(B_node, _Node)
         assert B_node._element == "B"
         assert len(queue) == queue._size == 3
-        
+
         # assertions after dequeue operation
         assert queue.dequeue() == "A"
         # tail should stay the same
         assert queue._tail == C_node
-        # but _next pointer of tail should be updated 
+        # but _next pointer of tail should be updated
         assert C_node._next == B_node
-        
+
         assert len(queue) == queue._size == 2
+
 
 class TestRotate:
     """
@@ -144,7 +145,7 @@ class TestRotate:
         B_node = A_node._next
         assert isinstance(B_node, _Node)
         assert B_node._element == "B"
-        
+
         queue.rotate()
         assert queue._tail == A_node
 
@@ -167,5 +168,3 @@ class TestGeneral:
             assert elem == queue.dequeue()
 
         assert queue.is_empty() is True
-
-                 

@@ -52,7 +52,7 @@ class TestIsEmpty:
         test_base._size = 10
         assert test_base.is_empty() is False
 
-    
+
 class TestInsertBetween:
     """
     Test the 'insert_between()' method of the _DoublyLinkedBase class.
@@ -98,7 +98,7 @@ class TestInsertBetween:
     @staticmethod
     def test_insert_between_pointers_inserted_node():
         """
-        Test that the pointers of the inserted node are correctly set. 
+        Test that the pointers of the inserted node are correctly set.
         """
         test_base = _DoublyLinkedBase()
         test_element = "A"
@@ -107,7 +107,6 @@ class TestInsertBetween:
         )
         assert new_node._next == test_base._trailer
         assert new_node._prev == test_base._header
-
 
     @staticmethod
     def test_insert_between_pointers_neighbours():
@@ -132,9 +131,7 @@ class TestInsertBetween:
         test_base = _DoublyLinkedBase()
         test_element = "A"
         initial_length = len(test_base)
-        test_base._insert_between(
-            test_element, test_base._header, test_base._trailer
-        )
+        test_base._insert_between(test_element, test_base._header, test_base._trailer)
         new_length = len(test_base)
         assert new_length == initial_length + 1
 
@@ -244,7 +241,6 @@ class TestDeleteNode:
         assert new_node._element is None
 
 
-
 class TestReverseIterative:
     """
     Tests for the 'reverse_iterative()' method of the DoublyLinkedBase class.
@@ -308,7 +304,7 @@ class TestReverseIterative:
         test_base = _DoublyLinkedBase()
         original_header = test_base._header
         original_trailer = test_base._trailer
-        
+
         assert test_base._header._prev is None
         assert test_base._header._next == test_base._trailer
 
@@ -389,7 +385,7 @@ class TestReverseRecursive:
         test_base = _DoublyLinkedBase()
         original_header = test_base._header
         original_trailer = test_base._trailer
-        
+
         assert test_base._header._prev is None
         assert test_base._header._next == test_base._trailer
 
@@ -405,4 +401,3 @@ class TestReverseRecursive:
         assert test_base._trailer == original_header
         assert test_base._trailer._prev == test_base._header
         assert test_base._trailer._next is None
-    

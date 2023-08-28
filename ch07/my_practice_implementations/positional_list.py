@@ -42,7 +42,7 @@ class PositionalList(_DoublyLinkedBase[T]):
         if node is self._header or node is self._trailer:
             return None
         return Position(self, node)
-    
+
     def _get_node_at_index(self, index: int) -> _Node:
         """
         Get node at given index. This method really only serves for making
@@ -51,9 +51,7 @@ class PositionalList(_DoublyLinkedBase[T]):
         That's why method is private - only to be used in testing.
         """
         if not 0 <= index < self._size:
-            raise ValueError(
-                f"index must be 0 or greater and less than {self._size}"
-            )
+            raise ValueError(f"index must be 0 or greater and less than {self._size}")
         count = 0
         walk = self._header._next
         while count < index:
@@ -95,14 +93,14 @@ class PositionalList(_DoublyLinkedBase[T]):
     #     belonging to the PositionalList class, not to this class) must be
     #     uncommented.
     #     """
-        
+
     #     def __init__(self, walk: _Node, trailer: _Node):
     #         self.walk = walk
     #         self.trailer = trailer
 
     #     def __iter__(self):
     #         return self
-        
+
     #     def __next__(self):
     #         if self.walk == self.trailer:
     #             raise StopIteration
@@ -110,13 +108,12 @@ class PositionalList(_DoublyLinkedBase[T]):
     #             element = self.walk._element
     #             self.walk = self.walk._next
     #             return element
-            
+
     # def __iter__(self):
     #     return PositionalList.PositionalListIterator(
     #         self._header._next,
     #         self._trailer
     #     )
-
 
     def __reversed__(self):
         if self.is_empty():
@@ -155,11 +152,11 @@ class PositionalList(_DoublyLinkedBase[T]):
         original_element = node._element
         node._element = element
         return original_element
-    
+
     def __str__(self) -> str:
         elements = [i for i in self]
         return str(elements)
-    
+
     def max(self) -> Any:
         maximum = self.first().element()
         for e in self:
@@ -174,15 +171,16 @@ class PositionalList(_DoublyLinkedBase[T]):
                 return self._make_position(walk)
             walk = walk._next
         return None
-    
+
     def find_recursive(self, e: Any) -> Optional[Position]:
         def _find(e: Any, node: _Node) -> _Node:
             if node._element == e or node == self._trailer:
                 return node
             else:
                 return _find(e, node._next)
+
         return self._make_position(_find(e, self._header._next))
-    
+
     def add_last_composite(self, element: T) -> Position[T]:
         if self.is_empty():
             return self.add_first(element)
@@ -202,18 +200,18 @@ class PositionalList(_DoublyLinkedBase[T]):
         """
         if p == self.first():
             return
-        
+
         node = self._validate(p)
         # grab references to all nodes whose pointers need to be relinked
         preceding = node._prev
         following = node._next
         first = self._header._next
         header = self._header
-        
+
         # relink preceding and following node to skip given node now
         preceding._next = following
         following._prev = preceding
-        
+
         # relink given node itself
         node._prev = header
         node._next = first

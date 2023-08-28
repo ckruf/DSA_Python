@@ -6,6 +6,7 @@ class TestInsertFirst:
     """
     Tests for the 'insert_first()' method of the LinkedDeque class.
     """
+
     @staticmethod
     def test_insert_first():
         deque = LinkedDeque()
@@ -18,7 +19,7 @@ class TestInsertFirst:
         assert isinstance(A_node, _Node)
         assert A_node._element == "A"
         assert deque.first() == "A"
-        
+
         assert len(deque) == deque._size == 1
 
         deque.insert_first("B")
@@ -31,7 +32,7 @@ class TestInsertFirst:
         assert B_node._next == A_node
         assert B_node._prev == deque._header
         assert A_node._prev == B_node
-        
+
         deque.insert_first("C")
         assert len(deque) == deque._size == 3
         C_node = deque._header._next
@@ -183,7 +184,6 @@ class TestDeleteLast:
         with pytest.raises(Exception):
             deque.delete_last()
 
-
     @staticmethod
     def test_delete_last():
         deque = LinkedDeque()
@@ -199,7 +199,7 @@ class TestDeleteLast:
         C_node = deque._trailer._prev
         assert isinstance(C_node, _Node)
         assert C_node._element == "C"
-        
+
         assert len(deque) == deque._size == 3
         assert B_node._next == C_node
         assert deque._trailer._prev == C_node
@@ -224,7 +224,7 @@ class TestGeneral:
     """
     Test a series of insert and delete operations
     """
-    
+
     @staticmethod
     def test_general():
         deque = LinkedDeque()

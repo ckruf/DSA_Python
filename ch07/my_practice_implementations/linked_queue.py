@@ -2,10 +2,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional, Any
 
+
 @dataclass(slots=True)
 class _Node:
     _element: Any
     _next: Optional[_Node] = None
+
 
 class LinkedQueue:
     _size: int
@@ -36,7 +38,7 @@ class LinkedQueue:
         if self._size == 0:
             self._tail = None
         return element
-    
+
     def rotate(self) -> None:
         """
         Dequeue the first element of the queue and then enqueue it
@@ -87,4 +89,3 @@ class LinkedQueue:
         Q2._head = None
         Q2._tail = None
         Q2._size = 0
-    

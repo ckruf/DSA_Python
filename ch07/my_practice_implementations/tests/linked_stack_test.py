@@ -63,7 +63,7 @@ class TestPop:
     @staticmethod
     def test_pop_empty():
         """
-        Test that the 'pop()' method raises an Exception when attempting 
+        Test that the 'pop()' method raises an Exception when attempting
         to pop from an empty stack.
         """
         stack = LinkedStack()
@@ -81,11 +81,10 @@ class TestPop:
         stack.pop()
         assert stack._head is None
 
-
     @staticmethod
     def test_pop_populated_reassigns_head():
         """
-        Test that the 'pop()' method correctly sets new '_head' 
+        Test that the 'pop()' method correctly sets new '_head'
         """
         stack = LinkedStack()
         stack.push("A")
@@ -121,7 +120,7 @@ class TestPop:
 
 class TestTop:
     """Test the 'top()' method of the LinkedStack class"""
-    
+
     @staticmethod
     def test_top_empty():
         """Test that 'top()' raises Exception when stack is empty"""

@@ -10,11 +10,14 @@ dsa_python_dir = src_dir.parent.absolute()
 sys.path.insert(0, str(dsa_python_dir))
 
 from ch07.my_practice_implementations.positional_list import PositionalList
-from ch07.my_practice_implementations.insertion_sort import insertion_sort_doubly_linked_list
+from ch07.my_practice_implementations.insertion_sort import (
+    insertion_sort_doubly_linked_list,
+)
+
 
 def insertion_sort_attempt_1(seq: PositionalList):
     """
-    Attempt at insertion sort on a doubly linked list. The reason that this 
+    Attempt at insertion sort on a doubly linked list. The reason that this
     implementation does not work is the advancing of the 'marker' variable.
 
     Suppose you have a list [2, 1].
@@ -33,7 +36,7 @@ def insertion_sort_attempt_1(seq: PositionalList):
     """
     if len(seq) < 2:
         return
-    
+
     marker = seq.first()
     while marker != seq.last():
         to_be_inserted = seq.after(marker)
@@ -44,10 +47,11 @@ def insertion_sort_attempt_1(seq: PositionalList):
         seq.delete(to_be_inserted)
         marker = seq.after(marker)
 
+
 def insertion_sort_attempt_2(seq: PositionalList):
     if len(seq) < 2:
         return
-    
+
     marker = seq.first()
     while marker != seq.last():
         to_be_inserted = seq.after(marker)
@@ -59,10 +63,11 @@ def insertion_sort_attempt_2(seq: PositionalList):
         seq.delete(to_be_inserted)
         marker = seq.after(marker)
 
+
 def insertion_sort_attempt_3(seq: PositionalList):
     if len(seq) < 2:
         return
-    
+
     marker = seq.first()
     while marker is not None:
         to_be_inserted = seq.after(marker)
@@ -113,7 +118,13 @@ class TestLinkedInsertionSort:
     @staticmethod
     def test_random_list():
         test_list = PositionalList()
-        elements = [25, 22, 15, 17, 10,]
+        elements = [
+            25,
+            22,
+            15,
+            17,
+            10,
+        ]
         for elem in elements:
             test_list.add_last(elem)
         assert elements == [i for i in test_list]

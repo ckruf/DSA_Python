@@ -13,17 +13,16 @@ class CircularList:
     _size: int
     _tail: Optional[Node]
 
-
     def __init__(self):
         self._size = 0
         self._tail = None
 
     def is_empty(self) -> bool:
         return self._size == 0
-    
+
     def __len__(self) -> int:
         return self._size
-    
+
     def get_first(self) -> Any:
         if self._size == 0:
             raise Exception("List is empty")
@@ -33,7 +32,7 @@ class CircularList:
         if self._size == 0:
             raise Exception("List is empty")
         return self._tail._element
-    
+
     def insert_first(self, element: Any) -> None:
         new_head = Node(element, None)
         if self._size == 0:
@@ -63,7 +62,6 @@ class CircularList:
         node._next = new_node
         self._size += 1
 
-
     def delete_first(self) -> Any:
         if self._size == 0:
             raise Exception("Can't delete from empty list")
@@ -76,7 +74,7 @@ class CircularList:
             first_node._next = None
         self._size -= 1
         return element
-    
+
     def delete_last(self) -> Any:
         if self._size == 0:
             raise ValueError("Can't delete from empty list")
@@ -125,7 +123,7 @@ class CircularList:
             if walk == self._tail:
                 return None
         return walk
-    
+
     def _node_belongs_to_list(self, node: Node) -> bool:
         if self._size == 0:
             return False
@@ -135,7 +133,7 @@ class CircularList:
         while walk != self._tail:
             if walk == node:
                 return True
-            walk =  walk._next
+            walk = walk._next
         return False
 
     def __str__(self) -> str:
@@ -145,7 +143,7 @@ class CircularList:
         if self._size == 0:
             return
         walk = self._tail._next
-        while True: 
+        while True:
             yield walk._element
             if walk == self._tail:
                 break

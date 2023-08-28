@@ -22,10 +22,11 @@ class Item:
 
 class FavoritesList:
     """
-    Favorites list implemented using PositionalList. 
-    A favorites list allows us to access and remove items, and provides a 
+    Favorites list implemented using PositionalList.
+    A favorites list allows us to access and remove items, and provides a
     method for viewing the top k accessed items.
     """
+
     _data: PositionalList[Item]
 
     def __init__(self):

@@ -24,10 +24,10 @@ class LinkedList:
 
     def is_empty(self) -> bool:
         return self._size == 0
-    
+
     def __len__(self) -> int:
         return self._size
-    
+
     def add_first(self, element: Any) -> None:
         """Insert an item at the beginning of the list."""
         new_head = Node(element, self._head)
@@ -49,7 +49,7 @@ class LinkedList:
     def add_at_index(self, element: Any, index: int) -> None:
         """
         Insert item at a given position. The item will be inserted before
-        the item currently at the given index, and so it will become the 
+        the item currently at the given index, and so it will become the
         item at that index after insertion. For example:
 
         add_at_index(x, 0) will insert the item at the front of the list
@@ -62,9 +62,7 @@ class LinkedList:
             self.add_last(element)
             return
         if not 0 < index < self._size:
-            raise ValueError(
-                f"index must be between 0 and {self._size} (inclusive)"
-            )
+            raise ValueError(f"index must be between 0 and {self._size} (inclusive)")
         # get to node at index - 1
         count = 0
         walk = self._head
@@ -75,7 +73,7 @@ class LinkedList:
         newly_inserted = Node(element, walk._next)
         walk._next = newly_inserted
         self._size += 1
-        
+
     def delete_first(self) -> Any:
         """Delete the first node of the list"""
         if self._size == 0:
@@ -89,7 +87,7 @@ class LinkedList:
             self._head = None
             self._tail = None
         return element
-    
+
     def delete_last(self) -> Any:
         """Delete the last node of the list"""
         if self._size == 0:
@@ -110,7 +108,7 @@ class LinkedList:
         self._tail._next = None
         self._size -= 1
         return element
-        
+
     def delete_at_index(self, index: int) -> Any:
         """Delete the node at the given index"""
         if index == 0:
@@ -118,9 +116,7 @@ class LinkedList:
         if index == self._size - 1:
             return self.delete_last()
         if not 0 <= index < self._size:
-            raise ValueError(
-                f"index must be greater than 0 and less than {self._size}"
-            )
+            raise ValueError(f"index must be greater than 0 and less than {self._size}")
         count = 0
         walk = self._head
         while count < index - 1:
@@ -129,49 +125,49 @@ class LinkedList:
         deleted_node = walk._next
         element = deleted_node._element
         walk._next = deleted_node._next
-        deleted_node._next = deleted_node._element = None  # garbage collection / node invalidation
+        deleted_node._next = (
+            deleted_node._element
+        ) = None  # garbage collection / node invalidation
         self._size -= 1
         return element
-    
+
     def get_first(self) -> Any:
         """Get first element of linked list"""
         if self._size == 0:
             raise ValueError("Cannot get first, list is empty")
         return self._head.element()
-    
+
     def get_last(self) -> Any:
         """Get the last element of linked list"""
         if self._size == 0:
             raise ValueError("Cannot get last, list is empty")
         return self._tail.element()
-    
+
     def get_element_at_index(self, index: int) -> Any:
         """Get element at given index"""
         node = self.get_node_at_index(index)
         return node._element
-        
+
     def get_node_at_index(self, index: int) -> Node:
         """Get node at given index"""
         if not 0 <= index < self._size:
-            raise ValueError(
-                f"index must be 0 or greater and less than {self._size}"
-            )
+            raise ValueError(f"index must be 0 or greater and less than {self._size}")
         count = 0
         walk = self._head
         while count < index:
             walk = walk._next
             count += 1
         return walk
-    
+
     def __iter__(self):
         walk = self._head
         while walk is not None:
             yield walk.element()
             walk = walk._next
-    
+
     def __str__(self) -> str:
         return str([i for i in self])
-    
+
     def clear(self) -> None:
         walk = self._head
         while walk is not None:
