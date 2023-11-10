@@ -4,6 +4,7 @@ from typing import Any, Optional
 
 from ch08.my_practice_implementations.abstract_bin_tree import BinaryTree
 from ch08.my_practice_implementations import abstract_tree
+from collections import deque
 
 
 
@@ -165,37 +166,3 @@ class LinkedBinaryTree(BinaryTree):
             t2._size = 0
         
         self._size += (size_t1 + size_t2)
-
-    def preorder(self):
-        """Generate preorder iteration of positions in the tree"""
-        if not self.is_empty():
-            for p in self._subtree_preorder(self.root()):
-                yield p
-
-    def _subtree_preorder(self, p: Position):
-        yield p
-        for c in self.children(p):
-            for other in self._subtree_preorder(c):
-                yield other
-
-    def _subtree_preorder_simple(self, p: Position):
-        yield p
-        for c in self.children():
-            yield from self._subtree_preorder_simple(c)
-
-    def postorder(self):
-        """Generate postorder iteration of positions in the tree"""
-        if not self.is_empty():
-            for p in self._subtree_postorder(self.root()):
-                yield p
-        
-    def _subtree_postorder(self, p: Position):
-        for c in self.children(p):
-            for other in self._subtree_postorder(c):
-                yield other
-        yield p
-
-    def _subtree_postorder_simple(self, p: Position):
-        for c in self.children(p):
-            yield from self._subtree_postorder_simple(c)
-        yield p

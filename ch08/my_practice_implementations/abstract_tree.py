@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from collections import deque
 from typing import Any, Optional, Iterator
 
 
@@ -62,5 +63,58 @@ class Tree(metaclass=ABCMeta):
             return 0
         else:
             return 1 + self.depth(self.parent(p))
+        
+    def preorder(self) -> Iterator[Position]:
+        """Generate preorder iteration of positions in the tree"""
+        if not self.is_empty():
+            for p in self._subtree_preorder(self.root()):
+                yield p
+
+    def _subtree_preorder(self, p: Position) -> Iterator[Position]:
+        yield p
+        for c in self.children(p):
+            for other in self._subtree_preorder(c):
+                yield other
+
+    def _subtree_preorder_simple(self, p: Position) -> Iterator[Position]:
+        yield p
+        for c in self.children():
+            yield from self._subtree_preorder_simple(c)
+
+    def postorder(self) -> Iterator[Position]:
+        """Generate postorder iteration of positions in the tree"""
+        if not self.is_empty():
+            for p in self._subtree_postorder(self.root()):
+                yield p
+        
+    def _subtree_postorder(self, p: Position) -> Iterator[Position]:
+        for c in self.children(p):
+            for other in self._subtree_postorder(c):
+                yield other
+        yield p
+
+    def _subtree_postorder_simple(self, p: Position) -> Iterator[Position]:
+        for c in self.children(p):
+            yield from self._subtree_postorder_simple(c)
+        yield p
+
+    def breadthfirst(self) -> Iterator[Position]:
+        if self.is_empty():
+            return
+        Q = deque()
+        Q.append(self.root())
+        while Q:
+            p = Q.popleft()
+            yield p
+            for c in self.children(p):
+                Q.append(c)
+
+    def positions(self) -> Iterator[Position]:
+        """Generate an iteration of all positions in the tree"""
+        return self.preorder()
 
     
+    def __iter__(self) -> Iterator[Any]:
+        """Generate an iteration of all elements in the tree"""
+        for p in self.positions():
+            yield p.element()
