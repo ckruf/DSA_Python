@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Any, Optional
+from typing import Any, Optional, Iterator
 
 from ch08.my_practice_implementations.abstract_bin_tree import BinaryTree
 from ch08.my_practice_implementations import abstract_tree
@@ -166,3 +166,6 @@ class LinkedBinaryTree(BinaryTree):
             t2._size = 0
         
         self._size += (size_t1 + size_t2)
+
+    def positions(self) -> Iterator[Position]:
+        return self.inorder()
