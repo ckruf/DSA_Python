@@ -20,7 +20,7 @@ class Position(metaclass=ABCMeta):
 class Tree(metaclass=ABCMeta):
 
     @abstractmethod
-    def root(self):
+    def root(self) -> Optional[Position]:
         ...
 
     @abstractmethod
