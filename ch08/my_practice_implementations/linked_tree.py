@@ -1,5 +1,4 @@
 from __future__ import annotations
-from _typeshed import SupportsWrite
 from abc import ABCMeta
 from dataclasses import dataclass
 from typing import Any, Iterator, List, Optional
@@ -58,7 +57,7 @@ class LinkedTree(abstract_tree.Tree):
     def children(self, p: Position) -> Iterator[Position]:
         node = self._validate(p)
         for c in node._children:
-            yield c
+            yield self._make_position(c)
 
     def __len__(self) -> int:
         return self._size
