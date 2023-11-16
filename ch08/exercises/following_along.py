@@ -126,12 +126,32 @@ def indented_numbered_tree_print(
     for c in document_tree.children(p):
         indented_numbered_tree_print(document_tree, c, depth + 1, path)
         path[-1] += 1
+    # the code after the for loop always runs after a whole particular 
+    # level of the tree is finished
     path.pop()
 
 
+def parenthesize(tree: LinkedTree, p: Position) -> None:
+    """
+    Given a tree, print out its parenthetic string representation.
+    """
+    print(p.element(), end="")
+    child_count = tree.num_children(p)
+    for index, c in enumerate(tree.children(p)):
+        if index == 0:
+           print("(", end="")
+        parenthesize(tree, c)
+        if index != child_count - 1:
+            print(",", end="")
+        else:
+            print(")", end="")
+
+
+
 if __name__ == "__main__":
-    document_tree = create_document_tree()
-    unindented_table_of_contents(document_tree)
-    indented_table_of_contents(document_tree, document_tree.root(), 0)
+    # document_tree = create_document_tree()
+    # unindented_table_of_contents(document_tree)
+    # indented_table_of_contents(document_tree, document_tree.root(), 0)
     organization_tree = create_organization_tree()
-    indented_numbered_tree_print(organization_tree, organization_tree.root(), 0, [])
+    # indented_numbered_tree_print(organization_tree, organization_tree.root(), 0, [])
+    parenthesize(organization_tree, organization_tree.root())
