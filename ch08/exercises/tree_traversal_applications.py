@@ -1,5 +1,5 @@
 """
-File containing my attempts at examples in this chapter (not exercises).
+File containing my attempts at tree traversal examples in this chapter (not exercises).
 """
 
 import sys

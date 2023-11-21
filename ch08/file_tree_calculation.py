@@ -12,12 +12,24 @@ excluded_directories = {".git", "env", "__pycache__", ".pytest_cache", ".idea"}
 
 total_calls = 0
 
-def compute_directory_sizes(directory_location: os.PathLike, depth: int = 0) -> None:
+def compute_directory_size(directory_location: os.PathLike) -> int:
+    """
+    Given a path-like directory location, return the size of the directory 
+    (including all the files and sub-directories it contains).
+    """
+    sub_total = 0
+    for name in os.listdir(directory_location):
+        path = os.path.join(directory_location, name)
+        if os.path.isfile(path):
+            sub_total += os.path.getsize(path)
+        elif os.path.isdir(path):
+            sub_total += compute_directory_size(path)
+    return sub_total
+
+def compute_and_print_directory_sizes(directory_location: os.PathLike, depth: int = 0) -> None:
     """
     Given a path-like directory location, go through all the files and 
     sub-directories, and print out the total file size of all (sub)directories.
-
-    :param
     """
     global total_calls
     total_calls += 1
@@ -31,7 +43,7 @@ def compute_directory_sizes(directory_location: os.PathLike, depth: int = 0) -> 
             # print(f"File: {filename}, Size: {size} bytes")
             sub_total += size
         elif os.path.isdir(path):
-            sub_dir_size = compute_directory_sizes(path, depth + 1)
+            sub_dir_size = compute_and_print_directory_sizes(path, depth + 1)
             print(2 * depth * " ", end="")  # print indentation
             print(f"{path} size: {sub_dir_size}")
     return sub_total
@@ -68,6 +80,9 @@ def pretty_print_directory_sizes_second_fail(
 ) -> int:
     """
     Another attempt to pretty print sizes of a directory (and its subdirs).
+    This one fails, because the name of the directory gets printed first,
+    which is then interrupted by output from the subtree, after which the 
+    size is printed.
     """
     global total_calls
     total_calls += 1
@@ -90,11 +105,14 @@ def pretty_print_directory_sizes_second_fail(
 
 
 def pretty_print_directory_sizes(root_location: os.PathLike) -> None:
+    """
+    This one succeeds, but uses a dict to store auxilliary data, so O(n) memory used
+    """
 
     def collect_results(
-            directory_location: os.PathLike,
-            results: dict,
-            depth: int,
+        directory_location: os.PathLike,
+        results: dict,
+        depth: int,
     ) -> int:
         """
         Another attempt to pretty print sizes of a directory (and its subdirs).
@@ -129,7 +147,8 @@ def pretty_print_directory_sizes(root_location: os.PathLike) -> None:
 
 def pretty_print_directory_size_GPT(directory_location: os.PathLike, depth: int = 0, calculate_only: bool = False) -> int:
     """
-    Recursively prints sizes of a directory and its subdirectories with indentation.
+    This one is by ChatGPT, it succeeds, but is very inefficient, because it calculates the entire
+    subtree separately for each directory.
     """
     global total_calls
     total_calls += 1
@@ -160,5 +179,8 @@ if __name__ == "__main__":
     # compute_directory_sizes(parent_dir)
     # pretty_print_directory_sizes(parent_dir)
     # pretty_print_directory_sizes_second_fail(parent_dir)
-    pretty_print_directory_size_GPT(parent_dir)
-    print(total_calls)
+    # pretty_print_directory_size_GPT(parent_dir)
+    pretty_print_directory_sizes(parent_dir)
+    # print(total_calls)
+    print(parent_dir)
+    print(compute_directory_size(parent_dir))

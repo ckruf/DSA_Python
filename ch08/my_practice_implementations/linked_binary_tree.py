@@ -47,7 +47,7 @@ class LinkedBinaryTree(BinaryTree):
         return Position(node, self)
 
     def root(self) -> Optional[Position]:
-        return self._root
+        return self._make_position(self._root)
 
     def parent(self, p: Position) -> Optional[Position]:
         node = self._validate(p)
