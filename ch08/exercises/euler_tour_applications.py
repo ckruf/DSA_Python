@@ -99,10 +99,6 @@ def create_binary_tree() -> LinkedBinaryTree:
     return bin_tree
 
 
-
-
-
-
 class BinaryLayoutTour(BinaryEulerTour):
     _count: int
     

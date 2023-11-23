@@ -1,3 +1,4 @@
+"""File containing my implementation of a linked binary tree"""
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Optional, Iterator
