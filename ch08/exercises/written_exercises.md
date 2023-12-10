@@ -282,3 +282,28 @@ recurse(H, H) -> return False
 ## 8.36
 
 Each internal node in an improper binary tree doubles the number of possible non-isomorphic trees. This is because each internal node can have its child either as a left child, or a right child. Therefore, even in the case of a linear binary tree, there would be 2^n possible non-isomorphic trees, given n internal nodes. However, there are even many more than that, because in the case of a linear tree, we only consider one option of where to attach the new node (the most recent node). In reality, we have a choice of many nodes to attach the new node to. Therefore, there are far more than 2^n possible trees
+
+
+## 8.43
+
+Using the tree from figure 8.15 as an example (I have redrawn it to its binary tree representation in the file 8_43.png):
+
+1. Preorder traversal
+
+Original tree: Paper, Title, Abstract, 1, 1.1, 1.2, 2, 2.1, 2.2, 2.3, 3, 3.1, 3.2, References 
+Binary representation: Paper, Title, Abstract, 1, 1.1, 1.2, 2, 2.1, 2.2, 2.3, 3, 3.1, 3.2, Refernces
+
+The preorder traversal is equivalent.
+
+2. Postorder traversal
+
+Original tree: Title, Abstract, 1.1, 1.2, 1, 2.1, 2.2, 2.3, 2, 3.1, 3.2, 3, References, Paper
+Binary representation: 1.2, 1.1, 2.3, 2.2, 2.1, 3.2, 3.1, Refernces, 3, 2, 1, Abstract, Title, Paper
+
+The postorder 
+
+3. Is an inorder traversal of the binary represenation equivalent to one of the standard traversal of the original tree? If so, which one?
+
+Inorder traversal: Title, Abstract, 1.1, 1.2, 1, 2.1, 2.2, 2.3, 2...
+
+The inorder traversal of the binary represenation is equivalent to the postorder traversal of the original tree.
