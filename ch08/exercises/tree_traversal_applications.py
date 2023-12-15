@@ -77,6 +77,41 @@ def create_organization_tree() -> LinkedTree:
     return organization_tree
 
 
+def create_modified_organization_tree() -> LinkedTree:
+    """
+    Create the tree from Figure 8.2, represeneting the organizational
+    structure of a fictitious corporation. However, in this version, The
+    positions 'Domestic' and 'International' are swapped.
+    """
+    organization_tree = LinkedTree()
+    root_pos = organization_tree.add_root("Electronics R' Us")
+
+    organization_tree.add_child(root_pos, "R&D")
+    sales_pos = organization_tree.add_child(root_pos, "Sales")
+
+    international_pos = organization_tree.add_child(sales_pos, "International")
+    organization_tree.add_child(sales_pos, "Domestic")    
+    
+    organization_tree.add_child(international_pos, "Canada")
+    overseas_pos = organization_tree.add_child(international_pos, "Overseas")
+    organization_tree.add_child(international_pos, "S. America")
+
+    organization_tree.add_child(overseas_pos, "Africa")
+    organization_tree.add_child(overseas_pos, "Europe")
+    organization_tree.add_child(overseas_pos, "Asia")
+    organization_tree.add_child(overseas_pos, "Australia")
+
+    organization_tree.add_child(root_pos, "Purchasing")
+    manufacturing_pos = organization_tree.add_child(root_pos, "Manufacturing")
+
+    organization_tree.add_child(manufacturing_pos, "TV")
+    organization_tree.add_child(manufacturing_pos, "CD")
+    organization_tree.add_child(manufacturing_pos, "Tuner")
+
+    return organization_tree
+
+
+
 def unindented_table_of_contents(document_tree: LinkedTree) -> None:
     """
     Given a tree, representing the hierarchical structure of a document,
