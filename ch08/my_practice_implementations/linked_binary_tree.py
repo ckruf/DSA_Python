@@ -38,6 +38,9 @@ class Position(abstract_tree.Position):
 
     def __eq__(self, other) -> bool:
         return type(self) is type(other) and self._node is other._node
+    
+    def __ne__(self, other) -> bool:
+        return not (self == other)
 
 
 class LinkedBinaryTree(BinaryTree):
@@ -214,3 +217,28 @@ class LinkedBinaryTree(BinaryTree):
                 parent_node._right = None
         deleted_count = _recurse_delete(p)
         self._size -= deleted_count
+
+    def preorder_next(self, p: Position) -> Optional[Position]:
+        if self.num_children(p) > 0:
+            if self.left(p):
+                return self.left(p)
+            return self.right(p)
+        has_right_sibling = False
+        while not has_right_sibling:
+            parent = self.parent(p)
+            if parent is None:
+                return None
+            has_right_sibling = self.left(parent) == p and self.right(parent) is not None
+            if has_right_sibling:
+                return self.right(parent)
+            p = parent
+            parent = self.parent(parent)
+
+
+if __name__ == "__main__":
+    from ch08.exercises.euler_tour_applications import create_non_positioned_bin_tree
+    bin_tree = create_non_positioned_bin_tree()
+    H_pos = bin_tree.root()
+    L_pos = bin_tree.right(H_pos)
+    next_pos = bin_tree.preorder_next(L_pos)
+    assert next_pos is None
