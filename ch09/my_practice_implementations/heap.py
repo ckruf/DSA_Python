@@ -10,6 +10,7 @@ src_dir = script_path.parent.parent.absolute()
 sys.path.insert(0, str(src_dir))
 
 
+from typing import Optional
 from .priority_queue_base import PriorityQueueBase, Item
 from ch07.my_practice_implementations.positional_list import PositionalList, Position
 
@@ -21,10 +22,19 @@ class Empty(Exception):
 class HeapPriorityQueue(PriorityQueueBase):
     _data: list[Item]
 
-    def __init__(self):
-        self._data = []
+    def __init__(self, contents: Optional[list[tuple[int, Any]]] = None):
+        contents = contents or []
+        self._data = [Item(k, v) for k, v in contents]
+        if len(self._data) > 1:
+            self._heapify()
 
     # private helper methods
+    
+    def _heapify(self):
+        start = self._parent(len(self)-1)
+        for j in range(start, -1, -1):
+            self._downheap(j)
+    
 
     def _left(self, parent_index: int) -> int:
         """
