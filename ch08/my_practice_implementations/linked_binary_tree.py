@@ -234,11 +234,58 @@ class LinkedBinaryTree(BinaryTree):
             p = parent
             parent = self.parent(parent)
 
+    def postorder_next(self, p: Position) -> Optional[Position]:
+        parent = self.parent(p)
+        # root
+        if parent is None:
+            return None
+        parents_right = self.right(parent)
+        # last child on this level -> return parent
+        if p == parents_right or parents_right is None:
+            return parent
+        # has childless right sibling
+        if self.num_children(parents_right) == 0:
+            return parents_right
+        # has right sibling with children
+        return self._dig_deep_prefer_left(parents_right)
 
-if __name__ == "__main__":
-    from ch08.exercises.euler_tour_applications import create_non_positioned_bin_tree
-    bin_tree = create_non_positioned_bin_tree()
-    H_pos = bin_tree.root()
-    L_pos = bin_tree.right(H_pos)
-    next_pos = bin_tree.preorder_next(L_pos)
-    assert next_pos is None
+    def _dig_deep_prefer_left(self, p: Position) -> Position:
+        """
+        Given a position, find its deepest child when prefering left children.
+        """
+        if self.num_children(p) == 0:
+            return p
+        left_child = self.left(p)
+        right_child = self.right(p)
+        if left_child is not None:
+            return self._dig_deep_prefer_left(left_child)
+        return self._dig_deep_prefer_left(right_child)
+
+    def _find_left_ancestor(self, p: Position) -> Optional[Position]:
+        """
+        Given a position, find its nearest ancestor who is a left child.
+        """
+        if p is None or self.parent(p) is None:
+            return None
+        parent = self.parent(p)
+        if p == self.left(parent):
+            return p
+        return self._find_left_ancestor(parent)
+
+    def inorder_next(self, p: Position) -> Optional[Position]:
+        parent = self.parent(p)
+        # root
+        if parent is None:
+            return self._dig_deep_prefer_left(self.right(p))
+        # if position is a left child
+        if p == self.left(parent):
+            if self.right(p) is None:
+                return self.parent(p)
+            return self._dig_deep_prefer_left(p)
+        # position is a right child
+        if self.right(p) is not None:
+            return self.right(p)
+        nearest_left_ancestor =  self._find_left_ancestor(parent)
+        if nearest_left_ancestor is not None:
+            return self.parent(nearest_left_ancestor)
+        return None
