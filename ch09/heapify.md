@@ -64,3 +64,28 @@ After calling `downheap` on 1-2:
 And finally, in order to merge the two 7-node heaps into a single 15-node heap, we just call downheap on index 0:
 
 <img src="./7.png">
+
+## Justification of O(n) running time
+
+### Inorder successor paths justification
+
+Let's consider π<sub>v</sub>, which is the parth from a (non-leaf) node v to its 'inorder successor'. The 'inorder successor' is the node which would come after v during an inorder traversal of the binary tree. To get to the inorder successor, we first go to the right child of v, and then keep going left, until we reach a leaf node. While this is not neccesarily the path taken during down-heap bubbling of v, it does provide an upper bound on the complexity of the down-heap operation at v. Therefore, the total running time of the bottom-up heap construction algorithm can be bound by the sum of the sizes of these paths.
+
+<img src="./inorder_successor_paths.png">
+
+The key claim is that the paths π<sub>v</sub> are edge-disjoint. Meaning that an edge only ever appears in one single path. Therefore, the sum of the path lengths is bounded by the total number of edges in the tree, and thus is O(n). The argument for the paths being disjoint is as follows. For right leaning edges it's obvious, since each path only contains one sigle right leaning edge, going from a particular node to its right child (and no two nodes can possibly share a right child). For left leaning edges, we must consider first, that left leaning edges are always part of a consecutive group, until a node is reached. Second, from any of the applicable nodes, if we keep going left, we only ever reach one particular leaf node. Since each non-leaf node must have a different inorder successor, no two such paths can contain the same left-leaning edge. Thus, we can conclude that bottom-up construction of a heap T takes O(n) time.
+
+
+
+### Sum justification
+
+
+An alternative proof is to try to actually count the number of steps involved. If we look back at the image illustrating bottom-up heap construction, we can describe the steps as follows:
+
+1. In the first step, we construct (n+1)/2 heaps, each containing one entry. Since single-node heaps by definition must obey the heap-order property, no more work is done in this step.
+2. In the second step, we form (n+1)/4 heaps, each storing three entries. And for each heap, we could at most possibly do one swap, in order to restore the heap order property.
+3. In the third step, we form (n+1)/8 heaps, each storing seven entries. And for each heap, we could at most possibly do two swaps, in order to restore the heap order property.
+
+At this point, we can discern the pattern. At the ith step, at most (i-1) * (n+1)/2^i swaps can be made. The total number of steps taken is log(n+1). Therefore, the number of swaps done is the sum from 1 up to log(n+1) of (i-1) * (n+1) / 2^i. Using wolfram alpha, this sum turns out to be n - (log(n+1)/log(2)). Hence O(n).
+
+<img src="./sum_result.png">

@@ -12,7 +12,6 @@ sys.path.insert(0, str(src_dir))
 
 from typing import Optional
 from .priority_queue_base import PriorityQueueBase, Item
-from ch07.my_practice_implementations.positional_list import PositionalList, Position
 
 
 class Empty(Exception):
@@ -107,3 +106,37 @@ class HeapPriorityQueue(PriorityQueueBase):
         new_item = Item(key, value)
         self._data.append(new_item)
         self._upheap(len(self._data) - 1)
+
+
+
+class MaxHeapPriorityQueue(HeapPriorityQueue):
+
+    def _upheap(self, index: int) -> None:
+        parent_index = self._parent(index)
+        if index > 0 and self._data[index] > self._data[parent_index]:
+            self._swap(index, parent_index)
+            self._upheap(parent_index)
+
+    def _downheap(self, index: int) -> None:
+        if self._has_left(index):
+            left_child_index = self._left(index)
+            child_index = left_child_index
+            if self._has_right:
+                right_child_index = self._right(index)
+                if self._data[right_child_index] > self._data[left_child_index]:
+                    child_index = right_child_index
+            if self._data[index] < self._data[child_index]:
+                self._swap(index, child_index)
+                self._downheap(child_index)
+
+    def min(self):
+        raise NotImplementedError()
+    
+    def remove_min(self):
+        raise NotImplementedError()
+    
+    def max(self) -> tuple[int, Any]:
+        return super().min()
+    
+    def remove_max(self) -> tuple[int, Any]:
+        return super().remove_min()
