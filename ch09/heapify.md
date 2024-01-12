@@ -35,35 +35,35 @@ def _heapify(self):
 
 Now let's explain how this extremely simple code implements the complex illustration above. Let's use the following list as an example: `[44, 11, 13, 35, 5, 8, 43, 41, 26, 33, 39, 14, 2, 29, 2]`. As a binary tree, it would currently look like this:
 
-<img src="./1.png">
+<img src="./heapify_illustration/1.png">
 
 when using the standard numbering for a binary tree. Ie we label the root as index 0, and then left children have the index of (2 * parent_index) + 1 and right children have the index of (2 * parent_index) + 2. We consider the bottom level to be 8 single-node heaps. Since single-node heaps are by definition in order, there is no need to do any work.
 
-<img src="./2.png">
+<img src="./heapify_illustration/2.png">
 
 In order to merge them into three-node heaps, we just need to call a `downheap` operation on the second level nodes, at indices 3 to 6. 
 
 Before calling `downheap` on indices 3 to 6:
 
-<img src="./3.png">
+<img src="./heapify_illustration/3.png">
 
 
 After calling `downheap` on indices 3 to 6:
 
-<img src="./4.png">
+<img src="./heapify_illustration/4.png">
 
 Now, in order to merge these three-node heaps into 7-node heaps, we just call `downheap` on indices 1-2. The current list representation of the heap is `[44, 11, 13, 26, 5, 2, 2, 41, 35, 33, 39, 14, 8, 29, 43]`. The current node representation, before calling `downheap` is:
 
-<img src="./5.png">
+<img src="./heapify_illustration/5.png">
 
 
 After calling `downheap` on 1-2:
 
-<img src="./6.png">
+<img src="./heapify_illustration/6.png">
 
 And finally, in order to merge the two 7-node heaps into a single 15-node heap, we just call downheap on index 0:
 
-<img src="./7.png">
+<img src="./heapify_illustration/7.png">
 
 ## Justification of O(n) running time
 

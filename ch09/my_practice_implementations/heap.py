@@ -78,7 +78,7 @@ class HeapPriorityQueue(PriorityQueueBase):
         if self._has_left(index):
             left_child_index = self._left(index)
             child_index = left_child_index
-            if self._has_right:
+            if self._has_right(index):
                 right_child_index = self._right(index)
                 if self._data[right_child_index] < self._data[left_child_index]:
                     child_index = right_child_index

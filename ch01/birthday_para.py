@@ -31,7 +31,10 @@ def share_birthday(n: int) -> bool:
     return False
 
 
-def share_birthday_experiments(trials: int, people_counts: list[int] = [5, 10, 15, 20, 23, 25, 30, 35, 40, 45, 50]) -> dict [int, float]:
+def share_birthday_experiments(
+    trials: int,
+    people_counts: list[int] = [5, 10, 15, 20, 23, 25, 30, 35, 40, 45, 50]
+) -> dict [int, float]:
     """
     Run experiments on the birthday paradox. Find the probabilities that two people share a birthday in 
     a room of 5, 10, 15... people. Does experiments the given number of times using randomly generated birthdays

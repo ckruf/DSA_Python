@@ -50,8 +50,9 @@ class UnsortedPriorityQueue(PriorityQueueBase):
 
     def remove_min(self) -> tuple[int, Any]:
         smallest = self._find_min()
+        answer = smallest.element().to_tuple()
         self._data.delete(smallest)
-        return smallest.element().to_tuple()
+        return answer
 
     def __len__(self) -> int:
         return len(self._data)

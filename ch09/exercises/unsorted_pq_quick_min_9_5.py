@@ -40,6 +40,9 @@ class QuickMinUnsortedPQ(UnsortedPriorityQueue):
     
     def remove_min(self) -> tuple[int, Any]:
         current_min_item = super().remove_min()
-        new_min_tem = self._find_min()
-        self._min_tem = new_min_tem
+        if self.is_empty():
+            new_min_item = None
+        else:
+            new_min_item = self._find_min().element()
+        self._min_item = new_min_item
         return current_min_item
