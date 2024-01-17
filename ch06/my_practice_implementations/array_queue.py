@@ -50,7 +50,7 @@ class ArrayQueue:
   
   def _resize(self, capacity: int):
     if capacity < self._size:
-      raise ValueError(f"There are {self._n} items in the queue") 
+      raise ValueError(f"There are {self._size} items in the queue, cannot have capacity of {capacity}") 
     old = self._data
     self._data = [None] * capacity
     start = self._front

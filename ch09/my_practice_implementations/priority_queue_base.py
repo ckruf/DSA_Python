@@ -1,4 +1,5 @@
 from __future__ import annotations
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any
 
@@ -16,7 +17,23 @@ class Item:
         return self._key, self._value
 
 
-class PriorityQueueBase:
+class PriorityQueueBase(ABC):
     
     def is_empty(self) -> bool:
         return len(self) == 0
+
+    @abstractmethod
+    def remove_min(self) -> tuple[int, Any]:
+        pass
+
+    @abstractmethod
+    def min(self) -> tuple[int, Any]:
+        pass
+
+    @abstractmethod
+    def __len__(self) -> int:
+        pass
+
+    @abstractmethod
+    def add(self, key: int, value: Any) -> None:
+        pass

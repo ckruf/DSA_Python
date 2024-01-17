@@ -26,10 +26,13 @@ class SortedPriorityQueue(PriorityQueueBase):
 
     def add(self, key: int, value: Any) -> None:
         new_item = Item(key, value)
+        if self._data.is_empty():
+            self._data.add_first(new_item)
+            return
         walk = self._data.last()
         while walk is not None and new_item < walk.element():
             walk = self._data.before(walk)
-        if walk is None:  # takes care of empty lists and insertions of new lowest key items
+        if walk is None:  # insertion of new lowest key item
             self._data.add_first(new_item)
         else:
             self._data.add_after(walk, new_item)
