@@ -13,19 +13,24 @@ def polynomial(word: str, constant: int) -> int:
     return sum(ord(letter) * constant ** (len(word) - index - 1) for index, letter in enumerate(word))
 
 
-def cyclic_shift(s: str):
+def string_cyclic_shift(word: str):
     mask = (1 << 32) - 1
-    h = 0
-    for character in s:
-        h = (h << 5 & mask) | (h >> 27)
-        h += ord(character)
-    return h
+    hash_code = 0
+    for character in word:
+        hash_code = (hash_code << 5 & mask) | (hash_code >> 27)
+        hash_code += ord(character)
+    return hash_code
+
+def cyclic_shift(n):
+    mask = (1 << 32) - 1
+    hash_code = n
+    hash_code = (hash_code << 5 & mask) | (hash_code >> 27)
+    return hash_code
 
 def main():
     words = ["stop", "tops", "spot"]
-    for word in words:
-        print(word, end=" ")
-        print(polynomial(word, 33))
+    print(string_cyclic_shift("an"))
+    print(string_cyclic_shift("na"))
 
 
 if __name__ == "__main__":
