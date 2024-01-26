@@ -15,7 +15,7 @@ from ch10.my_practice_implementations.map_base import MapBase
 
 class UnsortedTableMap(MapBase):
     """
-    Map implementation using list, with O(n) complexity for all operations.
+    Map implementation using Python list, with O(n) complexity for all operations.
     """
     _table: list[MapBase.Item]
 

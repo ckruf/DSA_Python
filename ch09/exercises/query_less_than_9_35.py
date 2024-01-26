@@ -1,5 +1,3 @@
-import pytest
-
 import sys
 import os
 from pathlib import Path
@@ -11,7 +9,6 @@ src_dir = script_path.parent.parent.absolute()
 print(src_dir)
 sys.path.insert(0, str(src_dir))
 
-from typing import Optional
 from ch09.my_practice_implementations.heap import HeapPriorityQueue, Item
 
 

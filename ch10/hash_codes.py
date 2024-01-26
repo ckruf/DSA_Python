@@ -27,11 +27,18 @@ def cyclic_shift(n):
     hash_code = (hash_code << 5 & mask) | (hash_code >> 27)
     return hash_code
 
-def main():
-    words = ["stop", "tops", "spot"]
-    print(string_cyclic_shift("an"))
-    print(string_cyclic_shift("na"))
 
+def mad_hash(k: int) -> int:
+    return ((3 * k) + 5) % 11
+
+def secondary_hash(k: int) -> int:
+    return 7 - (k % 7)
+
+def main():
+    nums = [54, 28, 41, 18, 10, 36, 25, 38, 12, 90]
+    for key in nums:
+        hash_code = (3 * key) % 17
+        print(f"key {key}, hash {hash_code}")
 
 if __name__ == "__main__":
     main()

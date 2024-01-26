@@ -80,7 +80,3 @@ class HashMapBase(MapBase, ABC):
         self._n = 0
         for k, v in old:
             self[k] = v
-
-    
-
-    
