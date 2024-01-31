@@ -12,6 +12,7 @@ sys.path.insert(0, str(src_dir))
 from math import ceil
 from typing import Hashable, Any
 from .hash_map_base import HashMapBase
+from ch10.exercises.prime_sieve_10_31 import prime_in_range
 
 
 

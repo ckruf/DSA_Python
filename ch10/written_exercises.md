@@ -106,3 +106,40 @@ decrement n
 What abstraction would you use to manage a database of friends’ birthdays in order to support efficient queries such as “find all friends whose birthday is today” and “find the friend who will be the next to celebrate a birthday”?
 
 A sorted map, ideally implemented using a skip list.
+
+## 10.31
+
+The sieve of Erastothenes algorithm works by marking multiples of numbers as non-prime, leaving us with only prime numbers. For example, if we wanted to look for all prime numbers up to 100. We would initially set p to 2, and then mark all multiples of p in the range p^2 up to 100. We then increment p to 3, check that it has not been crossed off, and again mark all multiples of 3 in the range of 9 (p^2) to 100. We then increment to 4, but it has been crossed off already, so we continue to 5, then skip 6, go to 7, and so on. Note that we always start at p^2, because smaller multiples of p would have been marked previously. For example, when looking at mulitples of 3, we start with 9. But 6 would have already been marked when going over multiples of 2.
+
+Now, let's look at an example to see how the bootstrapping step, in which we first find the primes up to sqrt(2M) helps. Let M = 100, such that we are looking for primes in the range 100 to 200. 
+
+### Wihtout bootstrapping
+
+- generate a boolean array of length 200
+- mark all multiples of 2 in range 4, 200
+- mark all multiples of 3 in range 9, 200
+- mark all multiples of 5 in range 25, 200
+- mark all multiples of 7 in range 49, 200
+- mark all multiples of 11 in range 121, 200
+- mark all multiples of 13 in range 169, 200 
+
+### With bootstrapping
+
+Bootstrapping
+
+- generate boolean array of size 14 (square root of 200, rounded)
+- mark all multiples of 2 in range 4, 14
+- mark all multiples of 3 in range 9, 14
+- At this point, all non-primes have been marked in the range, return list of primes [2, 3, 5, 7, 11, 13]
+
+Generation
+
+- generate boolean array of length 200
+- mark all multiples of 2 in range 100, 200
+- mark all multiples of 3 in range 102, 200
+- mark all multiples of 5 in range 100, 200
+- mark all multiples of 7 in range 105, 200
+- mark all multiples of 11 in range 121, 200
+- mark all mutliples of 13 in range 169, 200
+
+So for numbers where p^2 is much smaller than the beginning of the range, we saved a bunch of iterations. For example for 2, rather than marking all multiples of 2 in the range 4 to 200, we marked just in the range 100 to 200

@@ -63,7 +63,6 @@ class LinearProbeHashMap(HashMapBase):
             raise KeyError("Key Error: " + repr(k))
         else:
             self._table[index] = self._AVAIL
-            self._n -= 1
 
     def __iter__(self):
         for i in range(len(self._table)):

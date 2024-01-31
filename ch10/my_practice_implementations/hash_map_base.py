@@ -41,7 +41,6 @@ class HashMapBase(MapBase, ABC):
     def _bucket_delitem(self, j: int, k: Hashable) -> None:
         """
         Remove item with key k from bucket j, or raise KeyError.
-        This method is responsible for decrementing self._n
         """
         ...
 
@@ -75,7 +74,7 @@ class HashMapBase(MapBase, ABC):
 
     def _resize(self, new_capacity: int) -> None:
         old = list(self.items())
-        self._table = new_capacity * None
+        self._table = new_capacity * [None]
         # __setitem__ will increment back to correct size
         self._n = 0
         for k, v in old:

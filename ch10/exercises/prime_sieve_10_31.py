@@ -8,6 +8,8 @@ integer i. We then initialize the array cells to all be “true” and we “mar
 off” all the cells that are multiples of 2, 3, 5, 7, and so on. This process
 can stop after it reaches a number larger than √2M. (Hint: Consider a
 bootstrapping method for finding the primes up to √2M.)
+
+More explanation can be found in written_exercises.md
 """
 from math import pow
 
@@ -48,7 +50,3 @@ def prime_in_range(M: int) -> int:
 
     return None  # In case no prime is found in the range, which is unlikely
 
-"""
-The method used to find primes up to n is the sieve of Erastothenes. This algorithm
-starts with 2, and 
-"""
