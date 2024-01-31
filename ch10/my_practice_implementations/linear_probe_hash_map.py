@@ -31,8 +31,8 @@ class LinearProbeHashMap(HashMapBase):
         
         Because load factor is kept < 0.5, this loop cannot be infinite.
         """
+        first_available = None
         while True:
-            first_available = None
             if self._is_available(j):
                 if first_available is None:
                     first_available = j

@@ -10,7 +10,7 @@ print(src_dir)
 sys.path.insert(0, str(src_dir))
 
 
-from typing import Hashable
+from typing import Any, Hashable
 from ch10.my_practice_implementations.hash_map_base import HashMapBase
 
 
@@ -44,3 +44,30 @@ class QuadraticProbeHashMap(HashMapBase):
             probes += 1
             index = (index + (probes ** 2)) % len(self._table) 
             
+    def _bucket_getitem(self, j: int, k: Hashable) -> Any:
+        success, index = self._find_slot(k, j)
+        if success:
+            return self._table[index]._value
+        raise KeyError("Key Error: " + repr(k))
+
+    def _bucket_setitem(self, j: int, k: Hashable, v: Any) -> None:
+        found, index = self._find_slot(k, j)
+        # overwriting existing key-value
+        if found:
+            self._table[j]._value = v
+        else:
+            self._table[index] = self.Item(k, v)
+            self._n += 1
+
+    def _bucket_delitem(self, j: int, k: Hashable) -> None:
+        found, index = self._find_slot(k, j)
+        if found:
+            self._table[index] = self._AVAIL
+            self._n -= 1
+        else:
+            raise KeyError("Key Error: " + repr(k))
+
+    def __iter__(self):
+        for i in range(len(self._table)):
+            if not self._is_available(i):
+                yield self._table[i]._key
