@@ -355,3 +355,7 @@ def kth_smallest(arr1: list[int], arr2: list[int], k: int) -> int:
     # if we take no items from arr1
     return arr2[k-1]
 ```
+
+## 10.48
+
+Use a sorted map, implemented with a skip list. The keys are the words in the document, and the values can be a list of integers, which are the indices of the words in the document. This gives us log(n) performance each time we insert a new word, or add an additional index to a word. The words will also be ordered at the end.
