@@ -25,7 +25,7 @@ Input: A position x of a binary search tree T that has both a parent y and a gra
 
 Output: Tree T after a trinode restructuring (which corresponds to a single or double rotation) involving positions x, y, and z
 
-1: Let (a, b, c) be a left-to-right (inorder) listing of the positions x, y, and z, and let (T1,T2,T3,T4) be a left-to-right (inorder) listing of the four subtrees of x, y, and z not rooted at x, y, or z.
+1: Let (a, b, c) be a left-to-right (inorder) listing of the positions x, y (parent of x), and z (parent of y), and let (T1,T2,T3,T4) be a left-to-right (inorder) listing of the four subtrees of x, y, and z not rooted at x, y, or z.
 
 2: Replace the subtree rooted at z with a new subtree rooted at b. Meaning, relink the connection which exists between z and its parent, such that the parent of z becomes the parent of b instead.
 
@@ -33,3 +33,5 @@ Output: Tree T after a trinode restructuring (which corresponds to a single or d
 
 4: Let c be the right child of b and let T3 and T4 be the left and right subtrees of c, respectively
 ```
+
+The result of a trinode restructuring is that depth of x and its subtrees is reduced. In the case of same alignment between x, parent and grandparent, its depth is reduced by one. In case of opposite alignment, it is reduced by two. The depth of z increases by one. The depth of y decreases in the case of same algnment, and stays the same in case of opposite alignment.
