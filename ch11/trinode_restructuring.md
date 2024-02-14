@@ -6,7 +6,7 @@ Trinode restructuring is a compound operation, combining one or more rotations, 
 
 As mentioned, the core operation of a trinode restructuring is a 'rotation'. Personally, I think it's a bit of a misnomer, because you can't get from the configuration before a rotation to the configuration after the rotation by actually rotating the elements. Nevertheless, during a rotation, either a left child or a child of a given node move up to replace the parent node, with the remaining subtrees also moving around. The result is that the depth of one of the subtrees decreases by one, and the depth of one of the other subtrees increases by one.
 
-<img src="./tree_rotation.png">
+<img src="./assets/tree_rotation.png">
 
 We can distinguish between the two operations as a right rotation, and a left rotation, though there is inconsistency in how these are applied. For our purposes, a right rotation occures when the left child replaces the parent, and the parent then becomes the right child. During this operation, the depth of the original parent node, and its right subtree increases by one. The depth of the original left child and its left subtree decreases by one. An alternative way to identify which heights are changing is to realize that the two parent-child nodes (x and y) 'swap heights', as the depth of one of them increases, and for the other one it decreases. And then the subtree containing values which are all less than both of the nodes (T1 in the image), and the subtree containing values greater than all of the nodes (T3 in the image) also change in height by one. On the other hand, the subtree containing values between x and y (T2 in the image) does not change in height. Another reminder of how the nodes/subtrees move around is that the inorder traversal order obviously cannot change, otherwise the tree would violate the order property after the rotation.
 
@@ -14,7 +14,7 @@ We can distinguish between the two operations as a right rotation, and a left ro
 
 A trinode restructuirng is a compound operation, consisting of one or two rotations. It takes three nodes: node x, its parent y, and its grandparent z, and rearranges them in order to reduce the depth of x and its subtrees. There are 4 possible arrangements for three nodes in this kind of relationship. x can be either a left or right child, and then y can be either a left or right child, giving us 2 * 2 = 4 configurations:
 
-<img src="./trinode_restructuring.png">
+<img src="./assets/trinode_restructuring.png">
 
 A pseudocode algorithm:
 
