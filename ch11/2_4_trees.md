@@ -42,18 +42,18 @@ By deleting as described above, we preserve the depth property. But again, we ma
 
 In this case, we perform a transfer operation. During a transfer operation, we move a key from the sibling s to the common parent w, and we move another key from the parent w to u, so that it does not become a 1 node. We also move a child from s to w. 
 
-<img src="./transfer_operation_1.png">
+<img src="./assets/transfer_operation_1.png">
 
-<img src="./transfer_operation_2.png">
+<img src="./assets/transfer_operation_2.png">
 
-<img src="./transfer_operation_3.png">
+<img src="./assets/transfer_operation_3.png">
 
 2. The node does not have a 3-node or 4-node as an immdediate sibling
 
 In this case, we perform a fusion operation. During a fusion operation, we move a key from the parent node w to the node u. And then we merge u with its sibling s. 
 
-<img src="./fusion_operation.png">
+<img src="./assets/fusion_operation.png">
 
 Because we are removing a key from the parent during a fusion operation, we may cause a cascading effect of underflows. If it propagates all the way up to the root, then the root is simply deleted:
 
-<img src="./cascading_underflows.png">
+<img src="./assets/cascading_underflows.png">
